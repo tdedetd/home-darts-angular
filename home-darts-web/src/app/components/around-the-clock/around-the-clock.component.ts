@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { BehaviorSubject, catchError } from 'rxjs';
+import { catchError } from 'rxjs';
 
 @UntilDestroy()
 @Component({
@@ -11,9 +11,16 @@ import { BehaviorSubject, catchError } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AroundTheClockComponent {
+  public get buttonsDisabled(): boolean {
+    return this.loading || this.nominal === 0;
+  };
+
   public nominal = 1;
   public errorDebug = '';
   public loading = false;
+
+  public throws = 0;
+  public hits = 0;
 
   // temp
   private readonly gameId = 1;
@@ -60,7 +67,6 @@ export class AroundTheClockComponent {
     this.loading = true;
     this.cdr.detectChanges();
 
-    console.log('nominal', nominal);
     this.http.post(`${this.apiPrefix}${this.gameId}/throw`, { nominal, hit }, { params: { playerId: this.playerId } })
       .pipe(
         catchError((err) => {
@@ -73,7 +79,9 @@ export class AroundTheClockComponent {
       )
       .subscribe(() => {
         this.loading = false;
+        this.throws++;
         if (hit) {
+          this.hits++;
           if (this.isForward) {
             if (nominal === 20) {
               this.nominal = 25;
