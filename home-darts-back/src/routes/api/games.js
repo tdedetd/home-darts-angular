@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { getPgClient } = require('../../config/pg');
 const { completedGamesReadOnly } = require('../../middleware/completed-games-read-only');
 const { paramGameId } = require('../../middleware/param-game-id');
 const { queryPlayerId } = require('../../middleware/query-player-id');
@@ -14,41 +15,32 @@ const { GAMEMODE_AROUND_THE_CLOCK } = require('../../utils/constants/gamemodes')
 const { SECTION_TYPE_ANY } = require('../../utils/constants/section-types');
 const { getUtcDate } = require('../../utils/functions/get-utc-date');
 
-const { Pool: PgPool } = require('pg');
-const pgPool = new PgPool(require('../../config').pg);
-
-router.post('/start', queryPlayerId, (req, res) => {
+router.post('/start', queryPlayerId, async (req, res) => {
   const playerId = req.query.playerId;
-  pgPool.connect().then(async (client) => {
-    await client.query('BEGIN');
-    const insertGameResult = await client.query(
-      'INSERT INTO public.game (creation_date, gamemode_name) VALUES ($1, $2) RETURNING id',
-      [getUtcDate(), GAMEMODE_AROUND_THE_CLOCK]
-    );
+  await getPgClient().query('BEGIN');
+  const insertGameResult = await getPgClient().query(
+    'INSERT INTO public.game (creation_date, gamemode_name) VALUES ($1, $2) RETURNING id',
+    [getUtcDate(), GAMEMODE_AROUND_THE_CLOCK]
+  );
 
-    /** @type {number} */
-    const gameId = insertGameResult.rows[0].id;
-    await client.query('INSERT INTO public.game_player (game_id, player_id) VALUES ($1, $2)', [gameId, playerId]);
+  /** @type {number} */
+  const gameId = insertGameResult.rows[0].id;
+  await getPgClient().query('INSERT INTO public.game_player (game_id, player_id) VALUES ($1, $2)', [gameId, playerId]);
 
-    // TODO: via bulk insert
-    const insertGameParamsQuery = 'INSERT INTO public.game_param (game_id, param_name, value) VALUES ($1, $2, $3)';
-    await client.query(insertGameParamsQuery, [gameId, GAME_PARAM_TYPE_DIRECTION, GAME_DIRECTION_FORWARD_BACKWARD]);
-    await client.query(insertGameParamsQuery, [gameId, GAME_PARAM_TYPE_HIT_DETECTION, SECTION_TYPE_ANY]);
-    await client.query(insertGameParamsQuery, [gameId, GAME_PARAM_TYPE_FAST_GAME, GAME_PARAM_BOOLEAN_FALSE]);
-    await client.query(insertGameParamsQuery, [gameId, GAME_PARAM_TYPE_INCLUDE_BULL, GAME_PARAM_BOOLEAN_TRUE]);
+  // TODO: via bulk insert
+  const insertGameParamsQuery = 'INSERT INTO public.game_param (game_id, param_name, value) VALUES ($1, $2, $3)';
+  await getPgClient().query(insertGameParamsQuery, [gameId, GAME_PARAM_TYPE_DIRECTION, GAME_DIRECTION_FORWARD_BACKWARD]);
+  await getPgClient().query(insertGameParamsQuery, [gameId, GAME_PARAM_TYPE_HIT_DETECTION, SECTION_TYPE_ANY]);
+  await getPgClient().query(insertGameParamsQuery, [gameId, GAME_PARAM_TYPE_FAST_GAME, GAME_PARAM_BOOLEAN_FALSE]);
+  await getPgClient().query(insertGameParamsQuery, [gameId, GAME_PARAM_TYPE_INCLUDE_BULL, GAME_PARAM_BOOLEAN_TRUE]);
 
-    await client.query('COMMIT');
-    res.status(201);
-    res.json({ gameId });
-  }).catch(err => {
-    console.error(err);
-    res.status(500);
-    res.json();
-  });
+  await getPgClient().query('COMMIT');
+  res.status(201);
+  res.json({ gameId });
 });
 
 // TODO: check player participation
-router.post('/:gameId/throw', queryPlayerId, paramGameId, completedGamesReadOnly, (req, res) => {
+router.post('/:gameId/throw', queryPlayerId, paramGameId, completedGamesReadOnly, async (req, res) => {
   const playerId = req.query.playerId;
   const gameId = req.params.gameId;
 
@@ -57,74 +49,56 @@ router.post('/:gameId/throw', queryPlayerId, paramGameId, completedGamesReadOnly
   /** @type {boolean} */
   const hit = req.body.hit;
 
-  pgPool.connect().then(async (client) => {
-    await client.query('BEGIN');
-    await client.query(
-      'INSERT INTO public.throw (creation_date, game_id, player_id, hit, nominal, multiplier) VALUES ($1, $2, $3, $4, $5, $6)',
-      [getUtcDate(), gameId, playerId, hit, nominal, 1]
-    );
-    await client.query('COMMIT');
-    res.status(201);
-    res.json();
-  }).catch(err => {
-    console.error(err);
-    res.status(500);
-    res.json();
-  });
+  await getPgClient().query('BEGIN');
+  await getPgClient().query(
+    'INSERT INTO public.throw (creation_date, game_id, player_id, hit, nominal, multiplier) VALUES ($1, $2, $3, $4, $5, $6)',
+    [getUtcDate(), gameId, playerId, hit, nominal, 1]
+  );
+  await getPgClient().query('COMMIT');
+  res.status(201);
+  res.json();
 });
 
 // TODO: check player participation
-router.delete('/:gameId/undo', queryPlayerId, paramGameId, completedGamesReadOnly, (req, res) => {
+router.delete('/:gameId/undo', queryPlayerId, paramGameId, completedGamesReadOnly, async (req, res) => {
   const playerId = req.query.playerId;
   const gameId = req.params.gameId;
 
-  pgPool.connect().then(async (client) => {
-    const lastThrowResult = await client.query(
-      'SELECT t.id FROM public.throw t WHERE game_id = $1 and player_id = $2 ORDER BY t.id desc limit 1',
-      [gameId, playerId]
-    );
-    if (!lastThrowResult.rows.length) {
-      res.json();
-      return;
-    }
-    const lastThrowId = lastThrowResult.rows[0].id;
+  const lastThrowResult = await getPgClient().query(
+    'SELECT t.id FROM public.throw t WHERE game_id = $1 and player_id = $2 ORDER BY t.id desc limit 1',
+    [gameId, playerId]
+  );
+  if (!lastThrowResult.rows.length) {
+    res.json();
+    return;
+  }
+  const lastThrowId = lastThrowResult.rows[0].id;
 
-    await client.query('DELETE FROM public.throw WHERE id = $1', [lastThrowId]);
-    await client.query('COMMIT');
-    res.json();
-  }).catch(err => {
-    console.error(err);
-    res.status(500);
-    res.json();
-  });
+  await getPgClient().query('DELETE FROM public.throw WHERE id = $1', [lastThrowId]);
+  await getPgClient().query('COMMIT');
+  res.json();
 });
 
-router.put('/:gameId/complete', queryPlayerId, paramGameId, completedGamesReadOnly, (req, res) => {
+router.put('/:gameId/complete', queryPlayerId, paramGameId, completedGamesReadOnly, async (req, res) => {
   const playerId = req.query.playerId;
   const gameId = req.params.gameId;
 
-  pgPool.connect().then(async (client) => {
-    await client.query('BEGIN');
+  await getPgClient().query('BEGIN');
 
-    // TODO: out check player participation into middleware
-    // TODO: EXISTS
-    const gamePlayerResult = await client.query('SELECT FROM public.game_player WHERE game_id = $1 and player_id = $2', [gameId, playerId]);
-    const isParticipant = gamePlayerResult.rows.length === 1;
+  // TODO: out check player participation into middleware
+  // TODO: EXISTS
+  const gamePlayerResult = await getPgClient().query('SELECT FROM public.game_player WHERE game_id = $1 and player_id = $2', [gameId, playerId]);
+  const isParticipant = gamePlayerResult.rows.length === 1;
 
-    if (!isParticipant) {
-      res.status(403);
-      res.json();
-      return;
-    }
-
-    await client.query('UPDATE public.game SET is_completed = true WHERE id = $1', [gameId]);
-    await client.query('COMMIT');
+  if (!isParticipant) {
+    res.status(403);
     res.json();
-  }).catch(err => {
-    console.error(err);
-    res.status(500);
-    res.json();
-  });
+    return;
+  }
+
+  await getPgClient().query('UPDATE public.game SET is_completed = true WHERE id = $1', [gameId]);
+  await getPgClient().query('COMMIT');
+  res.json();
 });
 
 module.exports = router;
