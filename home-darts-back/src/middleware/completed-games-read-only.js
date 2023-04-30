@@ -13,8 +13,7 @@ module.exports = {
 
     pgPool.connect().then(async (client) => {
       const isCompletedResult = await client.query('SELECT is_completed FROM public.game WHERE id = $1', [gameId]);
-      const isCompleted = isCompletedResult.rows[0]['is_completed'];
-      if (isCompleted) {
+      if (isCompletedResult.rows.length && isCompletedResult.rows[0]['is_completed']) {
         res.status(403);
         res.json();
         return;

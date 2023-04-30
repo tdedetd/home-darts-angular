@@ -41,12 +41,13 @@ router.post('/start', queryPlayerId, (req, res) => {
     res.status(201);
     res.json({ gameId });
   }).catch(err => {
-    // TODO: log error
+    console.error(err);
     res.status(500);
     res.json();
   });
 });
 
+// TODO: check player participation
 router.post('/:gameId/throw', queryPlayerId, paramGameId, completedGamesReadOnly, (req, res) => {
   const playerId = req.query.playerId;
   const gameId = req.params.gameId;
@@ -66,12 +67,13 @@ router.post('/:gameId/throw', queryPlayerId, paramGameId, completedGamesReadOnly
     res.status(201);
     res.json();
   }).catch(err => {
-    // TODO: log error
+    console.error(err);
     res.status(500);
     res.json();
   });
 });
 
+// TODO: check player participation
 router.delete('/:gameId/undo', queryPlayerId, paramGameId, completedGamesReadOnly, (req, res) => {
   const playerId = req.query.playerId;
   const gameId = req.params.gameId;
@@ -91,7 +93,35 @@ router.delete('/:gameId/undo', queryPlayerId, paramGameId, completedGamesReadOnl
     await client.query('COMMIT');
     res.json();
   }).catch(err => {
-    // TODO: log error
+    console.error(err);
+    res.status(500);
+    res.json();
+  });
+});
+
+router.put('/:gameId/complete', queryPlayerId, paramGameId, completedGamesReadOnly, (req, res) => {
+  const playerId = req.query.playerId;
+  const gameId = req.params.gameId;
+
+  pgPool.connect().then(async (client) => {
+    await client.query('BEGIN');
+
+    // TODO: out check player participation into middleware
+    // TODO: EXISTS
+    const gamePlayerResult = await client.query('SELECT FROM public.game_player WHERE game_id = $1 and player_id = $2', [gameId, playerId]);
+    const isParticipant = gamePlayerResult.rows.length === 1;
+
+    if (!isParticipant) {
+      res.status(403);
+      res.json();
+      return;
+    }
+
+    await client.query('UPDATE public.game SET is_completed = true WHERE id = $1', [gameId]);
+    await client.query('COMMIT');
+    res.json();
+  }).catch(err => {
+    console.error(err);
     res.status(500);
     res.json();
   });
