@@ -1,0 +1,26 @@
+.erorr-debug {
+  color: #a00;
+}
+
+.nominal-panel {
+  padding: 40px 0;
+  text-align: center;
+  font-size: 196px;
+  font-weight: 700;
+}
+
+.tools {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  justify-content: space-around;
+}
+
+.tools > li:not(:last-child) {
+  margin-right: 12px;
+}
+
+.btn {
+  font-size: 32px;
+}

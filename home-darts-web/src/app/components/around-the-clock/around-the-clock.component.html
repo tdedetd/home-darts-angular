@@ -1,0 +1,13 @@
+<p class="erorr-debug">errorDebug: {{ errorDebug | json }}; loading: {{ loading }}; nominal: {{ nominal }}</p>
+<div class="nominal-panel">{{ nominal }}</div>
+<ul class="tools">
+  <li>
+    <button class="btn" [disabled]="loading || nominal === 0" (click)="onHit()">Hit</button>
+  </li>
+  <li>
+    <button class="btn" [disabled]="loading || nominal === 0" (click)="onMiss()">Miss</button>
+  </li>
+  <li>
+    <button class="btn" [disabled]="loading || nominal === 0" (click)="onUndo()">Undo</button>
+  </li>
+</ul>
