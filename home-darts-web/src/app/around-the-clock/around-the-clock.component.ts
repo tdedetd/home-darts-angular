@@ -1,8 +1,11 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { catchError } from 'rxjs';
-import { ApiService } from 'src/app/services/api.service';
+import { GameDirections } from 'src/app/models/game-directions.enum';
+import { AroundTheClockApiService } from 'src/app/around-the-clock/service/around-the-clock-api.service';
+import { getSectionsForAroundTheClock } from './utils/functions/get-sections-for-around-the-clock';
 
+// TODO: provide game service
 @UntilDestroy()
 @Component({
   selector: 'app-around-the-clock',
@@ -15,9 +18,12 @@ export class AroundTheClockComponent {
     return this.loading || this.isCompleted;
   };
 
+  public get currentSection(): number | undefined {
+    return this.sections[this.currentSectionIndex];
+  }
+
   public gameId: number | null = null;
 
-  public nominal = 1;
   public errorDebug = '';
   public loading = false;
   public throws = 0;
@@ -27,9 +33,10 @@ export class AroundTheClockComponent {
   // TODO: config
   private readonly playerId = 1;
 
-  private isForward = true;
+  private currentSectionIndex = 0;
+  private sections = getSectionsForAroundTheClock(GameDirections.ForwardBackward, true);
 
-  constructor(private cdr: ChangeDetectorRef, private api: ApiService) {}
+  constructor(private cdr: ChangeDetectorRef, private api: AroundTheClockApiService) {}
 
   public onCompleteBtnClick(): void {
     if (this.gameId === null) return;
@@ -52,11 +59,11 @@ export class AroundTheClockComponent {
   }
 
   public onHit(): void {
-    this.throw(this.nominal, true);
+    this.throw(this.currentSection, true);
   }
 
   public onMiss(): void {
-    this.throw(this.nominal, false);
+    this.throw(this.currentSection, false);
   }
 
   public onUndo(): void {
@@ -104,8 +111,8 @@ export class AroundTheClockComponent {
       });
   }
 
-  private throw(nominal: number, hit: boolean): void {
-    if (this.gameId === null) return;
+  private throw(nominal: number | undefined, hit: boolean): void {
+    if (this.gameId === null || typeof nominal === 'undefined') return;
 
     this.loading = true;
     this.cdr.detectChanges();
@@ -125,18 +132,7 @@ export class AroundTheClockComponent {
         this.throws++;
         if (hit) {
           this.hits++;
-          if (this.isForward) {
-            if (nominal === 20) {
-              this.nominal = 25;
-            } else if (nominal === 25) {
-              this.isForward = false;
-              this.nominal = 20;
-            } else {
-              this.nominal++;
-            }
-          } else {
-            this.nominal--;
-          }
+          this.currentSectionIndex++;
         }
         this.cdr.detectChanges();
       });

@@ -1,12 +1,12 @@
 <ng-container *ngIf="gameId !== null; else startGame">
   <p class="erorr-debug">errorDebug: {{ errorDebug | json }}; gameId: {{ gameId }}; hits: {{ hits }} / {{ throws }} ({{ (hits / throws * 100) | number: '1.3-3' }}%)</p>
-  <div class="nominal-panel">{{ nominal }}</div>
+  <div class="nominal-panel">{{ currentSection }}</div>
   <ul class="tools">
     <li>
-      <button class="btn tools__btn" [disabled]="buttonsDisabled || nominal === 0" (click)="onHit()">Hit</button>
+      <button class="btn tools__btn" [disabled]="buttonsDisabled || !currentSection" (click)="onHit()">Hit</button>
     </li>
     <li>
-      <button class="btn tools__btn" [disabled]="buttonsDisabled || nominal === 0" (click)="onMiss()">Miss</button>
+      <button class="btn tools__btn" [disabled]="buttonsDisabled || !currentSection" (click)="onMiss()">Miss</button>
     </li>
     <li>
       <!-- TODO: disabled -->

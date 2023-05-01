@@ -15,6 +15,9 @@ const { GAMEMODE_AROUND_THE_CLOCK } = require('../../utils/constants/gamemodes')
 const { SECTION_TYPE_ANY } = require('../../utils/constants/section-types');
 const { getUtcDate } = require('../../utils/functions/get-utc-date');
 
+// TODO: around-the-clock section
+// TODO: moddlewares for moddleware
+
 router.post('/start', queryPlayerId, async (req, res) => {
   const playerId = req.query.playerId;
   await getPgClient().query('BEGIN');
@@ -35,8 +38,7 @@ router.post('/start', queryPlayerId, async (req, res) => {
   await getPgClient().query(insertGameParamsQuery, [gameId, GAME_PARAM_TYPE_INCLUDE_BULL, GAME_PARAM_BOOLEAN_TRUE]);
 
   await getPgClient().query('COMMIT');
-  res.status(201);
-  res.json({ gameId });
+  res.status(201).json({ gameId });
 });
 
 // TODO: check player participation
@@ -55,8 +57,7 @@ router.post('/:gameId/throw', queryPlayerId, paramGameId, completedGamesReadOnly
     [getUtcDate(), gameId, playerId, hit, nominal, 1]
   );
   await getPgClient().query('COMMIT');
-  res.status(201);
-  res.json();
+  res.status(201).json();
 });
 
 // TODO: check player participation
@@ -91,8 +92,7 @@ router.put('/:gameId/complete', queryPlayerId, paramGameId, completedGamesReadOn
   const isParticipant = gamePlayerResult.rows.length === 1;
 
   if (!isParticipant) {
-    res.status(403);
-    res.json();
+    res.status(403).json();
     return;
   }
 
