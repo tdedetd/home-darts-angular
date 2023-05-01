@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { catchError } from 'rxjs';
+import { ApiService } from 'src/app/services/api.service';
 
 @UntilDestroy()
 @Component({
@@ -12,25 +12,44 @@ import { catchError } from 'rxjs';
 })
 export class AroundTheClockComponent {
   public get buttonsDisabled(): boolean {
-    return this.loading || this.nominal === 0;
+    return this.loading || this.isCompleted;
   };
+
+  public gameId: number | null = null;
 
   public nominal = 1;
   public errorDebug = '';
   public loading = false;
-
   public throws = 0;
   public hits = 0;
+  public isCompleted = false;
 
-  // temp
-  private readonly gameId = 1;
-  // temp
+  // TODO: config
   private readonly playerId = 1;
 
-  private readonly apiPrefix = 'http://192.168.0.104:3000/api/games/';
   private isForward = true;
 
-  constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, private api: ApiService) {}
+
+  public onCompleteBtnClick(): void {
+    if (this.gameId === null) return;
+
+    this.api.complete(this.gameId, this.playerId)
+      .pipe(
+        catchError((err) => {
+          this.loading = false;
+          this.errorDebug = 'complete';
+          this.cdr.detectChanges();
+          return err;
+        }),
+        untilDestroyed(this)
+      )
+      .subscribe(() => {
+        this.loading = false;
+        this.isCompleted = true;
+        this.cdr.detectChanges();
+      });
+  }
 
   public onHit(): void {
     this.throw(this.nominal, true);
@@ -41,10 +60,12 @@ export class AroundTheClockComponent {
   }
 
   public onUndo(): void {
+    if (this.gameId === null) return;
+
     this.loading = true;
     this.cdr.detectChanges();
 
-    this.http.delete(`${this.apiPrefix}${this.gameId}/undo`, { params: { playerId: this.playerId } })
+    this.api.undo(this.gameId, this.playerId)
       .pipe(
         catchError((err) => {
           this.loading = false;
@@ -63,11 +84,33 @@ export class AroundTheClockComponent {
       });
   }
 
+  public onStartBtnClick(): void {
+    this.loading = true;
+
+    this.api.start(this.playerId)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: ({ gameId }) => {
+          this.loading = false;
+          this.gameId = gameId;
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          this.loading = false;
+          this.errorDebug = 'start';
+          this.cdr.detectChanges();
+          return err;
+        },
+      });
+  }
+
   private throw(nominal: number, hit: boolean): void {
+    if (this.gameId === null) return;
+
     this.loading = true;
     this.cdr.detectChanges();
 
-    this.http.post(`${this.apiPrefix}${this.gameId}/throw`, { nominal, hit }, { params: { playerId: this.playerId } })
+    this.api.throw(nominal, hit, this.gameId, this.playerId)
       .pipe(
         catchError((err) => {
           this.loading = false;

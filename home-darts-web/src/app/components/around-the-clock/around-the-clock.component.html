@@ -1,14 +1,24 @@
-<p class="erorr-debug">errorDebug: {{ errorDebug | json }}; loading: {{ loading }}; hits: {{ hits }} / {{ throws }} ({{ hits / throws * 100 }}%)</p>
-<div class="nominal-panel">{{ nominal }}</div>
-<ul class="tools">
-  <li>
-    <button class="btn" [disabled]="buttonsDisabled" (click)="onHit()">Hit</button>
-  </li>
-  <li>
-    <button class="btn" [disabled]="buttonsDisabled" (click)="onMiss()">Miss</button>
-  </li>
-  <li>
-    <!-- TODO: disabled -->
-    <button class="btn" [disabled]="true" (click)="onUndo()">Undo</button>
-  </li>
-</ul>
+<ng-container *ngIf="gameId !== null; else startGame">
+  <p class="erorr-debug">errorDebug: {{ errorDebug | json }}; gameId: {{ gameId }}; hits: {{ hits }} / {{ throws }} ({{ (hits / throws * 100) | number: '1.3-3' }}%)</p>
+  <div class="nominal-panel">{{ nominal }}</div>
+  <ul class="tools">
+    <li>
+      <button class="btn tools__btn" [disabled]="buttonsDisabled || nominal === 0" (click)="onHit()">Hit</button>
+    </li>
+    <li>
+      <button class="btn tools__btn" [disabled]="buttonsDisabled || nominal === 0" (click)="onMiss()">Miss</button>
+    </li>
+    <li>
+      <!-- TODO: disabled -->
+      <button class="btn tools__btn" [disabled]="true" (click)="onUndo()">Undo</button>
+    </li>
+  </ul>
+  <div class="complete-tools">
+    <button class="btn game-btn" [disabled]="buttonsDisabled" (click)="onCompleteBtnClick()">Complete</button>
+  </div>
+  <p *ngIf="isCompleted">Game is completed</p>
+</ng-container>
+
+<ng-template #startGame>
+  <button class="btn game-btn" [disabled]="loading" (click)="onStartBtnClick()">Start</button>
+</ng-template>

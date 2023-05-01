@@ -1,3 +1,7 @@
+.game-btn {
+  width: 160px;
+}
+
 .erorr-debug {
   color: #a00;
 }
@@ -15,12 +19,28 @@
   list-style: none;
   display: flex;
   justify-content: space-around;
+  margin-bottom: 24px;
 }
 
 .tools > li:not(:last-child) {
   margin-right: 12px;
 }
 
+.tools__btn {
+  width: 80px;
+}
+
 .btn {
-  font-size: 32px;
+  font-size: 24px;
+  padding: 24px 0;
+  text-transform: uppercase;
+}
+
+.btn:not(:disabled) {
+  cursor: pointer;
+}
+
+.complete-tools {
+  display: flex;
+  justify-content: center;
 }
