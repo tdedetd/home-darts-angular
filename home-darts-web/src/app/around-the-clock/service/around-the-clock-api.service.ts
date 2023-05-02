@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class AroundTheClockApiService {
-  // TODO: around-the-clock section
+  // TODO: around-the-clock section in url
   // TODO: api url to config
   private readonly apiPrefix = 'http://192.168.0.104:3000/api/games/';
 
