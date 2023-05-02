@@ -1,16 +1,18 @@
-const { port } = require('./config');
-
+const { debugInfo } = require('./middleware/debug-info');
+const bodyParser = require('body-parser');
+const { isProduction, port } = require('./config');
+const { name: appName } = require('../package.json');
 const express = require('express');
+
 const app = express();
 
 app.use(require('cors')());
-const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+if (!isProduction) app.use(debugInfo);
 app.use(require('./routes'));
 
-const { name: appName } = require('../package.json');
 app.listen(port, () => {
-  console.log(`${appName} listening on port ${port}`);
+  console.log(`${appName} listening on port ${port} in ${isProduction ? 'production' : 'debug'} mode`);
 });

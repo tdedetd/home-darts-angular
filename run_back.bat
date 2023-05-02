@@ -1,2 +1,2 @@
 cd .\home-darts-back
-npm run dev
+npm start

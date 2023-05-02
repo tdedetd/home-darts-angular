@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { getPgClient } = require('../../config/pg');
+const { checkGameExistanse } = require('../../middleware/check-game-existanse');
 const { completedGamesReadOnly } = require('../../middleware/completed-games-read-only');
 const { paramGameId } = require('../../middleware/param-game-id');
 const { queryPlayerId } = require('../../middleware/query-player-id');
@@ -14,11 +15,14 @@ const {
 const { GAMEMODE_AROUND_THE_CLOCK } = require('../../utils/constants/gamemodes');
 const { SECTION_TYPE_ANY } = require('../../utils/constants/section-types');
 const { getUtcDate } = require('../../utils/functions/get-utc-date');
+const { isEmpty } = require('../../utils/functions/is-empty');
 
 // TODO: around-the-clock section
-// TODO: moddlewares for moddleware
 
-router.post('/start', queryPlayerId, async (req, res) => {
+router.use('/', queryPlayerId);
+router.use('/:gameId([0-9]+)', paramGameId, checkGameExistanse, completedGamesReadOnly);
+
+router.post('/start', async (req, res) => {
   const playerId = req.query.playerId;
   await getPgClient().query('BEGIN');
   const insertGameResult = await getPgClient().query(
@@ -42,14 +46,18 @@ router.post('/start', queryPlayerId, async (req, res) => {
 });
 
 // TODO: check player participation
-router.post('/:gameId/throw', queryPlayerId, paramGameId, completedGamesReadOnly, async (req, res) => {
+router.post('/:gameId([0-9]+)/throw', async (req, res) => {
   const playerId = req.query.playerId;
   const gameId = req.params.gameId;
+
+  if (isEmpty(req.body.nominal) || isNaN(Number(req.body.nominal)) || isEmpty(req.body.hit)) {
+    res.status(400).json();
+  }
 
   /** @type {number} */
   const nominal = req.body.nominal;
   /** @type {boolean} */
-  const hit = req.body.hit;
+  const hit = Boolean(req.body.hit);
 
   await getPgClient().query('BEGIN');
   await getPgClient().query(
@@ -61,7 +69,7 @@ router.post('/:gameId/throw', queryPlayerId, paramGameId, completedGamesReadOnly
 });
 
 // TODO: check player participation
-router.delete('/:gameId/undo', queryPlayerId, paramGameId, completedGamesReadOnly, async (req, res) => {
+router.delete('/:gameId([0-9]+)/undo', async (req, res) => {
   const playerId = req.query.playerId;
   const gameId = req.params.gameId;
 
@@ -80,7 +88,7 @@ router.delete('/:gameId/undo', queryPlayerId, paramGameId, completedGamesReadOnl
   res.json();
 });
 
-router.put('/:gameId/complete', queryPlayerId, paramGameId, completedGamesReadOnly, async (req, res) => {
+router.put('/:gameId([0-9]+)/complete', async (req, res) => {
   const playerId = req.query.playerId;
   const gameId = req.params.gameId;
 

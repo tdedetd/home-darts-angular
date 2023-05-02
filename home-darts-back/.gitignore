@@ -1,2 +1,3 @@
 /node_modules/
-pg-connect.js
+pg-connect-dev.js
+pg-connect-prod.js
