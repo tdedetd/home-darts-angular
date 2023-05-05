@@ -3,10 +3,10 @@
   <div class="nominal-panel">{{ currentSection }}</div>
   <ul class="tools">
     <li>
-      <button class="btn tools__btn" [disabled]="buttonsDisabled || !currentSection" (click)="onHit()">Hit</button>
+      <button class="btn tools__btn" [disabled]="buttonDisabled || !currentSection" (click)="onHit()">Hit</button>
     </li>
     <li>
-      <button class="btn tools__btn" [disabled]="buttonsDisabled || !currentSection" (click)="onMiss()">Miss</button>
+      <button class="btn tools__btn" [disabled]="buttonDisabled || !currentSection" (click)="onMiss()">Miss</button>
     </li>
     <li>
       <!-- TODO: disabled -->
@@ -14,7 +14,7 @@
     </li>
   </ul>
   <div class="complete-tools">
-    <button class="btn game-btn" [disabled]="buttonsDisabled" (click)="onCompleteBtnClick()">Complete</button>
+    <button class="btn game-btn" [disabled]="buttonDisabled" (click)="onCompleteBtnClick()">Complete</button>
   </div>
   <p *ngIf="isCompleted">Game is completed</p>
 </ng-container>

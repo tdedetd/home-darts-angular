@@ -14,12 +14,12 @@ import { getSectionsForAroundTheClock } from './utils/functions/get-sections-for
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AroundTheClockComponent {
-  public get buttonsDisabled(): boolean {
+  public get buttonDisabled(): boolean {
     return this.loading || this.isCompleted;
   };
 
   public get currentSection(): number | undefined {
-    return this.sections[this.currentSectionIndex];
+    return this.sections[this.hits];
   }
 
   public gameId: number | null = null;
@@ -33,7 +33,6 @@ export class AroundTheClockComponent {
   // TODO: config
   private readonly playerId = 1;
 
-  private currentSectionIndex = 0;
   private sections = getSectionsForAroundTheClock(GameDirections.ForwardBackward, true);
 
   constructor(private cdr: ChangeDetectorRef, private api: AroundTheClockApiService) {}
@@ -130,10 +129,7 @@ export class AroundTheClockComponent {
       .subscribe(() => {
         this.loading = false;
         this.throws++;
-        if (hit) {
-          this.hits++;
-          this.currentSectionIndex++;
-        }
+        if (hit) this.hits++;
         this.cdr.detectChanges();
       });
   }

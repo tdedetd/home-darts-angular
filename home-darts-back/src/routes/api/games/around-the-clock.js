@@ -1,23 +1,21 @@
 const router = require('express').Router();
-const { getPgClient } = require('../../config/pg');
-const { checkGameExistanse } = require('../../middleware/check-game-existanse');
-const { completedGamesReadOnly } = require('../../middleware/completed-games-read-only');
-const { paramGameId } = require('../../middleware/param-game-id');
-const { queryPlayerId } = require('../../middleware/query-player-id');
-const { GAME_DIRECTION_FORWARD_BACKWARD } = require('../../utils/constants/game-directions');
-const { GAME_PARAM_BOOLEAN_TRUE, GAME_PARAM_BOOLEAN_FALSE } = require('../../utils/constants/game-param-booleans');
+const { getPgClient } = require('../../../config/pg');
+const { checkGameExistanse } = require('../../../middleware/check-game-existanse');
+const { completedGamesReadOnly } = require('../../../middleware/completed-games-read-only');
+const { paramGameId } = require('../../../middleware/param-game-id');
+const { queryPlayerId } = require('../../../middleware/query-player-id');
+const { GAME_DIRECTION_FORWARD_BACKWARD } = require('../../../utils/constants/game-directions');
+const { GAME_PARAM_BOOLEAN_TRUE, GAME_PARAM_BOOLEAN_FALSE } = require('../../../utils/constants/game-param-booleans');
 const {
   GAME_PARAM_TYPE_DIRECTION,
   GAME_PARAM_TYPE_HIT_DETECTION,
   GAME_PARAM_TYPE_FAST_GAME,
   GAME_PARAM_TYPE_INCLUDE_BULL
-} = require('../../utils/constants/game-param-types');
-const { GAMEMODE_AROUND_THE_CLOCK } = require('../../utils/constants/gamemodes');
-const { SECTION_TYPE_ANY } = require('../../utils/constants/section-types');
-const { getUtcDate } = require('../../utils/functions/get-utc-date');
-const { isEmpty } = require('../../utils/functions/is-empty');
-
-// TODO: around-the-clock section
+} = require('../../../utils/constants/game-param-types');
+const { GAMEMODE_AROUND_THE_CLOCK } = require('../../../utils/constants/gamemodes');
+const { SECTION_TYPE_ANY } = require('../../../utils/constants/section-types');
+const { getUtcDate } = require('../../../utils/functions/get-utc-date');
+const { isEmpty } = require('../../../utils/functions/is-empty');
 
 router.use('/', queryPlayerId);
 router.use('/:gameId([0-9]+)', paramGameId, checkGameExistanse, completedGamesReadOnly);
