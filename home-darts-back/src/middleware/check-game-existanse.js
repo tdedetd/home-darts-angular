@@ -18,7 +18,6 @@ module.exports = {
       next();
     } else {
       res.status(404).json();
-      return;
     }
   }
 };

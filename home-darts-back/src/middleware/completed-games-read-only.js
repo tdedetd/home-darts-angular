@@ -16,7 +16,6 @@ module.exports = {
     const isCompletedResult = await getPgClient().query('SELECT is_completed FROM public.game WHERE id = $1', [gameId]);
     if (isCompletedResult.rows.length && isCompletedResult.rows[0]['is_completed']) {
       res.status(403).json();
-      return;
     } else {
       next();
     }

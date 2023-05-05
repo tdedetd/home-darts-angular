@@ -52,6 +52,7 @@ router.post('/:gameId([0-9]+)/throw', async (req, res) => {
 
   if (isEmpty(req.body.nominal) || isNaN(Number(req.body.nominal)) || isEmpty(req.body.hit)) {
     res.status(400).json();
+    return;
   }
 
   /** @type {number} */
