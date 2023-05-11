@@ -1,9 +1,13 @@
+const { dirname } = require('path');
 const { isProduction } = require('./is-production');
 
 module.exports = {
   isProduction,
-  port: 3000,
+
+  packageSrcDir: dirname(require.main.filename), 
 
   /** @type {import('pg').ClientConfig} */
   pg: isProduction ? require('./pg-connect-prod') : require('./pg-connect-dev'),
+
+  port: 3000,
 };

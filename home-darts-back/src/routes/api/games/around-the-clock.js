@@ -17,7 +17,7 @@ const { SECTION_TYPE_ANY } = require('../../../utils/constants/section-types');
 const { getUtcDate } = require('../../../utils/functions/get-utc-date');
 const { isEmpty } = require('../../../utils/functions/is-empty');
 
-router.use('/', queryPlayerId);
+router.use(queryPlayerId);
 router.use('/:gameId([0-9]+)', paramGameId, checkGameExistanse, completedGamesReadOnly);
 
 router.post('/start', async (req, res) => {

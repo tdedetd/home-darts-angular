@@ -1,3 +1,4 @@
+// TODO: replace by auth
 const { isProduction } = require('../config');
 const { formatDebugMiddleware } = require('../utils/functions/format-debug-middleware');
 const { isEmpty } = require('../utils/functions/is-empty');
@@ -14,7 +15,7 @@ module.exports = {
 
     const playerId = req.query.playerId;
     if (isEmpty(playerId) || isNaN(Number(playerId))) {
-      res.status(400).json();
+      res.status(400).json({ error: 'Correct playerId is missing in query' });
     } else {
       req.query.playerId = Number(playerId);
       next();
