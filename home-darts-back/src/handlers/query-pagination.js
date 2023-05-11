@@ -1,5 +1,5 @@
 const { isProduction } = require('../config');
-const { formatDebugMiddleware } = require('../utils/functions/format-debug-middleware');
+const { formatDebugHandler } = require('../utils/functions/format-debug-handler');
 const { isEmpty } = require('../utils/functions/is-empty');
 
 module.exports = {
@@ -10,7 +10,7 @@ module.exports = {
    * @param {import('express').NextFunction} next
    */
   queryPagination: (req, res, next) => {
-    if (!isProduction) console.info(formatDebugMiddleware('queryPagination'));
+    if (!isProduction) console.info(formatDebugHandler('queryPagination'));
 
     const page = req.query.page;
     const size = req.query.size;

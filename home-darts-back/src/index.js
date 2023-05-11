@@ -1,4 +1,4 @@
-const { debugInfo } = require('./middleware/debug-info');
+const { debugInfo } = require('./handlers/debug-info');
 const bodyParser = require('body-parser');
 const { isProduction, port } = require('./config');
 const { name: appName } = require('../package.json');

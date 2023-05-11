@@ -1,6 +1,6 @@
 // TODO: replace by auth
 const { isProduction } = require('../config');
-const { formatDebugMiddleware } = require('../utils/functions/format-debug-middleware');
+const { formatDebugHandler } = require('../utils/functions/format-debug-handler');
 const { isEmpty } = require('../utils/functions/is-empty');
 
 module.exports = {
@@ -11,7 +11,7 @@ module.exports = {
    * @param {import('express').NextFunction} next
    */
   queryPlayerId: (req, res, next) => {
-    if (!isProduction) console.info(formatDebugMiddleware('queryPlayerId'));
+    if (!isProduction) console.info(formatDebugHandler('queryPlayerId'));
 
     const playerId = req.query.playerId;
     if (isEmpty(playerId) || isNaN(Number(playerId))) {

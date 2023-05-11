@@ -1,9 +1,9 @@
 const router = require('express').Router();
 const { getPgClient } = require('../../../config/pg');
-const { checkGameExistanse } = require('../../../middleware/check-game-existanse');
-const { completedGamesReadOnly } = require('../../../middleware/completed-games-read-only');
-const { paramGameId } = require('../../../middleware/param-game-id');
-const { queryPlayerId } = require('../../../middleware/query-player-id');
+const { checkGameExistanse } = require('../../../handlers/check-game-existanse');
+const { completedGamesReadOnly } = require('../../../handlers/completed-games-read-only');
+const { paramGameId } = require('../../../handlers/param-game-id');
+const { queryPlayerId } = require('../../../handlers/query-player-id');
 const { GAME_DIRECTION_FORWARD_BACKWARD } = require('../../../utils/constants/game-directions');
 const { GAME_PARAM_BOOLEAN_TRUE, GAME_PARAM_BOOLEAN_FALSE } = require('../../../utils/constants/game-param-booleans');
 const {
@@ -93,7 +93,7 @@ router.put('/:gameId([0-9]+)/complete', async (req, res) => {
 
   await getPgClient().query('BEGIN');
 
-  // TODO: out check player participation into middleware
+  // TODO: out check player participation into handler
   // TODO: EXISTS
   const gamePlayerResult = await getPgClient().query('SELECT FROM public.game_player WHERE game_id = $1 and player_id = $2', [gameId, playerId]);
   const isParticipant = gamePlayerResult.rows.length === 1;

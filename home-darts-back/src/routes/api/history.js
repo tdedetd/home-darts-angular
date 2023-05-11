@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { getPgClient } = require('../../config/pg');
-const { queryPagination } = require('../../middleware/query-pagination');
-const { queryPlayerId } = require('../../middleware/query-player-id');
+const { queryPagination } = require('../../handlers/query-pagination');
+const { queryPlayerId } = require('../../handlers/query-player-id');
 const { getSql } = require('../../utils/functions/get-sql');
 
 router.use(queryPlayerId);

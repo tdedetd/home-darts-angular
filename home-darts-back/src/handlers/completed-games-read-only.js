@@ -1,6 +1,6 @@
 const { isProduction } = require('../config');
 const { getPgClient } = require('../config/pg');
-const { formatDebugMiddleware } = require('../utils/functions/format-debug-middleware');
+const { formatDebugHandler } = require('../utils/functions/format-debug-handler');
 
 module.exports = {
   /**
@@ -10,7 +10,7 @@ module.exports = {
    * @param {import('express').NextFunction} next
    */
   completedGamesReadOnly: async (req, res, next) => {
-    if (!isProduction) console.info(formatDebugMiddleware('completedGamesReadOnly'));
+    if (!isProduction) console.info(formatDebugHandler('completedGamesReadOnly'));
 
     const gameId = req.params.gameId;
     const isCompletedResult = await getPgClient().query('SELECT is_completed FROM public.game WHERE id = $1', [gameId]);
