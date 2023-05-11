@@ -8,7 +8,7 @@ import { getSectionsForAroundTheClock } from './utils/functions/get-sections-for
 // TODO: provide game service
 @UntilDestroy()
 @Component({
-  selector: 'app-around-the-clock',
+  selector: 'hd-around-the-clock',
   templateUrl: './around-the-clock.component.html',
   styleUrls: ['./around-the-clock.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -30,9 +30,6 @@ export class AroundTheClockComponent {
   public hits = 0;
   public isCompleted = false;
 
-  // TODO: config
-  private readonly playerId = 1;
-
   private sections = getSectionsForAroundTheClock(GameDirections.ForwardBackward, true);
 
   constructor(private cdr: ChangeDetectorRef, private api: AroundTheClockApiService) {}
@@ -40,7 +37,7 @@ export class AroundTheClockComponent {
   public onCompleteBtnClick(): void {
     if (this.gameId === null) return;
 
-    this.api.complete(this.gameId, this.playerId)
+    this.api.complete(this.gameId)
       .pipe(
         catchError((err) => {
           this.loading = false;
@@ -71,7 +68,7 @@ export class AroundTheClockComponent {
     this.loading = true;
     this.cdr.detectChanges();
 
-    this.api.undo(this.gameId, this.playerId)
+    this.api.undo(this.gameId)
       .pipe(
         catchError((err) => {
           this.loading = false;
@@ -93,7 +90,7 @@ export class AroundTheClockComponent {
   public onStartBtnClick(): void {
     this.loading = true;
 
-    this.api.start(this.playerId)
+    this.api.start()
       .pipe(untilDestroyed(this))
       .subscribe({
         next: ({ gameId }) => {
@@ -116,7 +113,7 @@ export class AroundTheClockComponent {
     this.loading = true;
     this.cdr.detectChanges();
 
-    this.api.throw(nominal, hit, this.gameId, this.playerId)
+    this.api.throw(nominal, hit, this.gameId)
       .pipe(
         catchError((err) => {
           this.loading = false;

@@ -16,7 +16,5 @@ import { AroundTheClockApiService } from './service/around-the-clock-api.service
   providers: [
     AroundTheClockApiService,
   ],
-  // TODO: remove after adding routing
-  exports: [AroundTheClockComponent]
 })
 export class AroundTheClockModule { }
