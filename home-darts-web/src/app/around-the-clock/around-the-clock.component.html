@@ -9,8 +9,7 @@
       <button class="btn tools__btn" [disabled]="buttonDisabled || !currentSection" (click)="onMiss()">Miss</button>
     </li>
     <li>
-      <!-- TODO: disabled -->
-      <button class="btn tools__btn" [disabled]="true" (click)="onUndo()">Undo</button>
+      <button class="btn tools__btn" [disabled]="buttonDisabled || !currentSection" (click)="onUndo()">Undo</button>
     </li>
   </ul>
   <div class="complete-tools">

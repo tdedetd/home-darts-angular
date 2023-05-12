@@ -14,6 +14,7 @@ const {
 } = require('../../../utils/constants/game-param-types');
 const { GAMEMODE_AROUND_THE_CLOCK } = require('../../../utils/constants/gamemodes');
 const { SECTION_TYPE_ANY } = require('../../../utils/constants/section-types');
+const { getSql } = require('../../../utils/functions/get-sql');
 const { getUtcDate } = require('../../../utils/functions/get-utc-date');
 const { isEmpty } = require('../../../utils/functions/is-empty');
 
@@ -69,22 +70,18 @@ router.post('/:gameId([0-9]+)/throw', async (req, res) => {
 
 // TODO: check player participation
 router.delete('/:gameId([0-9]+)/undo', async (req, res) => {
-  const playerId = req.query.playerId;
   const gameId = req.params.gameId;
 
-  const lastThrowResult = await getPgClient().query(
-    'SELECT t.id FROM public.throw t WHERE game_id = $1 and player_id = $2 ORDER BY t.id desc limit 1',
-    [gameId, playerId]
-  );
+  const lastThrowResult = await getPgClient().query('SELECT t.id FROM public.throw t WHERE game_id = $1 ORDER BY t.id desc limit 1', [gameId]);
   if (!lastThrowResult.rows.length) {
     res.json();
     return;
   }
   const lastThrowId = lastThrowResult.rows[0].id;
 
-  await getPgClient().query('DELETE FROM public.throw WHERE id = $1', [lastThrowId]);
+  const deletedThrowResult = await getPgClient().query(getSql('delete-from-throw'), [lastThrowId]);
   await getPgClient().query('COMMIT');
-  res.json();
+  res.json(deletedThrowResult.rows[0]);
 });
 
 router.put('/:gameId([0-9]+)/complete', async (req, res) => {

@@ -1,1 +1,1 @@
-export type SqlQueryName = 'history';
+export type SqlQueryName = 'history' | 'delete-from-throw';

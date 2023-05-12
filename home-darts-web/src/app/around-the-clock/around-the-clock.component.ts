@@ -69,21 +69,24 @@ export class AroundTheClockComponent {
     this.cdr.detectChanges();
 
     this.api.undo(this.gameId)
-      .pipe(
-        catchError((err) => {
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (deletedThrow) => {
+          this.loading = false;
+
+          if (deletedThrow) {
+            this.throws--;
+            if (deletedThrow.hit) this.hits--;
+          }
+
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
           this.loading = false;
           this.errorDebug = 'undo';
           this.cdr.detectChanges();
           return err;
-        }),
-        untilDestroyed(this)
-      )
-      .subscribe(() => {
-        this.loading = false;
-
-        // TODO: history
-
-        this.cdr.detectChanges();
+        }
       });
   }
 

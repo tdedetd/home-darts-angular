@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { apiPrefix, playerId } from 'src/app/config';
+import { ThrowApi } from 'src/app/models/throw-api.interface';
 
 @Injectable()
 export class AroundTheClockApiService {
@@ -21,7 +22,7 @@ export class AroundTheClockApiService {
     return this.http.post<void>(`${this.apiPrefix}${gameId}/throw`, { nominal, hit }, { params: { playerId } });
   }
 
-  public undo(gameId: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiPrefix}${gameId}/undo`, { params: { playerId } });
+  public undo(gameId: number): Observable<ThrowApi | null> {
+    return this.http.delete<ThrowApi | null>(`${this.apiPrefix}${gameId}/undo`, { params: { playerId } });
   }
 }
