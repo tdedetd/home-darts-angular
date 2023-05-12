@@ -1,0 +1,21 @@
+:host {
+  display: block;
+  background-color: #ddd;
+  padding: 15px;
+}
+
+.history-item__first-line {
+  display: flex;
+  justify-content: space-between;
+}
+
+.history-item__second-line {
+  display: flex;
+  justify-content: space-around;
+  padding-top: 10px;
+}
+
+.history-item__not-completed {
+  padding-top: 10px;
+  color: #a00;
+}

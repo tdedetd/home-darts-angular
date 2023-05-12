@@ -1,0 +1,11 @@
+<ng-container *ngIf="data">
+  <div class="history-item__first-line">
+    <p>{{ data.creationDate | date:'dd.MM.YYYY HH:mm' }}</p>
+    <p>{{ gamemodesNames[data.gamemodeName] }}</p>
+  </div>
+  <div *ngIf="data.throws" class="history-item__second-line">
+    <p>Hits / throws: {{ data.hits }} / {{ data.throws }}</p>
+    <p>{{ (data.hits / data.throws * 100) | number: '1.2-2' }}%</p>
+  </div>
+  <p *ngIf="!data.isCompleted" class="history-item__not-completed">Game is not completed</p>
+</ng-container>
