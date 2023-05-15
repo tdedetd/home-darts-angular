@@ -1,7 +1,9 @@
-<h2 class="history__title">History</h2>
-<ul class="history__list">
-  <li *ngFor="let game of games" class="history__item">
-    <hd-history-item [data]="game"></hd-history-item>
-  </li>
-</ul>
-<button *ngIf="showMoreButton" (click)="loadMore()">Load more</button>
+<div class="container">
+  <h2 class="history__title">History</h2>
+  <ul>
+    <li *ngFor="let game of games" class="history__item">
+      <hd-history-item [data]="game"></hd-history-item>
+    </li>
+  </ul>
+  <button *ngIf="showMoreButton" class="btn-large" (click)="loadMore()">Load more</button>
+</div>
