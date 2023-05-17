@@ -10,4 +10,6 @@ module.exports = {
   pg: isProduction ? require('./pg-connect-prod') : require('./pg-connect-dev'),
 
   port: 3000,
+
+  maxThrowTimeSeconds: 5 * 60,
 };
