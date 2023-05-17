@@ -10,15 +10,15 @@ const routes: Routes = [
   },
   {
     path: 'around-the-clock',
-    loadChildren: () => import('./around-the-clock/around-the-clock.module').then(m => m.AroundTheClockModule),
+    loadChildren: () => import('./screens/around-the-clock/around-the-clock.module').then(m => m.AroundTheClockModule),
   },
   {
     path: 'history',
-    loadChildren: () => import('./history/history.module').then(m => m.HistoryModule),
+    loadChildren: () => import('./screens/history/history.module').then(m => m.HistoryModule),
   },
   {
     path: 'statistics',
-    loadChildren: () => import('./statistics/statistics.module').then(m => m.StatisticsModule),
+    loadChildren: () => import('./screens/statistics/statistics.module').then(m => m.StatisticsModule),
   },
 ];
 

@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { catchError } from 'rxjs';
-import { GameDirections } from 'src/app/around-the-clock/models/game-directions.enum';
-import { AroundTheClockApiService } from 'src/app/around-the-clock/service/around-the-clock-api.service';
 import { getSectionsForAroundTheClock } from './utils/functions/get-sections-for-around-the-clock';
+import { GameDirections } from './models/game-directions.enum';
+import { AroundTheClockApiService } from './service/around-the-clock-api.service';
 
 // TODO: provide game service
 @UntilDestroy()

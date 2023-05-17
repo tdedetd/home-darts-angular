@@ -1,5 +1,5 @@
-import { GameDirections } from 'src/app/around-the-clock/models/game-directions.enum';
-import { bullSection } from '../../../utils/constants/bull-section';
+import { GameDirections } from '../../models/game-directions.enum';
+import { bullSection } from 'src/app/utils/constants/bull-section';
 import { commonSections } from 'src/app/utils/constants/common-sections';
 
 const sectionsWithoutBullStrategy: Record<GameDirections, number[]> = {
