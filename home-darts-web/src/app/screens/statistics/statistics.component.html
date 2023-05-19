@@ -1,1 +1,14 @@
-<p>statistics works!</p>
+<div class="container">
+  <p>Player</p>
+  <div class="statistics__dropdown-container">
+    <select [formControl]="playerControl" class="statistics__dropdown">
+      <option *ngFor="let player of players$ | async" [ngValue]="player">{{ player.username }}</option>
+    </select>
+  </div>
+
+  <div *ngIf="stats$ | async as stats">
+    <p>Games count - {{ stats.gamesCount }}</p>
+    <p>Throws count - {{ stats.throwsCount }}</p>
+    <p>Total playing time - {{ stats.totalPlayingTimeSeconds | formatTimeInterval }}</p>
+  </div>
+</div>
