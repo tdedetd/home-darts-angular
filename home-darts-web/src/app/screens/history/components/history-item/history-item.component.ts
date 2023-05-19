@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { HistoryApi } from '../../models/history-api.interface';
-import { gamemodesNames } from 'src/app/utils/constants/gamemodes-names';
+import { gamemodesNames } from '@constants/gamemodes-names';
 
 @Component({
   selector: 'hd-history-item',

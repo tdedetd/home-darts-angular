@@ -1,4 +1,4 @@
-import { Gamemodes } from 'src/app/models/gamemodes.enum';
+import { Gamemodes } from '@models/gamemodes.enum';
 
 export interface HistoryApi {
   id: number;

@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { apiPrefix, playerId } from 'src/app/config';
-import { ThrowApi } from 'src/app/models/throw-api.interface';
+import { apiPrefix, playerId } from '@config';
+import { ThrowApi } from '@models/throw-api.interface';
 
 @Injectable()
 export class AroundTheClockApiService {
