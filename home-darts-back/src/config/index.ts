@@ -4,7 +4,8 @@ const { isProduction } = require('./is-production');
 module.exports = {
   isProduction,
 
-  packageSrcDir: dirname(require.main.filename), 
+  // TODO: resolve !
+  packageSrcDir: dirname(require.main!.filename), 
 
   /** @type {import('pg').ClientConfig} */
   pg: isProduction ? require('./pg-connect-prod') : require('./pg-connect-dev'),
@@ -13,3 +14,5 @@ module.exports = {
 
   maxThrowTimeSeconds: 3 * 60,
 };
+
+export {};

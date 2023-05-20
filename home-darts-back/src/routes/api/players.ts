@@ -25,3 +25,5 @@ router.get('/:playerId([0-9]+)/stats', paramPlayerId, checkPlayerExistence, asyn
 });
 
 module.exports = router;
+
+export {};

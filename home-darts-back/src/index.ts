@@ -17,3 +17,5 @@ app.use(require('./routes'));
 app.listen(port, () => {
   console.log(`${appName} listening on port ${port} in ${isProduction ? 'production' : 'debug'} mode`);
 });
+
+export {};

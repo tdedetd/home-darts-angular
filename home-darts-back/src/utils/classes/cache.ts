@@ -1,7 +1,5 @@
 class Cache {
-  constructor() {
-    this._cache = {};
-  }
+  _cache = {};
 
   /**
    * @param {string} key 
@@ -22,3 +20,5 @@ class Cache {
 }
 
 module.exports = { Cache };
+
+export {};

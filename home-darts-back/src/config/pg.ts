@@ -13,3 +13,5 @@ module.exports = {
   /** @returns {import('pg').PoolClient} */
   getPgClient: () => pgClient,
 };
+
+export {};

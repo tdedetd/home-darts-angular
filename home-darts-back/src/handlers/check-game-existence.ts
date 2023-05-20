@@ -9,15 +9,17 @@ module.exports = {
    * @param {import('express').Response<any, Record<string, any>, number>} res
    * @param {import('express').NextFunction} next
    */
-  completedGamesReadOnly: async (req, res, next) => {
-    if (!isProduction) console.info(formatDebugHandler('completedGamesReadOnly'));
+  checkGameExistence: async (req, res, next) => {
+    if (!isProduction) console.info(formatDebugHandler('checkGameExistence'));
 
     const gameId = req.data.gameId;
-    const isCompletedResult = await getPgClient().query('SELECT is_completed FROM public.game WHERE id = $1', [gameId]);
-    if (isCompletedResult.rows.length && isCompletedResult.rows[0]['is_completed']) {
-      res.status(403).json({ error: `Game ${gameId} is completed` });
-    } else {
+    const existsResult = await getPgClient().query('SELECT EXISTS (SELECT FROM public.game WHERE id = $1)', [gameId]);
+    if (existsResult.rows[0]['exists']) {
       next();
+    } else {
+      res.status(404).json({ error: `Game ${gameId} doesn't exists` });
     }
   }
 };
+
+export {};

@@ -8,3 +8,5 @@ module.exports = {
     return new Date(newDate.getTime() + newDate.getTimezoneOffset() * 60000);
   }
 };
+
+export {};

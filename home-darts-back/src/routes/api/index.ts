@@ -5,3 +5,5 @@ router.use('/history', require('./history'));
 router.use('/players', require('./players'));
 
 module.exports = router;
+
+export {};

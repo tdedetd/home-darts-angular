@@ -4,3 +4,5 @@ module.exports = {
    */
   formatDebugHandler: (handlerName) => `  - ${handlerName}`,
 };
+
+export {};

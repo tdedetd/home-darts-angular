@@ -93,3 +93,5 @@ router.put('/:gameId([0-9]+)/complete', async (req, res) => {
 });
 
 module.exports = router;
+
+export {};

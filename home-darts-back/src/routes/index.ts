@@ -5,3 +5,5 @@ router.use(nocache());
 router.use('/api', require('./api'));
 
 module.exports = router;
+
+export {};
