@@ -14,9 +14,9 @@ module.exports = {
 
     const gameId = req.params.gameId;
     if (isEmpty(gameId) || isNaN(Number(gameId))) {
-      res.status(400).json();
+      res.status(400).json({ error: 'Correct gameId is missing in params' });
     } else {
-      req.params.gameId = Number(gameId);
+      req.data = { ...req.data, gameId: Number(gameId) };
       next();
     }
   }

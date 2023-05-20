@@ -1,8 +1,10 @@
 const router = require('express').Router();
 const { getPgClient } = require('../../../config/pg');
-const { checkGameExistanse } = require('../../../handlers/check-game-existanse');
+const { checkGameExistence } = require('../../../handlers/check-game-existence');
+const { checkPlayerExistence } = require('../../../handlers/check-player-existence');
 const { completedGamesReadOnly } = require('../../../handlers/completed-games-read-only');
 const { paramGameId } = require('../../../handlers/param-game-id');
+const { playerParticipation } = require('../../../handlers/player-participation');
 const { queryPlayerId } = require('../../../handlers/query-player-id');
 const { GAME_DIRECTION_FORWARD_BACKWARD } = require('../../../utils/constants/game-directions');
 const { GAME_PARAM_BOOLEAN_TRUE, GAME_PARAM_BOOLEAN_FALSE } = require('../../../utils/constants/game-param-booleans');
@@ -18,11 +20,11 @@ const { getSql } = require('../../../utils/functions/get-sql');
 const { getUtcDate } = require('../../../utils/functions/get-utc-date');
 const { isEmpty } = require('../../../utils/functions/is-empty');
 
-router.use(queryPlayerId);
-router.use('/:gameId([0-9]+)', paramGameId, checkGameExistanse, completedGamesReadOnly);
+router.use(queryPlayerId, checkPlayerExistence);
+router.use('/:gameId([0-9]+)', paramGameId, checkGameExistence, completedGamesReadOnly, playerParticipation);
 
 router.post('/start', async (req, res) => {
-  const playerId = req.query.playerId;
+  const playerId = req.data.playerId;
   await getPgClient().query('BEGIN');
   const insertGameResult = await getPgClient().query(
     'INSERT INTO public.game (creation_date, gamemode_name) VALUES ($1, $2) RETURNING id',
@@ -44,10 +46,9 @@ router.post('/start', async (req, res) => {
   res.status(201).json({ gameId });
 });
 
-// TODO: check player participation
 router.post('/:gameId([0-9]+)/throw', async (req, res) => {
-  const playerId = req.query.playerId;
-  const gameId = req.params.gameId;
+  const playerId = req.data.playerId;
+  const gameId = req.data.gameId;
 
   if (isEmpty(req.body.nominal) || isNaN(Number(req.body.nominal)) || isEmpty(req.body.hit)) {
     res.status(400).json();
@@ -68,9 +69,8 @@ router.post('/:gameId([0-9]+)/throw', async (req, res) => {
   res.status(201).json();
 });
 
-// TODO: check player participation
 router.delete('/:gameId([0-9]+)/undo', async (req, res) => {
-  const gameId = req.params.gameId;
+  const gameId = req.data.gameId;
 
   const lastThrowResult = await getPgClient().query('SELECT t.id FROM public.throw t WHERE game_id = $1 ORDER BY t.id desc limit 1', [gameId]);
   if (!lastThrowResult.rows.length) {
@@ -85,21 +85,8 @@ router.delete('/:gameId([0-9]+)/undo', async (req, res) => {
 });
 
 router.put('/:gameId([0-9]+)/complete', async (req, res) => {
-  const playerId = req.query.playerId;
-  const gameId = req.params.gameId;
-
+  const gameId = req.data.gameId;
   await getPgClient().query('BEGIN');
-
-  // TODO: out check player participation into handler
-  // TODO: EXISTS
-  const gamePlayerResult = await getPgClient().query('SELECT FROM public.game_player WHERE game_id = $1 and player_id = $2', [gameId, playerId]);
-  const isParticipant = gamePlayerResult.rows.length === 1;
-
-  if (!isParticipant) {
-    res.status(403).json();
-    return;
-  }
-
   await getPgClient().query('UPDATE public.game SET is_completed = true WHERE id = $1', [gameId]);
   await getPgClient().query('COMMIT');
   res.json();

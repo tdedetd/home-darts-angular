@@ -16,10 +16,7 @@ module.exports = {
     if (isEmpty(playerId) || isNaN(Number(playerId))) {
       res.status(400).json({ error: 'Correct playerId is missing in params' });
     } else {
-      req.data = {
-        ...req.data,
-        playerId: Number(playerId),
-      };
+      req.data = { ...req.data, playerId: Number(playerId) };
       next();
     }
   }

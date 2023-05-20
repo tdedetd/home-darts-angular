@@ -12,8 +12,7 @@ module.exports = {
   queryPagination: (req, res, next) => {
     if (!isProduction) console.info(formatDebugHandler('queryPagination'));
 
-    const page = req.query.page;
-    const size = req.query.size;
+    const { page, size } = req.query;
 
     if (!isEmpty(page) && isNaN(Number(page))) {
       res.status(400).json({ error: 'Query param "page" must be number' });

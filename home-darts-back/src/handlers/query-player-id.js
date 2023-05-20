@@ -1,4 +1,3 @@
-// TODO: replace by auth
 const { isProduction } = require('../config');
 const { formatDebugHandler } = require('../utils/functions/format-debug-handler');
 const { isEmpty } = require('../utils/functions/is-empty');
@@ -17,9 +16,8 @@ module.exports = {
     if (isEmpty(playerId) || isNaN(Number(playerId))) {
       res.status(400).json({ error: 'Correct playerId is missing in query' });
     } else {
-      req.query.playerId = Number(playerId);
+      req.data = { ...req.data, playerId: Number(playerId) };
       next();
     }
-    // TODO: check player existence
   }
 };
