@@ -6,7 +6,7 @@ const { getSql } = require('../../utils/functions/get-sql');
 const router = require('express').Router();
 
 router.get('/', async (req, res) => {
-  const playersResult = await getPgClient().query('SELECT p.id, p.creation_date as "creationDate", p.username FROM public.player p ORDER BY p.username');
+  const playersResult = await getPgClient().query(getSql('players'));
   res.json(playersResult.rows);
 });
 

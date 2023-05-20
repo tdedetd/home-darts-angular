@@ -11,5 +11,5 @@ module.exports = {
 
   port: 3000,
 
-  maxThrowTimeSeconds: 5 * 60,
+  maxThrowTimeSeconds: 3 * 60,
 };

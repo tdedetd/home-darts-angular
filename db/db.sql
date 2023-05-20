@@ -45,7 +45,8 @@ create table public.game_param (
 create table public.player (
 	id serial primary key,
 	creation_date timestamp NOT NULL,
-	username varchar(64) UNIQUE NOT NULL
+	username varchar(64) UNIQUE NOT NULL,
+	is_hidden boolean NOT NULL DEFAULT false
 );
 
 -- fk
