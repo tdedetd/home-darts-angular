@@ -1,9 +1,8 @@
-const router = require('express').Router();
-const nocache = require('nocache');
+import { Router } from 'express';
+import { apiRouter } from './api/index.js';
+import nocache from '../../node_modules/nocache/index.js';
+
+export const router = Router();
 
 router.use(nocache());
-router.use('/api', require('./api'));
-
-module.exports = router;
-
-export {};
+router.use('/api', apiRouter);

@@ -1,24 +1,11 @@
-class Cache {
-  _cache = {};
+export class Cache {
+  private cache = {};
 
-  /**
-   * @param {string} key 
-   * @returns {string | undefined}
-   */
-  get(key) {
-    return this._cache[key];
+  public get(key: string): string | undefined {
+    return this.cache[key];
   }
 
-  /**
-   * @param {string} key 
-   * @param {string} value 
-   * @returns {void}
-   */
-  set(key, value) {
-    this._cache[key] = value;
+  public set(key: string, value: string): void {
+    this.cache[key] = value;
   }
 }
-
-module.exports = { Cache };
-
-export {};

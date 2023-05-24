@@ -1,13 +1,16 @@
-const router = require('express').Router();
-const { getPgClient } = require('../../config/pg');
-const { checkPlayerExistence } = require('../../handlers/check-player-existence');
-const { queryPagination } = require('../../handlers/query-pagination');
-const { queryPlayerId } = require('../../handlers/query-player-id');
-const { getSql } = require('../../utils/functions/get-sql');
+import { Router } from 'express';
+import { checkPlayerExistence } from '../../handlers/check-player-existence.js';
+import { queryPagination } from '../../handlers/query-pagination.js';
+import { queryPlayerId } from '../../handlers/query-player-id.js';
+import { getSql } from '../../utils/functions/get-sql.js';
+import { getPgClient } from '../../config/pg-connect.js';
+import { RequestWithData } from '../../utils/types/request-with-data.type.js';
 
-router.use(queryPlayerId, checkPlayerExistence);
+export const historyRouter = Router();
 
-router.get('/', queryPagination, async (req, res) => {
+historyRouter.use(queryPlayerId, checkPlayerExistence);
+
+historyRouter.get('/', queryPagination, async (req: RequestWithData, res) => {
   const { page, size } = req.data;
   const historyRes = await getPgClient().query(
     getSql('history'),
@@ -15,7 +18,3 @@ router.get('/', queryPagination, async (req, res) => {
   );
   res.json(historyRes.rows);
 });
-
-module.exports = router;
-
-export {};

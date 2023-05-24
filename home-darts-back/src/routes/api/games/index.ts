@@ -1,7 +1,6 @@
-const router = require('express').Router();
+import { Router } from 'express';
+import { aroundTheClockRouter } from './around-the-clock.js';
 
-router.use('/around-the-clock', require('./around-the-clock'));
+export const gamesRouter = Router();
 
-module.exports = router;
-
-export {};
+gamesRouter.use('/around-the-clock', aroundTheClockRouter);

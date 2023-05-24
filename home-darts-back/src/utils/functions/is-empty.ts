@@ -1,5 +1,1 @@
-module.exports = {
-  isEmpty: (value) => value === null || typeof value === 'undefined',
-};
-
-export {};
+export const isEmpty = <T>(value: T | null | undefined): boolean => value === null || typeof value === 'undefined';

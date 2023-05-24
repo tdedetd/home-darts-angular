@@ -1,7 +1,2 @@
-// TODO: to mapper
-module.exports = {
-  GAME_PARAM_BOOLEAN_TRUE: 'true',
-  GAME_PARAM_BOOLEAN_FALSE: 'false',
-};
-
-export {};
+export const GAME_PARAM_BOOLEAN_TRUE = 'true';
+export const GAME_PARAM_BOOLEAN_FALSE = 'false';

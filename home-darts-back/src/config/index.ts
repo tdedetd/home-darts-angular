@@ -1,18 +1,19 @@
-const { dirname } = require('path');
-const { isProduction } = require('./is-production');
+import { ClientConfig } from 'pg';
+import { isProduction } from './is-production.js';
+import { pgConfigProd } from './pg-connect-prod.js';
+import { pgConfigDev } from './pg-connect-dev.js';
 
-module.exports = {
-  isProduction,
 
-  // TODO: resolve !
-  packageSrcDir: dirname(require.main!.filename), 
+export { isProduction } from './is-production.js';
 
-  /** @type {import('pg').ClientConfig} */
-  pg: isProduction ? require('./pg-connect-prod') : require('./pg-connect-dev'),
+// TODO: resolve !
+// TODO: commit
+// export const packageSrcDir = dirname(require.main!.filename);
+export const packageSrcDir = '';
+console.log('packageSrcDir', packageSrcDir);
 
-  port: 3000,
+export const pg: ClientConfig = isProduction ? pgConfigProd : pgConfigDev;
 
-  maxThrowTimeSeconds: 3 * 60,
-};
+export const port = 3000;
 
-export {};
+export const maxThrowTimeSeconds = 3 * 60;

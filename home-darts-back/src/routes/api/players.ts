@@ -1,17 +1,19 @@
-const { maxThrowTimeSeconds } = require('../../config');
-const { getPgClient } = require('../../config/pg');
-const { checkPlayerExistence } = require('../../handlers/check-player-existence');
-const { paramPlayerId } = require('../../handlers/param-player-id');
-const { getSql } = require('../../utils/functions/get-sql');
+import { Router } from 'express';
+import { maxThrowTimeSeconds } from '../../config/index.js';
+import { getPgClient } from '../../config/pg-connect.js';
+import { checkPlayerExistence } from '../../handlers/check-player-existence.js';
+import { paramPlayerId } from '../../handlers/param-player-id.js';
+import { getSql } from '../../utils/functions/get-sql.js';
+import { RequestWithData } from '../../utils/types/request-with-data.type.js';
 
-const router = require('express').Router();
+export const playersRouter = Router();
 
-router.get('/', async (req, res) => {
+playersRouter.get('/', async (req, res) => {
   const playersResult = await getPgClient().query(getSql('players'));
   res.json(playersResult.rows);
 });
 
-router.get('/:playerId([0-9]+)/stats', paramPlayerId, checkPlayerExistence, async (req, res) => {
+playersRouter.get('/:playerId([0-9]+)/stats', paramPlayerId, checkPlayerExistence, async (req: RequestWithData, res) => {
   const playerId = req.data.playerId;
   const gamesCountResult = await getPgClient().query(getSql('games-count'), [playerId]);
   const throwsCountResult = await getPgClient().query('SELECT count(t.id)::int as "throwsCount" FROM public.throw t WHERE t.player_id = $1', [playerId]);
@@ -23,7 +25,3 @@ router.get('/:playerId([0-9]+)/stats', paramPlayerId, checkPlayerExistence, asyn
     ...totalPlayingTimeResult.rows[0],
   });
 });
-
-module.exports = router;
-
-export {};

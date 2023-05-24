@@ -1,9 +1,10 @@
-const router = require('express').Router();
+import { Router } from 'express';
+import { gamesRouter } from './games/index.js';
+import { historyRouter } from './history.js';
+import { playersRouter } from './players.js';
 
-router.use('/games', require('./games'));
-router.use('/history', require('./history'));
-router.use('/players', require('./players'));
+export const apiRouter = Router();
 
-module.exports = router;
-
-export {};
+apiRouter.use('/games', gamesRouter);
+apiRouter.use('/history', historyRouter);
+apiRouter.use('/players', playersRouter);

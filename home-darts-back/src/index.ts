@@ -1,9 +1,11 @@
-const { debugInfo } = require('./handlers/debug-info');
-const bodyParser = require('body-parser');
-const { isProduction, port } = require('./config');
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import { debugInfo } from './handlers/debug-info.js';
+import express from 'express';
+import { isProduction, port } from './config/index.js';
+import { router } from './routes/index.js';
+
 const { name: appName } = require('../package.json');
-const express = require('express');
-const cors = require('cors');
 
 const app = express();
 
@@ -12,10 +14,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 if (!isProduction) app.use(debugInfo);
-app.use(require('./routes'));
+app.use(router);
 
 app.listen(port, () => {
   console.log(`${appName} listening on port ${port} in ${isProduction ? 'production' : 'debug'} mode`);
 });
-
-export {};

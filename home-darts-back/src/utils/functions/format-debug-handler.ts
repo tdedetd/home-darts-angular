@@ -1,8 +1,1 @@
-module.exports = {
-  /**
-   * @param {string} handlerName
-   */
-  formatDebugHandler: (handlerName) => `  - ${handlerName}`,
-};
-
-export {};
+export const formatDebugHandler = (handlerName: string): string => `  - ${handlerName}`;
