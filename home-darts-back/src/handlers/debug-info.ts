@@ -5,7 +5,7 @@
  * @param {import('express').NextFunction} next
  */
 export const debugInfo = (req, res, next) => {
-  console.log('------------------------------------');
+  console.info('------------------------------------');
   console.info(req.method, req.url);
   next();
 };

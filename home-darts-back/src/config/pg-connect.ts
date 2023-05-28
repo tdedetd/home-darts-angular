@@ -1,4 +1,4 @@
-import * as pg from 'pg';
+import pg from 'pg';
 import { pg as pgConfig } from './index.js';
 
 // TODO: reconnect

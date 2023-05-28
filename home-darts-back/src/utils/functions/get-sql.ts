@@ -8,7 +8,7 @@ import { SqlQueryName } from '../types/sql-query-name.type.js';
 const sqlCache = new Cache();
 
 const readSqlFromFile = (queryName: SqlQueryName): string => {
-  const sqlPath = path.join(packageSrcDir, 'sql', `${queryName}.sql`);
+  const sqlPath = path.join(packageSrcDir, 'src', 'sql', `${queryName}.sql`);
   return readFileSync(sqlPath, 'utf-8');
 };
 

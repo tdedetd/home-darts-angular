@@ -1,16 +1,13 @@
 import { ClientConfig } from 'pg';
 import { isProduction } from './is-production.js';
-import { pgConfigProd } from './pg-connect-prod.js';
-import { pgConfigDev } from './pg-connect-dev.js';
-
+import { config as pgConfigProd } from './pg-connect-prod.js';
+import { config as pgConfigDev } from './pg-connect-dev.js';
 
 export { isProduction } from './is-production.js';
 
 // TODO: resolve !
-// TODO: commit
-// export const packageSrcDir = dirname(require.main!.filename);
-export const packageSrcDir = '';
-console.log('packageSrcDir', packageSrcDir);
+
+export const packageSrcDir = process.cwd();
 
 export const pg: ClientConfig = isProduction ? pgConfigProd : pgConfigDev;
 

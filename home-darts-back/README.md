@@ -4,8 +4,10 @@
 2. Run `npm i`.
 
 ## Development ##
-Run `npm run dev`
+1. Run `npm run dev`
+2. Copy `sql` folder to dist
 
 ## Production ##
 1. Run `npm run build`
 2. Run `npm start`
+3. Copy `sql` folder to dist
