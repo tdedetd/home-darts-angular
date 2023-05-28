@@ -1,14 +1,14 @@
+import { NextFunction, Response } from 'express';
 import { isProduction } from '../config/index.js';
 import { formatDebugHandler } from '../utils/functions/format-debug-handler.js';
 import { isEmpty } from '../utils/functions/is-empty.js';
+import { RequestWithData } from '../utils/types/request-with-data.type';
 
-/**
- * TODO: req typing
- * @param {import('express').Request} req
- * @param {import('express').Response<any, Record<string, any>, number>} res
- * @param {import('express').NextFunction} next
- */
-export const paramPlayerId = (req, res, next) => {
+export const paramPlayerId = (
+  req: RequestWithData<{ playerId: number }, { playerId?: string }>,
+  res: Response,
+  next: NextFunction
+) => {
   if (!isProduction) console.info(formatDebugHandler('paramPlayerId'));
 
   const playerId = req.params.playerId;

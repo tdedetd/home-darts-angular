@@ -5,6 +5,7 @@ import { queryPlayerId } from '../../handlers/query-player-id.js';
 import { getSql } from '../../utils/functions/get-sql.js';
 import { getPgClient } from '../../config/pg-connect.js';
 import { RequestWithData } from '../../utils/types/request-with-data.type.js';
+import { SqlQueries } from '../../utils/types/sql-queries.enum.js';
 
 export const historyRouter = Router();
 
@@ -13,7 +14,7 @@ historyRouter.use(queryPlayerId, checkPlayerExistence);
 historyRouter.get('/', queryPagination, async (req: RequestWithData, res) => {
   const { page, size } = req.data;
   const historyRes = await getPgClient().query(
-    getSql('history'),
+    getSql(SqlQueries.History),
     [req.data.playerId, size, page * size]
   );
   res.json(historyRes.rows);

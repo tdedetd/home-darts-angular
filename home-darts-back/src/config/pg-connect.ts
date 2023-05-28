@@ -8,9 +8,9 @@ const typeTimestamp = 1114;
 
 pg.types.setTypeParser(typeTimestamp, stringValue => new Date(stringValue + '+0000'));
 
-// TODO: rework
 let pgClient: pg.PoolClient | null = null;
+// TODO: make async
 pgPool.connect().then(client => pgClient = client);
 
-// TODO: rework
+// TODO: make async
 export const getPgClient = (): pg.PoolClient => pgClient as pg.PoolClient;

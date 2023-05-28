@@ -1,15 +1,20 @@
+import { NextFunction, Response } from 'express';
 import { isProduction } from '../config/index.js';
 import { getPgClient } from '../config/pg-connect.js';
 import { formatDebugHandler } from '../utils/functions/format-debug-handler.js';
+import { RequestWithData } from '../utils/types/request-with-data.type';
 
-/**
- * TODO: req typing
- * @param {import('express').Request} req
- * @param {import('express').Response<any, Record<string, any>, number>} res
- * @param {import('express').NextFunction} next
- */
-export const checkGameExistence = async (req, res, next) => {
+export const checkGameExistence = async (
+  req: RequestWithData<{ gameId: number }, { gameId?: string }>,
+  res: Response,
+  next: NextFunction
+) => {
   if (!isProduction) console.info(formatDebugHandler('checkGameExistence'));
+
+  if (!req.data) {
+    res.status(500).json();
+    return;
+  }
 
   const gameId = req.data.gameId;
   const existsResult = await getPgClient().query('SELECT EXISTS (SELECT FROM public.game WHERE id = $1)', [gameId]);

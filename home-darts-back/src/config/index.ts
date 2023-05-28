@@ -5,8 +5,6 @@ import { config as pgConfigDev } from './pg-connect-dev.js';
 
 export { isProduction } from './is-production.js';
 
-// TODO: resolve !
-
 export const packageSrcDir = process.cwd();
 
 export const pg: ClientConfig = isProduction ? pgConfigProd : pgConfigDev;

@@ -15,6 +15,7 @@ import { getSql } from '../../../utils/functions/get-sql.js';
 import { getUtcDate } from '../../../utils/functions/get-utc-date.js';
 import { isEmpty } from '../../../utils/functions/is-empty.js';
 import { RequestWithData } from '../../../utils/types/request-with-data.type.js';
+import { SqlQueries } from '../../../utils/types/sql-queries.enum.js';
 
 export const aroundTheClockRouter = Router();
 
@@ -80,7 +81,7 @@ aroundTheClockRouter.delete('/:gameId([0-9]+)/undo', async (req: RequestWithData
   }
   const lastThrowId = lastThrowResult.rows[0].id;
 
-  const deletedThrowResult = await getPgClient().query(getSql('delete-from-throw'), [lastThrowId]);
+  const deletedThrowResult = await getPgClient().query(getSql(SqlQueries.DeleteFromThrow), [lastThrowId]);
   await getPgClient().query('COMMIT');
   res.json(deletedThrowResult.rows[0]);
 });

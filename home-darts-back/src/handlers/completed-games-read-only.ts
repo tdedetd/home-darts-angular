@@ -1,15 +1,20 @@
+import { NextFunction, Response } from 'express';
 import { isProduction } from '../config/index.js';
 import { getPgClient } from '../config/pg-connect.js';
 import { formatDebugHandler } from '../utils/functions/format-debug-handler.js';
+import { RequestWithData } from '../utils/types/request-with-data.type';
 
-/**
- * TODO: req typing
- * @param {import('express').Request} req
- * @param {import('express').Response<any, Record<string, any>, number>} res
- * @param {import('express').NextFunction} next
- */
-export const completedGamesReadOnly = async (req, res, next) => {
+export const completedGamesReadOnly = async (
+  req: RequestWithData<{ gameId: number }, { gameId?: string }>,
+  res: Response,
+  next: NextFunction
+) => {
   if (!isProduction) console.info(formatDebugHandler('completedGamesReadOnly'));
+
+  if (!req.data) {
+    res.status(500).json();
+    return;
+  }
 
   const gameId = req.data.gameId;
   const isCompletedResult = await getPgClient().query('SELECT is_completed FROM public.game WHERE id = $1', [gameId]);

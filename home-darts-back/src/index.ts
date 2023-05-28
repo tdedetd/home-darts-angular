@@ -1,7 +1,7 @@
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import { debugInfo } from './handlers/debug-info.js';
 import express from 'express';
+import { debugInfo } from './handlers/debug-info.js';
 import { isProduction, port } from './config/index.js';
 import { router } from './routes/index.js';
 
