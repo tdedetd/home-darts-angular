@@ -1,4 +1,4 @@
 export interface PaginationParams {
-  page?: number;
-  size?: number;
+  page: number;
+  size: number;
 }

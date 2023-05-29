@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Request, Response, Router } from 'express';
 import { maxThrowTimeSeconds } from '../../config/index.js';
 import { getPgClient } from '../../config/pg-connect.js';
 import { checkPlayerExistence } from '../../handlers/check-player-existence.js';
@@ -9,12 +9,15 @@ import { SqlQueries } from '../../utils/types/sql-queries.enum.js';
 
 export const playersRouter = Router();
 
-playersRouter.get('/', async (req, res) => {
+playersRouter.get('/', async (req: Request, res: Response) => {
   const playersResult = await getPgClient().query(getSql(SqlQueries.Players));
   res.json(playersResult.rows);
 });
 
-playersRouter.get('/:playerId([0-9]+)/stats', paramPlayerId, checkPlayerExistence, async (req: RequestWithData, res) => {
+playersRouter.get('/:playerId([0-9]+)/stats', paramPlayerId, checkPlayerExistence, async (
+  req: RequestWithData,
+  res: Response,
+) => {
   const playerId = req.data.playerId;
   const gamesCountResult = await getPgClient().query(getSql(SqlQueries.GamesCount), [playerId]);
   const throwsCountResult = await getPgClient().query('SELECT count(t.id)::int as "throwsCount" FROM public.throw t WHERE t.player_id = $1', [playerId]);

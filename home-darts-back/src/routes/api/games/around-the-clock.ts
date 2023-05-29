@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Response, Router } from 'express';
 import { getPgClient } from '../../../config/pg-connect.js';
 import { checkGameExistence } from '../../../handlers/check-game-existence.js';
 import { checkPlayerExistence } from '../../../handlers/check-player-existence.js';
@@ -22,7 +22,7 @@ export const aroundTheClockRouter = Router();
 aroundTheClockRouter.use(queryPlayerId, checkPlayerExistence);
 aroundTheClockRouter.use('/:gameId([0-9]+)', paramGameId, checkGameExistence, completedGamesReadOnly, playerParticipation);
 
-aroundTheClockRouter.post('/start', async (req: RequestWithData, res) => {
+aroundTheClockRouter.post('/start', async (req: RequestWithData, res: Response) => {
   // TODO: type check
   const playerId = req.data.playerId;
   await getPgClient().query('BEGIN');
@@ -45,7 +45,7 @@ aroundTheClockRouter.post('/start', async (req: RequestWithData, res) => {
   res.status(201).json({ gameId });
 });
 
-aroundTheClockRouter.post('/:gameId([0-9]+)/throw', async (req: RequestWithData, res) => {
+aroundTheClockRouter.post('/:gameId([0-9]+)/throw', async (req: RequestWithData, res: Response) => {
   // TODO: type check
   const playerId = req.data.playerId;
   // TODO: type check
@@ -70,7 +70,7 @@ aroundTheClockRouter.post('/:gameId([0-9]+)/throw', async (req: RequestWithData,
   res.status(201).json();
 });
 
-aroundTheClockRouter.delete('/:gameId([0-9]+)/undo', async (req: RequestWithData, res) => {
+aroundTheClockRouter.delete('/:gameId([0-9]+)/undo', async (req: RequestWithData, res: Response) => {
   // TODO: type check
   const gameId = req.data.gameId;
 
@@ -86,7 +86,7 @@ aroundTheClockRouter.delete('/:gameId([0-9]+)/undo', async (req: RequestWithData
   res.json(deletedThrowResult.rows[0]);
 });
 
-aroundTheClockRouter.put('/:gameId([0-9]+)/complete', async (req: RequestWithData, res) => {
+aroundTheClockRouter.put('/:gameId([0-9]+)/complete', async (req: RequestWithData, res: Response) => {
   // TODO: type check
   const gameId = req.data.gameId;
   await getPgClient().query('BEGIN');

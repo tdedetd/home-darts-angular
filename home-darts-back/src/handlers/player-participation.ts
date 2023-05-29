@@ -1,15 +1,14 @@
 import { NextFunction, Response } from 'express';
-import { isProduction } from '../config/index.js';
 import { getPgClient } from '../config/pg-connect.js';
-import { formatDebugHandler } from '../utils/functions/format-debug-handler.js';
 import { RequestWithData } from '../utils/types/request-with-data.type';
+import { handlerDebug } from '../utils/functions/handler-debug.js';
 
 export const playerParticipation = async (
   req: RequestWithData<{ gameId: number, playerId: number }>,
   res: Response,
   next: NextFunction
 ) => {
-  if (!isProduction) console.info(formatDebugHandler('playerParticipation'));
+  handlerDebug('playerParticipation');
 
   if (!req.data) {
     res.status(500).json();

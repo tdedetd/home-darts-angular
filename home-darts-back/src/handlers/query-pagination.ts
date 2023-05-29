@@ -1,9 +1,8 @@
 import { NextFunction, Response } from 'express';
-import { isProduction } from '../config/index.js';
-import { formatDebugHandler } from '../utils/functions/format-debug-handler.js';
 import { isEmpty } from '../utils/functions/is-empty.js';
 import { RequestWithData } from '../utils/types/request-with-data.type';
 import { PaginationParams } from '../utils/models/pagination-params.interface';
+import { handlerDebug } from '../utils/functions/handler-debug.js';
 
 export const queryPagination = (
   req: RequestWithData<PaginationParams, unknown, unknown, unknown, {
@@ -13,7 +12,7 @@ export const queryPagination = (
   res: Response,
   next: NextFunction
 ) => {
-  if (!isProduction) console.info(formatDebugHandler('queryPagination'));
+  handlerDebug('queryPagination');
 
   const { page, size } = req.query;
 

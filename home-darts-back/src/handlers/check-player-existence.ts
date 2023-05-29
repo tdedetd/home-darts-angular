@@ -1,21 +1,14 @@
 import { NextFunction, Response } from 'express';
-import { isProduction } from '../config/index.js';
 import { getPgClient } from '../config/pg-connect.js';
-import { formatDebugHandler } from '../utils/functions/format-debug-handler.js';
 import { RequestWithData } from '../utils/types/request-with-data.type';
+import { handlerDebug } from '../utils/functions/handler-debug.js';
 
-/**
- * TODO: req typing
- * @param {import('express').Request} req
- * @param {import('express').Response<any, Record<string, any>, number>} res
- * @param {import('express').NextFunction} next
- */
 export const checkPlayerExistence = async (
   req: RequestWithData<{ playerId: number }, { playerId?: string }>,
   res: Response,
   next: NextFunction
 ) => {
-  if (!isProduction) console.info(formatDebugHandler('checkPlayerExistence'));
+  handlerDebug('checkPlayerExistence');
 
   if (!req.data) {
     res.status(500).json();
