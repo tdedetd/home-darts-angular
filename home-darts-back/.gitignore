@@ -1,3 +1,5 @@
 /node_modules/
-pg-connect-dev.js
-pg-connect-prod.js
+/dist/
+
+pg-connect-dev.ts
+pg-connect-prod.ts
