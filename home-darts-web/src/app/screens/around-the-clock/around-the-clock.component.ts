@@ -19,7 +19,7 @@ export class AroundTheClockComponent {
   };
 
   public get currentSection(): number | undefined {
-    return this.sections[this.hits];
+    return this.getSection(this.hits);
   }
 
   public gameId: number | null = null;
@@ -33,6 +33,10 @@ export class AroundTheClockComponent {
   private sections = getSectionsForAroundTheClock(GameDirections.ForwardBackward, true);
 
   constructor(private cdr: ChangeDetectorRef, private api: AroundTheClockApiService) {}
+
+  public getSection(index: number): number | undefined {
+    return this.sections[index];
+  }
 
   public onCompleteBtnClick(): void {
     if (this.gameId === null) return;

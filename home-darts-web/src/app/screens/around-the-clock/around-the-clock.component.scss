@@ -9,8 +9,19 @@
 .nominal-panel {
   padding: 40px 0;
   text-align: center;
-  font-size: 196px;
   font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nominal-panel__current {
+  font-size: 172px;
+}
+
+.nominal-panel__next {
+  font-size: 22px;
+  padding-left: 18px;
 }
 
 .tools {
