@@ -4,6 +4,8 @@ import { catchError } from 'rxjs';
 import { getSectionsForAroundTheClock } from './utils/functions/get-sections-for-around-the-clock';
 import { GameDirections } from './models/game-directions.enum';
 import { AroundTheClockApiService } from './service/around-the-clock-api.service';
+import { GameParamTypes } from '../../models/game-param-types.enum';
+import { SectionTypes } from '../../models/section-types.enum';
 
 // TODO: provide game service
 @UntilDestroy()
@@ -97,7 +99,12 @@ export class AroundTheClockComponent {
   public onStartBtnClick(): void {
     this.loading = true;
 
-    this.api.start()
+    this.api.start({
+      [GameParamTypes.Direction]: GameDirections.ForwardBackward,
+      [GameParamTypes.FastGame]: false,
+      [GameParamTypes.HitDetection]: SectionTypes.Any,
+      [GameParamTypes.IncludeBull]: true,
+    })
       .pipe(untilDestroyed(this))
       .subscribe({
         next: ({ gameId }) => {

@@ -6,25 +6,26 @@ import { completedGamesReadOnly } from '../../../handlers/completed-games-read-o
 import { paramGameId } from '../../../handlers/param-game-id.js';
 import { playerParticipation } from '../../../handlers/player-participation.js';
 import { queryPlayerId } from '../../../handlers/query-player-id.js';
-import { GameDirections } from '../../../utils/types/game-directions.enum.js';
-import { ParamTypeBooleanValues } from '../../../utils/types/param-type-boolean-values.enum.js';
 import { GameParamTypes } from '../../../utils/types/game-param-types.enum.js';
 import { Gamemodes } from '../../../utils/types/gamemodes.enum.js';
-import { SectionTypes } from '../../../utils/types/section-types.enum.js';
 import { getSql } from '../../../utils/functions/get-sql.js';
 import { getUtcDate } from '../../../utils/functions/get-utc-date.js';
 import { isEmpty } from '../../../utils/functions/is-empty.js';
 import { RequestWithData } from '../../../utils/types/request-with-data.type.js';
 import { SqlQueries } from '../../../utils/types/sql-queries.enum.js';
+import { AroundTheClockStartParams } from '../../../utils/models/around-the-clock-start-params.interface.js';
 
 export const aroundTheClockRouter = Router();
 
 aroundTheClockRouter.use(queryPlayerId, checkPlayerExistence);
 aroundTheClockRouter.use('/:gameId([0-9]+)', paramGameId, checkGameExistence, completedGamesReadOnly, playerParticipation);
 
-aroundTheClockRouter.post('/start', async (req: RequestWithData, res: Response) => {
-  // TODO: type check
-  const playerId = req.data.playerId;
+aroundTheClockRouter.post('/start', async (
+  req: RequestWithData<{ playerId: number }, unknown, unknown, AroundTheClockStartParams>,
+  res: Response
+) => {
+
+  const playerId = req.data?.playerId as number;
   await getPgClient().query('BEGIN');
   const insertGameResult = await getPgClient().query(
     'INSERT INTO public.game (creation_date, gamemode_name) VALUES ($1, $2) RETURNING id',
@@ -36,10 +37,10 @@ aroundTheClockRouter.post('/start', async (req: RequestWithData, res: Response) 
 
   // TODO: via bulk insert
   const insertGameParamsQuery = 'INSERT INTO public.game_param (game_id, param_name, value) VALUES ($1, $2, $3)';
-  await getPgClient().query(insertGameParamsQuery, [gameId, GameParamTypes.Direction, GameDirections.ForwardBackward]);
-  await getPgClient().query(insertGameParamsQuery, [gameId, GameParamTypes.HitDetection, SectionTypes.Any]);
-  await getPgClient().query(insertGameParamsQuery, [gameId, GameParamTypes.FastGame, ParamTypeBooleanValues.False]);
-  await getPgClient().query(insertGameParamsQuery, [gameId, GameParamTypes.IncludeBull, ParamTypeBooleanValues.True]);
+  await getPgClient().query(insertGameParamsQuery, [gameId, GameParamTypes.Direction, req.body[GameParamTypes.Direction]]);
+  await getPgClient().query(insertGameParamsQuery, [gameId, GameParamTypes.HitDetection, req.body[GameParamTypes.HitDetection]]);
+  await getPgClient().query(insertGameParamsQuery, [gameId, GameParamTypes.FastGame, req.body[GameParamTypes.FastGame]]);
+  await getPgClient().query(insertGameParamsQuery, [gameId, GameParamTypes.IncludeBull, req.body[GameParamTypes.IncludeBull]]);
 
   await getPgClient().query('COMMIT');
   res.status(201).json({ gameId });
