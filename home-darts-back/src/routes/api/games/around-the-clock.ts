@@ -6,11 +6,11 @@ import { completedGamesReadOnly } from '../../../handlers/completed-games-read-o
 import { paramGameId } from '../../../handlers/param-game-id.js';
 import { playerParticipation } from '../../../handlers/player-participation.js';
 import { queryPlayerId } from '../../../handlers/query-player-id.js';
-import { GAME_DIRECTION_FORWARD_BACKWARD } from '../../../utils/constants/game-directions.js';
-import { GAME_PARAM_BOOLEAN_FALSE, GAME_PARAM_BOOLEAN_TRUE } from '../../../utils/constants/game-param-booleans.js';
-import { GAME_PARAM_TYPE_DIRECTION, GAME_PARAM_TYPE_FAST_GAME, GAME_PARAM_TYPE_HIT_DETECTION, GAME_PARAM_TYPE_INCLUDE_BULL } from '../../../utils/constants/game-param-types.js';
-import { GAMEMODE_AROUND_THE_CLOCK } from '../../../utils/constants/gamemodes.js';
-import { SECTION_TYPE_ANY } from '../../../utils/constants/section-types.js';
+import { GameDirections } from '../../../utils/types/game-directions.enum.js';
+import { ParamTypeBooleanValues } from '../../../utils/types/param-type-boolean-values.enum.js';
+import { GameParamTypes } from '../../../utils/types/game-param-types.enum.js';
+import { Gamemodes } from '../../../utils/types/gamemodes.enum.js';
+import { SectionTypes } from '../../../utils/types/section-types.enum.js';
 import { getSql } from '../../../utils/functions/get-sql.js';
 import { getUtcDate } from '../../../utils/functions/get-utc-date.js';
 import { isEmpty } from '../../../utils/functions/is-empty.js';
@@ -28,7 +28,7 @@ aroundTheClockRouter.post('/start', async (req: RequestWithData, res: Response) 
   await getPgClient().query('BEGIN');
   const insertGameResult = await getPgClient().query(
     'INSERT INTO public.game (creation_date, gamemode_name) VALUES ($1, $2) RETURNING id',
-    [getUtcDate(), GAMEMODE_AROUND_THE_CLOCK]
+    [getUtcDate(), Gamemodes.AroundTheClock]
   );
 
   const gameId = insertGameResult.rows[0].id;
@@ -36,10 +36,10 @@ aroundTheClockRouter.post('/start', async (req: RequestWithData, res: Response) 
 
   // TODO: via bulk insert
   const insertGameParamsQuery = 'INSERT INTO public.game_param (game_id, param_name, value) VALUES ($1, $2, $3)';
-  await getPgClient().query(insertGameParamsQuery, [gameId, GAME_PARAM_TYPE_DIRECTION, GAME_DIRECTION_FORWARD_BACKWARD]);
-  await getPgClient().query(insertGameParamsQuery, [gameId, GAME_PARAM_TYPE_HIT_DETECTION, SECTION_TYPE_ANY]);
-  await getPgClient().query(insertGameParamsQuery, [gameId, GAME_PARAM_TYPE_FAST_GAME, GAME_PARAM_BOOLEAN_FALSE]);
-  await getPgClient().query(insertGameParamsQuery, [gameId, GAME_PARAM_TYPE_INCLUDE_BULL, GAME_PARAM_BOOLEAN_TRUE]);
+  await getPgClient().query(insertGameParamsQuery, [gameId, GameParamTypes.Direction, GameDirections.ForwardBackward]);
+  await getPgClient().query(insertGameParamsQuery, [gameId, GameParamTypes.HitDetection, SectionTypes.Any]);
+  await getPgClient().query(insertGameParamsQuery, [gameId, GameParamTypes.FastGame, ParamTypeBooleanValues.False]);
+  await getPgClient().query(insertGameParamsQuery, [gameId, GameParamTypes.IncludeBull, ParamTypeBooleanValues.True]);
 
   await getPgClient().query('COMMIT');
   res.status(201).json({ gameId });
