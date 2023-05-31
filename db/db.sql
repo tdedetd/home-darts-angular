@@ -89,10 +89,10 @@ REFERENCES game_param_type (name);
 -- inserts
 
 insert into public.gamemode (system_name, name) values
-	('around_the_clock', 'Around the clock');
+	('aroundTheClock', 'Around the clock');
 
 insert into public.game_param_type (name, description) values
-	('include_bull', ''),
+	('includeBull', ''),
 	('direction', ''),
-	('hit_detection', ''),
-	('fast_game', '');
+	('hitDetection', ''),
+	('fastGame', '');

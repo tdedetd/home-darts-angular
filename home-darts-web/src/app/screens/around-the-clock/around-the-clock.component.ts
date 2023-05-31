@@ -100,10 +100,10 @@ export class AroundTheClockComponent {
     this.loading = true;
 
     this.api.start({
-      [GameParamTypes.Direction]: GameDirections.ForwardBackward,
-      [GameParamTypes.FastGame]: false,
-      [GameParamTypes.HitDetection]: SectionTypes.Any,
-      [GameParamTypes.IncludeBull]: true,
+      direction: GameDirections.ForwardBackward,
+      fastGame: false,
+      hitDetection: SectionTypes.Any,
+      includeBull: true,
     })
       .pipe(untilDestroyed(this))
       .subscribe({

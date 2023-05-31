@@ -37,10 +37,10 @@ aroundTheClockRouter.post('/start', async (
 
   // TODO: via bulk insert
   const insertGameParamsQuery = 'INSERT INTO public.game_param (game_id, param_name, value) VALUES ($1, $2, $3)';
-  await getPgClient().query(insertGameParamsQuery, [gameId, GameParamTypes.Direction, req.body[GameParamTypes.Direction]]);
-  await getPgClient().query(insertGameParamsQuery, [gameId, GameParamTypes.HitDetection, req.body[GameParamTypes.HitDetection]]);
-  await getPgClient().query(insertGameParamsQuery, [gameId, GameParamTypes.FastGame, req.body[GameParamTypes.FastGame]]);
-  await getPgClient().query(insertGameParamsQuery, [gameId, GameParamTypes.IncludeBull, req.body[GameParamTypes.IncludeBull]]);
+  await getPgClient().query(insertGameParamsQuery, [gameId, GameParamTypes.Direction, req.body.direction]);
+  await getPgClient().query(insertGameParamsQuery, [gameId, GameParamTypes.HitDetection, req.body.hitDetection]);
+  await getPgClient().query(insertGameParamsQuery, [gameId, GameParamTypes.FastGame, req.body.fastGame]);
+  await getPgClient().query(insertGameParamsQuery, [gameId, GameParamTypes.IncludeBull, req.body.includeBull]);
 
   await getPgClient().query('COMMIT');
   res.status(201).json({ gameId });
