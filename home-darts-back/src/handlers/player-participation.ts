@@ -1,22 +1,16 @@
-import { NextFunction, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { getPgClient } from '../config/pg-connect.js';
-import { RequestWithData } from '../utils/types/request-with-data.type';
 import { handlerDebug } from '../utils/functions/handler-debug.js';
 
 export const playerParticipation = async (
-  req: RequestWithData<{ gameId: number, playerId: number }>,
-  res: Response,
+  req: Request,
+  res: Response<unknown, { gameId: number, playerId: number }>,
   next: NextFunction
 ) => {
   handlerDebug('playerParticipation');
 
-  if (!req.data) {
-    res.status(500).json();
-    return;
-  }
-
-  const { gameId, playerId } = req.data;
-  const existsResult = await getPgClient().query(
+  const { gameId, playerId } = res.locals;
+  const existsResult = await getPgClient().query<{ exists: boolean }>(
     'SELECT EXISTS (SELECT gp.id FROM public.game_player gp WHERE gp.player_id = $1 and gp.game_id = $2)',
     [playerId, gameId]
   );

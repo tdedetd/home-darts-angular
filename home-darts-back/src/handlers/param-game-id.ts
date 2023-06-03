@@ -1,11 +1,10 @@
-import { NextFunction, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { isEmpty } from '../utils/functions/is-empty.js';
-import { RequestWithData } from '../utils/types/request-with-data.type';
 import { handlerDebug } from '../utils/functions/handler-debug.js';
 
 export const paramGameId = (
-  req: RequestWithData<{ gameId: number }, { gameId?: string }>,
-  res: Response,
+  req: Request<{ gameId?: string }>,
+  res: Response<unknown, { gameId: number }>,
   next: NextFunction
 ) => {
   handlerDebug('paramGameId');
@@ -14,7 +13,7 @@ export const paramGameId = (
   if (isEmpty(gameId) || isNaN(Number(gameId))) {
     res.status(400).json({ error: 'Correct gameId is missing in params' });
   } else {
-    req.data = { ...req.data, gameId: Number(gameId) };
+    res.locals = { ...res.locals, gameId: Number(gameId) };
     next();
   }
 };

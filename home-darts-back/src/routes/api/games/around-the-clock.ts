@@ -1,4 +1,4 @@
-import { Response, Router } from 'express';
+import { Request, Response, Router } from 'express';
 import { getPgClient } from '../../../config/pg-connect.js';
 import { checkGameExistence } from '../../../handlers/check-game-existence.js';
 import { checkPlayerExistence } from '../../../handlers/check-player-existence.js';
@@ -11,9 +11,9 @@ import { Gamemodes } from '../../../utils/types/gamemodes.enum.js';
 import { getSql } from '../../../utils/functions/get-sql.js';
 import { getUtcDate } from '../../../utils/functions/get-utc-date.js';
 import { isEmpty } from '../../../utils/functions/is-empty.js';
-import { RequestWithData } from '../../../utils/types/request-with-data.type.js';
 import { SqlQueries } from '../../../utils/types/sql-queries.enum.js';
 import { AroundTheClockStartParams } from '../../../utils/models/around-the-clock-start-params.interface.js';
+import { Throw } from '../../../utils/models/throw.interface.js';
 
 export const aroundTheClockRouter = Router();
 
@@ -21,13 +21,12 @@ aroundTheClockRouter.use(queryPlayerId, checkPlayerExistence);
 aroundTheClockRouter.use('/:gameId([0-9]+)', paramGameId, checkGameExistence, completedGamesReadOnly, playerParticipation);
 
 aroundTheClockRouter.post('/start', async (
-  req: RequestWithData<{ playerId: number }, unknown, unknown, AroundTheClockStartParams>,
-  res: Response
+  req: Request<unknown, unknown, AroundTheClockStartParams>,
+  res: Response<{ gameId: number }, { playerId: number }>
 ) => {
-
-  const playerId = req.data?.playerId as number;
+  const playerId = res.locals.playerId;
   await getPgClient().query('BEGIN');
-  const insertGameResult = await getPgClient().query(
+  const insertGameResult = await getPgClient().query<{ id: number }>(
     'INSERT INTO public.game (creation_date, gamemode_name) VALUES ($1, $2) RETURNING id',
     [getUtcDate(), Gamemodes.AroundTheClock]
   );
@@ -46,21 +45,20 @@ aroundTheClockRouter.post('/start', async (
   res.status(201).json({ gameId });
 });
 
-aroundTheClockRouter.post('/:gameId([0-9]+)/throw', async (req: RequestWithData, res: Response) => {
-  // TODO: type check
-  const playerId = req.data.playerId;
-  // TODO: type check
-  const gameId = req.data.gameId;
+aroundTheClockRouter.post('/:gameId([0-9]+)/throw', async (
+  req: Request<unknown, unknown, { nominal: number, hit: boolean }>,
+  res: Response<void, { playerId: number, gameId: number }>
+) => {
+  const playerId = res.locals.playerId;
+  const gameId = res.locals.gameId;
 
   if (isEmpty(req.body.nominal) || isNaN(Number(req.body.nominal)) || isEmpty(req.body.hit)) {
     res.status(400).json();
     return;
   }
 
-  /** @type {number} */
   const nominal = req.body.nominal;
-  /** @type {boolean} */
-  const hit = Boolean(req.body.hit);
+  const hit = req.body.hit;
 
   await getPgClient().query('BEGIN');
   await getPgClient().query(
@@ -71,25 +69,30 @@ aroundTheClockRouter.post('/:gameId([0-9]+)/throw', async (req: RequestWithData,
   res.status(201).json();
 });
 
-aroundTheClockRouter.delete('/:gameId([0-9]+)/undo', async (req: RequestWithData, res: Response) => {
-  // TODO: type check
-  const gameId = req.data.gameId;
+aroundTheClockRouter.delete('/:gameId([0-9]+)/undo', async (
+  req: Request,
+  res: Response<Throw, { gameId: number }>
+) => {
+  const gameId = res.locals.gameId;
 
-  const lastThrowResult = await getPgClient().query('SELECT t.id FROM public.throw t WHERE game_id = $1 ORDER BY t.id desc limit 1', [gameId]);
+  const lastThrowResult = await getPgClient()
+    .query<{ id: number }>('SELECT t.id FROM public.throw t WHERE game_id = $1 ORDER BY t.creation_date desc limit 1', [gameId]);
   if (!lastThrowResult.rows.length) {
     res.json();
     return;
   }
   const lastThrowId = lastThrowResult.rows[0].id;
 
-  const deletedThrowResult = await getPgClient().query(getSql(SqlQueries.DeleteFromThrow), [lastThrowId]);
+  const deletedThrowResult = await getPgClient().query<Throw>(getSql(SqlQueries.DeleteFromThrow), [lastThrowId]);
   await getPgClient().query('COMMIT');
   res.json(deletedThrowResult.rows[0]);
 });
 
-aroundTheClockRouter.put('/:gameId([0-9]+)/complete', async (req: RequestWithData, res: Response) => {
-  // TODO: type check
-  const gameId = req.data.gameId;
+aroundTheClockRouter.put('/:gameId([0-9]+)/complete', async (
+  req: Request,
+  res: Response<void, { gameId: number }>
+) => {
+  const gameId = res.locals.gameId;
   await getPgClient().query('BEGIN');
   await getPgClient().query('UPDATE public.game SET is_completed = true WHERE id = $1', [gameId]);
   await getPgClient().query('COMMIT');
