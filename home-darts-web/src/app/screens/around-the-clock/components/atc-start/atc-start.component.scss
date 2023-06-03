@@ -1,0 +1,13 @@
+.game-btn {
+  width: 160px;
+}
+
+.btn {
+  font-size: 24px;
+  padding: 24px 0;
+  text-transform: uppercase;
+}
+
+.btn:not(:disabled) {
+  cursor: pointer;
+}

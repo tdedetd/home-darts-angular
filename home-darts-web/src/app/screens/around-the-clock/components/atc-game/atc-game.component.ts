@@ -1,21 +1,19 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { getSectionsForAroundTheClock } from '../../utils/functions/get-sections-for-around-the-clock';
+import { GameDirections } from '../../models/game-directions.enum';
+import { AroundTheClockApiService } from '../../service/around-the-clock-api.service';
 import { catchError } from 'rxjs';
-import { getSectionsForAroundTheClock } from './utils/functions/get-sections-for-around-the-clock';
-import { GameDirections } from './models/game-directions.enum';
-import { AroundTheClockApiService } from './service/around-the-clock-api.service';
-import { GameParamTypes } from '../../models/game-param-types.enum';
-import { SectionTypes } from '../../models/section-types.enum';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
-// TODO: provide game service
 @UntilDestroy()
 @Component({
-  selector: 'hd-around-the-clock',
-  templateUrl: './around-the-clock.component.html',
-  styleUrls: ['./around-the-clock.component.scss'],
+  selector: 'hd-atc-game',
+  templateUrl: './atc-game.component.html',
+  styleUrls: ['./atc-game.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AroundTheClockComponent {
+export class AtcGameComponent implements OnInit {
   public get buttonDisabled(): boolean {
     return this.loading || this.isCompleted;
   };
@@ -24,26 +22,33 @@ export class AroundTheClockComponent {
     return this.getSection(this.hits);
   }
 
-  public gameId: number | null = null;
-
   public errorDebug = '';
   public loading = false;
   public throws = 0;
   public hits = 0;
+  public gameId: number | null = null;
   public isCompleted = false;
 
   private sections = getSectionsForAroundTheClock(GameDirections.ForwardBackward, true);
 
-  constructor(private cdr: ChangeDetectorRef, private api: AroundTheClockApiService) {}
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private cdr: ChangeDetectorRef,
+    private atcApi: AroundTheClockApiService,
+    private router: Router,
+  ) {}
 
-  public getSection(index: number): number | undefined {
-    return this.sections[index];
+  public ngOnInit(): void {
+    this.gameId = Number(this.activatedRoute.snapshot.paramMap.get('gameId'));
+    if (isNaN(this.gameId)) {
+      this.router.navigate(['../'], { relativeTo: this.activatedRoute });
+    }
   }
 
   public onCompleteBtnClick(): void {
     if (this.gameId === null) return;
 
-    this.api.complete(this.gameId)
+    this.atcApi.complete(this.gameId)
       .pipe(
         catchError((err) => {
           this.loading = false;
@@ -68,13 +73,17 @@ export class AroundTheClockComponent {
     this.throw(this.currentSection, false);
   }
 
+  public getSection(index: number): number | undefined {
+    return this.sections[index];
+  }
+
   public onUndo(): void {
     if (this.gameId === null) return;
 
     this.loading = true;
     this.cdr.detectChanges();
 
-    this.api.undo(this.gameId)
+    this.atcApi.undo(this.gameId)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (deletedThrow) => {
@@ -96,38 +105,13 @@ export class AroundTheClockComponent {
       });
   }
 
-  public onStartBtnClick(): void {
-    this.loading = true;
-
-    this.api.start({
-      direction: GameDirections.ForwardBackward,
-      fastGame: false,
-      hitDetection: SectionTypes.Any,
-      includeBull: true,
-    })
-      .pipe(untilDestroyed(this))
-      .subscribe({
-        next: ({ gameId }) => {
-          this.loading = false;
-          this.gameId = gameId;
-          this.cdr.detectChanges();
-        },
-        error: (err) => {
-          this.loading = false;
-          this.errorDebug = 'start';
-          this.cdr.detectChanges();
-          return err;
-        },
-      });
-  }
-
   private throw(nominal: number | undefined, hit: boolean): void {
     if (this.gameId === null || typeof nominal === 'undefined') return;
 
     this.loading = true;
     this.cdr.detectChanges();
 
-    this.api.throw(nominal, hit, this.gameId)
+    this.atcApi.throw(nominal, hit, this.gameId)
       .pipe(
         catchError((err) => {
           this.loading = false;

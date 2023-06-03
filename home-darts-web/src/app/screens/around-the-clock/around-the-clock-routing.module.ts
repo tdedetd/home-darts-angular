@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AroundTheClockComponent } from './around-the-clock.component';
+import { AtcStartComponent } from './components/atc-start/atc-start.component';
+import { AtcGameComponent } from './components/atc-game/atc-game.component';
 
 const routes: Routes = [
-  { path: '', component: AroundTheClockComponent },
+  { path: '', pathMatch: 'full', component: AtcStartComponent },
+  { path: ':gameId', component: AtcGameComponent },
 ];
 
 @NgModule({
