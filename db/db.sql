@@ -7,7 +7,8 @@ create table public.gamemode (
 
 create table public.game_param_type (
 	name varchar(16) primary key,
-	description varchar(128) not NULL
+	description varchar(128) not NULL,
+	"datatype" varchar(16) NOT NULL DEFAULT 'string' CHECK ("datatype" = 'string' or "datatype" = 'boolean' or "datatype" = 'number')
 );
 
 create table public.throw (
@@ -91,8 +92,8 @@ REFERENCES game_param_type (name);
 insert into public.gamemode (system_name, name) values
 	('aroundTheClock', 'Around the clock');
 
-insert into public.game_param_type (name, description) values
-	('includeBull', ''),
-	('direction', ''),
-	('hitDetection', ''),
-	('fastGame', '');
+insert into public.game_param_type (name, description, "datatype") values
+	('includeBull', '', 'boolean'),
+	('direction', '', 'string'),
+	('hitDetection', '', 'string'),
+	('fastGame', '', 'boolean');
