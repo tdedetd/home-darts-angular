@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { MenuComponent } from './components/menu/menu.component';
-import { PlayerApiService } from './services/player-api.service';
 
 @NgModule({
   declarations: [
@@ -15,9 +14,6 @@ import { PlayerApiService } from './services/player-api.service';
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-  ],
-  providers: [
-    PlayerApiService,
   ],
   bootstrap: [AppComponent]
 })

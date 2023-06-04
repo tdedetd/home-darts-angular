@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { getSectionsForAroundTheClock } from '../../utils/functions/get-sections-for-around-the-clock';
 import { GameDirections } from '../../models/game-directions.enum';
 import { AroundTheClockApiService } from '../../service/around-the-clock-api.service';
@@ -35,14 +35,10 @@ export class AtcGameComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private cdr: ChangeDetectorRef,
     private atcApi: AroundTheClockApiService,
-    private router: Router,
   ) {}
 
   public ngOnInit(): void {
     this.gameId = Number(this.activatedRoute.snapshot.paramMap.get('gameId'));
-    if (isNaN(this.gameId)) {
-      this.router.navigate(['../'], { relativeTo: this.activatedRoute });
-    }
   }
 
   public onCompleteBtnClick(): void {
