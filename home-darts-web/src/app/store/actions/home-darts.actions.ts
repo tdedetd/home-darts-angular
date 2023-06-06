@@ -9,10 +9,12 @@ export const gameInfoLoadingStarted = createAction(
   props<{ gameId: number }>()
 );
 
-export const getGameInfoLoadingSuccessful = <GameParams extends object = Partial<Record<GameParamTypes, unknown>>>() =>
+export const getGameInfoLoadingSuccess = <GameParams extends object = Partial<Record<GameParamTypes, unknown>>>() =>
   createAction(
-    `${source} Game Info Loading Successful`,
+    `${source} Game Info Loading Success`,
     props<{ gameInfo: GameInfoApi<GameParams> }>()
   );
 
-export const gameInfoLoadingSuccessful = getGameInfoLoadingSuccessful();
+export const gameInfoLoadingSuccess = getGameInfoLoadingSuccess();
+
+export const gameInfoLoadingError = createAction(`${source} Game Info Loading Error`);
