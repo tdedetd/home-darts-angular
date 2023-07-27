@@ -6,6 +6,7 @@ import { isProduction, port } from './config/index.js';
 import { router } from './routes/index.js';
 
 const app = express();
+// TODO: sql cast number
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
