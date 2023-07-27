@@ -6,7 +6,7 @@ import { AroundTheClockApiService } from '../../service/around-the-clock-api.ser
 import { catchError } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
-import { gameInfoLoadingStarted } from '../../../../store/actions/home-darts.actions';
+import { startGameInfoLoading } from '../../../../store/actions/home-darts.actions';
 import { atcResetGame } from '../../store/actions/around-the-clock.actions';
 import { AroundTheClockState } from '../../models/around-the-clock-state.inteface';
 
@@ -44,7 +44,7 @@ export class AtcGameComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.gameId = Number(this.activatedRoute.snapshot.paramMap.get('gameId'));
-    this.store.dispatch(gameInfoLoadingStarted({ gameId: this.gameId }));
+    this.store.dispatch(startGameInfoLoading({ gameId: this.gameId }));
   }
 
   public ngOnDestroy(): void {

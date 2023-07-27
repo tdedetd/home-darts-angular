@@ -20,7 +20,7 @@ export class StatisticsComponent {
 
   private getStats(): Observable<PlayerStatsApi> {
     return this.playerControl.valueChanges.pipe(
-      filter(player => !!player),
+      filter(Boolean),
       switchMap(player => this.playerApi.getPlayerStats(player!.id)),
     );
   }
