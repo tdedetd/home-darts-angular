@@ -20,7 +20,7 @@ export const aroundTheClockReducer = createReducer<AroundTheClockState>(
     const sections = getSectionsForAroundTheClock(gameInfo.params.direction, gameInfo.params.includeBull);
     return {
       ...state,
-      currentPlayerId: throwsGrouped[0].playerId,
+      currentPlayerId: throwsGrouped[0]?.playerId ?? null,
       gameInfo,
       loadingStatus: GameLoadingStatuses.Initiated,
       sections,
