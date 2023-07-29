@@ -6,7 +6,7 @@ import { AroundTheClockApiService } from '../../service/around-the-clock-api.ser
 import { catchError } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
-import { startGameInfoLoading } from '../../../../store/actions/home-darts.actions';
+import { startGameInfoLoading } from '../../../../store/actions/game-info.actions';
 import { atcResetGame } from '../../store/actions/around-the-clock.actions';
 import { AroundTheClockState } from '../../models/around-the-clock-state.inteface';
 

@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { AroundTheClockState } from '../../models/around-the-clock-state.inteface';
-import { gameInfoLoadingError, getGameInfoLoadingSuccess } from '../../../../store/actions/home-darts.actions';
+import { gameInfoLoadingError, getGameInfoLoadingSuccess } from '../../../../store/actions/game-info.actions';
 import { AroundTheClockParams } from '../../models/around-the-clock-params.interface';
 import { atcResetGame } from '../actions/around-the-clock.actions';
 import { getSectionsForAroundTheClock } from '../../utils/functions/get-sections-for-around-the-clock';

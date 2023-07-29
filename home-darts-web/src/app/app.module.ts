@@ -7,7 +7,7 @@ import { MenuComponent } from './components/menu/menu.component';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
-import { HomeDartsEffects } from './store/effects/home-darts.effects';
+import { GameInfoEffects } from './store/effects/game-info.effects';
 
 @NgModule({
   declarations: [
@@ -19,9 +19,8 @@ import { HomeDartsEffects } from './store/effects/home-darts.effects';
     HttpClientModule,
     AppRoutingModule,
     StoreModule.forRoot(),
-    EffectsModule.forRoot(HomeDartsEffects),
-    // TODO: for development
-    StoreDevtoolsModule.instrument(),
+    EffectsModule.forRoot([GameInfoEffects]),
+    StoreDevtoolsModule.instrument({ logOnly: true }),
   ],
   bootstrap: [AppComponent]
 })

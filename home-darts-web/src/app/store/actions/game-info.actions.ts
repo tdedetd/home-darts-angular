@@ -3,20 +3,19 @@ import { GameInfoApi } from '@models/game-info-api.interface';
 import { GameParamTypes } from '../../models/game-param-types.enum';
 import { ThrowsGrouped } from '../../models/throws-grouped';
 
-// TODO: rename game info
-const source = '[Home darts]';
+const source = '[Game Info]';
 
 export const startGameInfoLoading = createAction(
-  `${source} Start Game Info Loading`,
+  `${source} Start Loading`,
   props<{ gameId: number }>()
 );
 
 export const getGameInfoLoadingSuccess = <GameParams extends object = Partial<Record<GameParamTypes, unknown>>>() =>
   createAction(
-    `${source} Game Info Loading Success`,
+    `${source} Loading Success`,
     props<{ gameInfo: GameInfoApi<GameParams>, throwsGrouped: ThrowsGrouped[] }>()
   );
 
 export const gameInfoLoadingSuccess = getGameInfoLoadingSuccess();
 
-export const gameInfoLoadingError = createAction(`${source} Game Info Loading Error`);
+export const gameInfoLoadingError = createAction(`${source} Loading Error`);

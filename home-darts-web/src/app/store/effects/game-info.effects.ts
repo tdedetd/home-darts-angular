@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { gameInfoLoadingError, startGameInfoLoading, gameInfoLoadingSuccess } from '../actions/home-darts.actions';
+import { gameInfoLoadingError, startGameInfoLoading, gameInfoLoadingSuccess } from '../actions/game-info.actions';
 import { catchError, forkJoin, map, of, switchMap } from 'rxjs';
 import { GameApiService } from '../../services/game-api.service';
 import { ThrowsApiService } from '../../services/throws-api.service';
 
-// TODO: rename game info
 @Injectable()
-export class HomeDartsEffects {
+export class GameInfoEffects {
   public loadGameInfo$ = createEffect(() => this.actions$.pipe(
     ofType(startGameInfoLoading),
     switchMap(({ gameId }) => forkJoin([
