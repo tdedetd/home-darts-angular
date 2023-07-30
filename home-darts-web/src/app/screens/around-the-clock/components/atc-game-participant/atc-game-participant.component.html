@@ -5,5 +5,9 @@
 </div>
 <div class="atc-part__stats">
   <p>{{ hits }} / {{ throws }}</p>
-  <p>{{ (hits / throws * 100) | number: '1.3-3' }}%</p>
+  <p>
+    <ng-container *ngIf="throws > 0; else noThrows">{{ (hits / throws * 100) | number: '1.3-3' }}%</ng-container>
+  </p>
 </div>
+
+<ng-template #noThrows>-</ng-template>

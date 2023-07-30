@@ -8,6 +8,8 @@ import { StoreModule } from '@ngrx/store';
 import { aroundTheClockReducer } from './store/reducers/around-the-clock.reducer';
 import { AtcGameComponent } from './components/atc-game/atc-game.component';
 import { AtcGameParticipantComponent } from './components/atc-game-participant/atc-game-participant.component';
+import { EffectsModule } from '@ngrx/effects';
+import { AroundTheClockEffects } from './store/effects/game-info.effects';
 
 
 @NgModule({
@@ -20,6 +22,7 @@ import { AtcGameParticipantComponent } from './components/atc-game-participant/a
     CommonModule,
     AroundTheClockRoutingModule,
     StoreModule.forFeature('aroundTheClock', aroundTheClockReducer),
+    EffectsModule.forFeature([AroundTheClockEffects]),
   ],
   providers: [
     AroundTheClockApiService,

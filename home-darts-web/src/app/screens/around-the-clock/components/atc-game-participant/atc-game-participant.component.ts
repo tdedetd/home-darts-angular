@@ -7,7 +7,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AtcGameParticipantComponent {
-  @Input() active = false;
+  @Input() active: boolean | null = false;
   @Input() hits = 0;
   @Input() username = '';
   @Input() throws = 1;

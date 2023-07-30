@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { apiPrefix } from '@config';
 import { Observable } from 'rxjs';
-import { ThrowsGrouped } from '../models/throws-grouped';
+import { ThrowsGrouped } from '../models/throws-grouped.interface';
 
 @Injectable({ providedIn: 'root' })
 export class ThrowsApiService {

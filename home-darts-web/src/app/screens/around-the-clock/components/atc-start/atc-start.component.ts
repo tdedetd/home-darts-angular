@@ -4,6 +4,7 @@ import { GameDirections } from '../../models/game-directions.enum';
 import { SectionTypes } from '@models/section-types.enum';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ActivatedRoute, Router } from '@angular/router';
+import { defaultPlayerId } from '@config';
 
 @UntilDestroy()
 @Component({
@@ -29,8 +30,8 @@ export class AtcStartComponent {
       direction: GameDirections.ForwardBackward,
       fastGame: false,
       hitDetection: SectionTypes.Any,
-      includeBull: true,
-    })
+      includeBull: true
+    }, defaultPlayerId)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: ({ gameId }) => {

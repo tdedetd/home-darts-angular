@@ -1,14 +1,15 @@
 import { createReducer, on } from '@ngrx/store';
-import { AroundTheClockState } from '../../models/around-the-clock-state.inteface';
+import { AroundTheClockState } from '../../models/around-the-clock-state.interface';
 import { gameInfoLoadingError, getGameInfoLoadingSuccess } from '../../../../store/actions/game-info.actions';
 import { AroundTheClockParams } from '../../models/around-the-clock-params.interface';
-import { atcResetGame } from '../actions/around-the-clock.actions';
+import { atcResetGame, atcTrowStart, atcTrowSuccess, atcUndoSuccess } from '../actions/around-the-clock.actions';
 import { getSectionsForAroundTheClock } from '../../utils/functions/get-sections-for-around-the-clock';
 import { GameLoadingStatuses } from '@models/game-loading-statuses.enum';
 
 const initialState: AroundTheClockState = {
   currentPlayerId: null,
   gameInfo: null,
+  loading: true,
   loadingStatus: GameLoadingStatuses.Pending,
   sections: [],
   participants: {},
@@ -22,6 +23,7 @@ export const aroundTheClockReducer = createReducer<AroundTheClockState>(
       ...state,
       currentPlayerId: throwsGrouped[0]?.playerId ?? null,
       gameInfo,
+      loading: false,
       loadingStatus: GameLoadingStatuses.Initiated,
       sections,
       participants: throwsGrouped.reduce<AroundTheClockState['participants']>((acc, { playerId, hits, throws }) => ({
@@ -37,5 +39,34 @@ export const aroundTheClockReducer = createReducer<AroundTheClockState>(
     ...initialState,
     loadingStatus: GameLoadingStatuses.Error,
   })),
-  on(atcResetGame, (): AroundTheClockState => initialState),
+  on(atcResetGame, () => initialState),
+  on(atcTrowStart, (state) => ({ ...state, loading: true })),
+  on(atcTrowSuccess, (state, { hit }) =>
+    state.currentPlayerId && state.participants[state.currentPlayerId] ? {
+      ...state,
+      loading: false,
+      participants: {
+        ...state.participants,
+        [state.currentPlayerId]: {
+          ...state.participants[state.currentPlayerId],
+          hits: state.participants[state.currentPlayerId].hits + Number(hit),
+          throws: state.participants[state.currentPlayerId].throws + 1
+        }
+      }
+    } : state
+  ),
+  on(atcUndoSuccess, (state, { lastThrow }) => 
+    state.currentPlayerId && state.participants[state.currentPlayerId] && lastThrow ? {
+      ...state,
+      loading: false,
+      participants: {
+        ...state.participants,
+        [state.currentPlayerId]: {
+          ...state.participants[state.currentPlayerId],
+          hits: state.participants[state.currentPlayerId].hits - Number(lastThrow.hit),
+          throws: state.participants[state.currentPlayerId].throws - 1
+        }
+      }
+    } : state
+  )
 );

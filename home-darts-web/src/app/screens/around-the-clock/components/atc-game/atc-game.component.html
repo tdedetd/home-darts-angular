@@ -1,42 +1,24 @@
 <div class="atc-game__container">
   <ul class="atc-game__participants">
-    <li>
+    <li *ngFor="let player of players$ | async">
       <hd-atc-game-participant
-        [turnHits]="[false, false, true]"
-        username="Player 1"
-        [hits]="3"
-        [throws]="10"
-      ></hd-atc-game-participant>
-    </li>
-    <li>
-      <hd-atc-game-participant
-        [active]="true"
-        [turnHits]="[true]"
-        username="Player 2"
-        [hits]="0"
-        [throws]="8"
-      ></hd-atc-game-participant>
-    </li>
-    <li>
-      <hd-atc-game-participant
+        [active]="isPlayerActive(player.id) | async"
         [turnHits]="[true, true, true]"
-        username="Player 3"
-        [hits]="18"
-        [throws]="1240"
+        [username]="player.username"
+        [hits]="player.hits"
+        [throws]="player.throws"
       ></hd-atc-game-participant>
     </li>
   </ul>
-  <div class="atc-game__output">Player 2 turns</div>
+  <div *ngIf="currentPlayer$ | async as currentPlayer" class="atc-game__output">{{ currentPlayer.username }} turns</div>
   <div class="atc-game__sections">
-    <div class="atc-game__digit">12</div>
-    <div class="atc-game__digit">13</div>
-    <div class="atc-game__digit">14</div>
+    <div *ngFor="let sector of upcomingSectors$ | async" class="atc-game__digit">{{ sector }}</div>
   </div>
   <div class="atc-game__tools-container">
     <div class="atc-game__tools">
-      <button class="atc-game__tool-btn">Hit</button>
-      <button class="atc-game__tool-btn">Miss</button>
-      <button class="atc-game__tool-btn">Undo</button>
+      <button class="atc-game__tool-btn" [disabled]="loading" (click)="throw(true)">Hit</button>
+      <button class="atc-game__tool-btn" [disabled]="loading" (click)="throw(false)">Miss</button>
+      <button class="atc-game__tool-btn" [disabled]="loading" (click)="undo()">Undo</button>
     </div>
   </div>
 </div>
