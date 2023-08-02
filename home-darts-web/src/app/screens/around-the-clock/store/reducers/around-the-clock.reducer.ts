@@ -21,7 +21,7 @@ export const aroundTheClockReducer = createReducer<AroundTheClockState>(
     const sections = getSectionsForAroundTheClock(gameInfo.params.direction, gameInfo.params.includeBull);
     return {
       ...state,
-      currentPlayerId: throwsGrouped[0]?.playerId ?? null,
+      currentPlayerId: gameInfo.players[0]?.id ?? null,
       gameInfo,
       loading: false,
       loadingStatus: GameLoadingStatuses.Initiated,
@@ -42,16 +42,20 @@ export const aroundTheClockReducer = createReducer<AroundTheClockState>(
   on(atcResetGame, () => initialState),
   on(atcTrowStart, (state) => ({ ...state, loading: true })),
   on(atcTrowSuccess, (state, { hit }) =>
-    state.currentPlayerId && state.participants[state.currentPlayerId] ? {
+    state.currentPlayerId ? {
       ...state,
       loading: false,
       participants: {
         ...state.participants,
-        [state.currentPlayerId]: {
-          ...state.participants[state.currentPlayerId],
-          hits: state.participants[state.currentPlayerId].hits + Number(hit),
-          throws: state.participants[state.currentPlayerId].throws + 1
-        }
+        [state.currentPlayerId]: (
+          state.participants[state.currentPlayerId]
+            ? {
+              ...state.participants[state.currentPlayerId],
+              hits: state.participants[state.currentPlayerId].hits + Number(hit),
+              throws: state.participants[state.currentPlayerId].throws + 1,
+            }
+            : { hits: Number(hit), throws: 1, isCompleted: false }
+        )
       }
     } : state
   ),

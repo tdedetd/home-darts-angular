@@ -19,9 +19,10 @@ export class AroundTheClockEffects {
       this.store.select(selectCurrentPlayerId),
     ),
     switchMap(([{ hit }, gameId, sector, playerId]) =>
-      this.atcApi.throw(sector, hit, gameId ?? 0, playerId ?? 0).pipe(map(() => hit))
-    ),
-    map((hit) => atcTrowSuccess({ hit }))
+      // TOOD: throw error if no gameId and playerId
+      this.atcApi.throw(sector, hit, gameId ?? 0, playerId ?? 0)
+        .pipe(map(() => atcTrowSuccess({ hit })))
+    )
   ));
 
   public undo$ = createEffect(() => this.actions$.pipe(
