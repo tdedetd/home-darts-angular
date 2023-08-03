@@ -36,7 +36,7 @@ export class AtcStartComponent {
     private fb: FormBuilder,
   ) { }
 
-  public onStartBtnClick(): void {
+  public submit(): void {
     this.loading = true;
 
     this.atcApi.start(this.form.getRawValue(), defaultPlayerId)
