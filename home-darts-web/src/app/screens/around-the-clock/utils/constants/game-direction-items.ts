@@ -1,29 +1,25 @@
+import { Item } from '@models/item.interface';
 import { GameDirections } from '../../models/game-directions.enum';
 
-interface GameDirectionItem {
-  name: string;
-  value: GameDirections;
-}
-
-export const gameDirectionItems: GameDirectionItem[] = [
+export const gameDirectionItems: Item<GameDirections>[] = [
   {
-    name: 'Forward',
+    label: 'Forward',
     value: GameDirections.Forward,
   },
   {
-    name: 'Backward',
+    label: 'Backward',
     value: GameDirections.Backward,
   },
   {
-    name: 'Forward and backward',
+    label: 'Forward and backward',
     value: GameDirections.ForwardBackward,
   },
   {
-    name: 'Clockwise',
+    label: 'Clockwise',
     value: GameDirections.Clockwise,
   },
   {
-    name: 'Counter clockwise',
+    label: 'Counter clockwise',
     value: GameDirections.CounterClockwise,
   },
 ];

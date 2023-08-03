@@ -28,6 +28,7 @@
       "@config": ["src/app/config"],
       "@constants/*": ["src/app/utils/constants/*"],
       "@models/*": ["src/app/models/*"],
+      "@modules/*": ["src/app/modules/*"],
     }
   },
   "angularCompilerOptions": {

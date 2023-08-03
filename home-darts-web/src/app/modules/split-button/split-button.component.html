@@ -1,0 +1,5 @@
+<button
+  *ngFor="let item of items"
+  class="split-btn__btn"
+  [disabled]="item.value === value"
+  (click)="onClick(item)">{{ item.label }}</button>
