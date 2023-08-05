@@ -8,6 +8,10 @@ import { defaultPlayerId } from '@config';
 import { FormBuilder } from '@angular/forms';
 import { gameDirectionItems } from '../../utils/constants/game-direction-items';
 import { sectionTypes } from '../../utils/constants/section-types';
+import { PlayerApiService } from '../../../../services/player-api.service';
+import { Observable } from 'rxjs';
+import { PlayerApi } from '@models/player-api.interface';
+import { arrayMinLengthValidator } from '../../../../utils/functions/array-min-length.validator';
 
 @UntilDestroy()
 @Component({
@@ -19,8 +23,10 @@ import { sectionTypes } from '../../utils/constants/section-types';
 export class AtcStartComponent {
   public readonly gameDirectionItems = gameDirectionItems;
   public readonly sectionTypes = sectionTypes;
+  public readonly players$: Observable<PlayerApi[]> = this.playerApi.getPlayers();
 
   public form = this.fb.group({
+    players: this.fb.nonNullable.control<PlayerApi['id'][]>([defaultPlayerId], arrayMinLengthValidator(1)),
     direction: this.fb.nonNullable.control<GameDirections>(GameDirections.ForwardBackward),
     fastGame: this.fb.nonNullable.control<boolean>(false),
     hitDetection: this.fb.nonNullable.control<SectionTypes>(SectionTypes.Any),
@@ -34,12 +40,14 @@ export class AtcStartComponent {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
+    private playerApi: PlayerApiService,
   ) { }
 
   public submit(): void {
     this.loading = true;
+    this.cdr.detectChanges();
 
-    this.atcApi.start(this.form.getRawValue(), defaultPlayerId)
+    this.atcApi.start(this.form.getRawValue())
       .pipe(untilDestroyed(this))
       .subscribe({
         next: ({ gameId }) => {

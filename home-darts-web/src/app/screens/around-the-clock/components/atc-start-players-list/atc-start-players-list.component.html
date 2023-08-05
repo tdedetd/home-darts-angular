@@ -1,0 +1,15 @@
+<ul>
+  <li *ngFor="let player of players | filteredPlayers: 'only': value" class="player-start-players-list__li">
+    <p>{{ player.username }}</p>
+    <button
+      class="player-start-players-list__close-btn"
+      type="button"
+      (click)="onCloseClick(player)">&#10006;</button>
+  </li>
+</ul>
+<select>
+  <option
+    *ngFor="let player of players | filteredPlayers: 'remove': value"
+    [ngValue]="player"
+    (click)="onItemChange(player)">{{ player.username }}</option>
+</select>

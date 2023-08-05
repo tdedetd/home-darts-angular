@@ -10,8 +10,10 @@ import { AtcGameComponent } from './components/atc-game/atc-game.component';
 import { AtcGameParticipantComponent } from './components/atc-game-participant/atc-game-participant.component';
 import { EffectsModule } from '@ngrx/effects';
 import { AroundTheClockEffects } from './store/effects/around-the-clock.effects';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SplitButtonModule } from '@modules/split-button/split-button.module';
+import { FilteredPlayersPipe } from './pipes/filtered-players.pipe';
+import { AtcStartPlayersListComponent } from './components/atc-start-players-list/atc-start-players-list.component';
 
 
 @NgModule({
@@ -19,12 +21,15 @@ import { SplitButtonModule } from '@modules/split-button/split-button.module';
     AtcStartComponent,
     AtcGameComponent,
     AtcGameParticipantComponent,
+    FilteredPlayersPipe,
+    AtcStartPlayersListComponent,
   ],
   imports: [
     CommonModule,
     AroundTheClockRoutingModule,
     StoreModule.forFeature('aroundTheClock', aroundTheClockReducer),
     EffectsModule.forFeature([AroundTheClockEffects]),
+    FormsModule,
     ReactiveFormsModule,
     SplitButtonModule,
   ],

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { apiPrefix } from '@config';
 import { ThrowApi } from '@models/throw-api.interface';
 import { AroundTheClockParams } from '../models/around-the-clock-params.interface';
+import { PlayerApi } from '../../../models/player-api.interface';
 
 @Injectable()
 export class AroundTheClockApiService {
@@ -15,8 +16,8 @@ export class AroundTheClockApiService {
     return this.http.put<void>(`${this.apiPrefix}${gameId}/complete`, null, { params: { playerId }});
   }
 
-  public start(params: AroundTheClockParams, playerId: number): Observable<{ gameId: number }> {
-    return this.http.post<{ gameId: number }>(`${this.apiPrefix}start`, params, { params: { playerId }});
+  public start(params: AroundTheClockParams & { players: PlayerApi['id'][] }): Observable<{ gameId: number }> {
+    return this.http.post<{ gameId: number }>(`${this.apiPrefix}start`, params);
   }
 
   public throw(nominal: number, hit: boolean, gameId: number, playerId: number): Observable<void> {

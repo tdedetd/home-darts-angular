@@ -1,24 +1,33 @@
-<form [formGroup]="form" (ngSubmit)="submit()">
-  <div class="atc-start__param">
-    <select formControlName="direction">
-      <option *ngFor="let item of gameDirectionItems" [value]="item.value">{{ item.label }}</option>
-    </select>
-  </div>
-  <div class="atc-start__param">
-    <label>
-      <input type="checkbox" formControlName="fastGame">
-      <span>Fast game</span>
-    </label>
-  </div>
-  <div class="atc-start__param">
-    <p>Hit detection</p>
-    <hd-split-button formControlName="hitDetection" [items]="sectionTypes"></hd-split-button>
-  </div>
-  <div class="atc-start__param">
-    <label>
-      <input type="checkbox" formControlName="includeBull">
-      <span>Include bull</span>
-    </label>
-  </div>
-  <input class="btn game-btn" [disabled]="loading" type="submit" value="Start">
-</form>
+<div class="container">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div *ngIf="players$ | async as players" class="atc-start__param">
+      <h3>Players</h3>
+      <hd-atc-start-players-list
+        formControlName="players"
+        [players]="players"></hd-atc-start-players-list>
+    </div>
+    <div class="atc-start__param">
+      <h3>Direction</h3>
+      <select formControlName="direction">
+        <option *ngFor="let item of gameDirectionItems" [value]="item.value">{{ item.label }}</option>
+      </select>
+    </div>
+    <div class="atc-start__param">
+      <label>
+        <input type="checkbox" formControlName="fastGame">
+        <span>Fast game</span>
+      </label>
+    </div>
+    <div class="atc-start__param">
+      <h3>Hit detection</h3>
+      <hd-split-button formControlName="hitDetection" [items]="sectionTypes"></hd-split-button>
+    </div>
+    <div class="atc-start__param">
+      <label>
+        <input type="checkbox" formControlName="includeBull">
+        <span>Include bull</span>
+      </label>
+    </div>
+    <input class="btn game-btn" [disabled]="loading || !form.valid" type="submit" value="Start">
+  </form>
+</div>
