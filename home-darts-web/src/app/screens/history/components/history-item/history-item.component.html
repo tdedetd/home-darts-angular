@@ -7,5 +7,5 @@
     <p>Hits / throws: {{ data.hits }} / {{ data.throws }}</p>
     <p>{{ (data.hits / data.throws * 100) | number: '1.2-2' }}%</p>
   </div>
-  <p *ngIf="!data.isCompleted" class="history-item__not-completed">Game is not completed</p>
+  <a *ngIf="!data.isCompleted" [routerLink]="['..', 'around-the-clock', data.id]" [relativeTo]="route">Load game</a>
 </ng-container>

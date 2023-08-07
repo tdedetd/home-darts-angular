@@ -2,9 +2,10 @@ import { createReducer, on } from '@ngrx/store';
 import { AroundTheClockState } from '../../models/around-the-clock-state.interface';
 import { gameInfoLoadingError, getGameInfoLoadingSuccess } from '../../../../store/actions/game-info.actions';
 import { AroundTheClockParams } from '../../models/around-the-clock-params.interface';
-import { atcResetGame, atcTrowStart, atcTrowSuccess, atcUndoSuccess } from '../actions/around-the-clock.actions';
+import { atcCompleteSuccess, atcResetGame, atcTrowStart, atcTrowSuccess, atcUndoSuccess } from '../actions/around-the-clock.actions';
 import { getSectionsForAroundTheClock } from '../../utils/functions/get-sections-for-around-the-clock';
 import { GameLoadingStatuses } from '@models/game-loading-statuses.enum';
+import { getParticipantAfterThrow } from './utils/get-participant-after-throw';
 
 const initialState: AroundTheClockState = {
   currentPlayerId: null,
@@ -49,12 +50,8 @@ export const aroundTheClockReducer = createReducer<AroundTheClockState>(
         ...state.participants,
         [state.currentPlayerId]: (
           state.participants[state.currentPlayerId]
-            ? {
-              ...state.participants[state.currentPlayerId],
-              hits: state.participants[state.currentPlayerId].hits + Number(hit),
-              throws: state.participants[state.currentPlayerId].throws + 1,
-            }
-            : { hits: Number(hit), throws: 1, isCompleted: false }
+            ? getParticipantAfterThrow(state.sections, hit, false, state.participants[state.currentPlayerId])
+            : getParticipantAfterThrow(state.sections, hit, false)
         )
       }
     } : state
@@ -65,12 +62,16 @@ export const aroundTheClockReducer = createReducer<AroundTheClockState>(
       loading: false,
       participants: {
         ...state.participants,
-        [state.currentPlayerId]: {
-          ...state.participants[state.currentPlayerId],
-          hits: state.participants[state.currentPlayerId].hits - Number(lastThrow.hit),
-          throws: state.participants[state.currentPlayerId].throws - 1
-        }
+        [state.currentPlayerId]: getParticipantAfterThrow(
+          state.sections, lastThrow.hit, true, state.participants[state.currentPlayerId])
       }
     } : state
-  )
+  ),
+  on(atcCompleteSuccess, (state) => ({
+    ...state,
+    gameInfo: state.gameInfo ? {
+      ...state.gameInfo,
+      isCompleted: true,
+    } : state.gameInfo
+  }))
 );

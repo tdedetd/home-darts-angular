@@ -8,7 +8,7 @@ export const selectUpcomingSectorsForCurrentPlayer = createSelector(
   selectCurrentPlayerId,
   selectParticipants,
   selectSectors,
-  (playerId: number | null, participants: Record<number, AtcParticipant>, sectors: number[]) => {
+  (playerId: number | null, participants: Partial<Record<number, AtcParticipant>>, sectors: number[]) => {
     if (playerId === null) return [];
     const hits = participants[playerId]?.hits ?? 0;
     return sectors.slice(hits, hits + 3);

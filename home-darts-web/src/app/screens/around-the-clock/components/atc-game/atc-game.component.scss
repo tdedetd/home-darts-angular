@@ -47,3 +47,9 @@
 .atc-game__tool-btn:not(:disabled) {
   cursor: pointer;
 }
+
+.atc-game__tool-btn-complete {
+  position: absolute;
+  bottom: 100%;
+  width: 50%;
+}

@@ -1,4 +1,4 @@
-<div class="container">
+<div *ngIf="isGameNotCompleted$ | async; else gameCompleted" class="container">
   <ul class="atc-game__participants">
     <li *ngFor="let player of players$ | async">
       <hd-atc-game-participant
@@ -15,6 +15,10 @@
     <div *ngFor="let sector of upcomingSectors$ | async" class="atc-game__digit">{{ sector }}</div>
   </div>
   <div class="atc-game__tools-container">
+    <button
+      *ngIf="canCompleteGame$ | async"
+      class="atc-game__tool-btn atc-game__tool-btn-complete"
+      (click)="onCompleteClick()">Complete</button>
     <div class="atc-game__tools container">
       <button class="atc-game__tool-btn" [disabled]="loading" (click)="throw(true)">Hit</button>
       <button class="atc-game__tool-btn" [disabled]="loading" (click)="throw(false)">Miss</button>
@@ -22,3 +26,5 @@
     </div>
   </div>
 </div>
+
+<ng-template #gameCompleted>Game is completed</ng-template>

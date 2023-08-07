@@ -10,3 +10,6 @@ export const atcTrowSuccess = createAction(`${source} Trow Success`, props<{ hit
 
 export const atcUndoStart = createAction(`${source} Undo Start`);
 export const atcUndoSuccess = createAction(`${source} Undo Success`, props<{ lastThrow: ThrowApi | null }>());
+
+export const atcCompleteStart = createAction(`${source} Complete Start`);
+export const atcCompleteSuccess = createAction(`${source} Complete Success`);

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { atcTrowStart, atcTrowSuccess, atcUndoStart, atcUndoSuccess } from '../actions/around-the-clock.actions';
+import { atcCompleteStart, atcCompleteSuccess, atcTrowStart, atcTrowSuccess, atcUndoStart, atcUndoSuccess } from '../actions/around-the-clock.actions';
 import { map, switchMap, withLatestFrom } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AroundTheClockState } from '../../models/around-the-clock-state.interface';
@@ -11,6 +11,17 @@ import { selectCurrentPlayerId } from '../selectors/current-player-id.selector';
 
 @Injectable()
 export class AroundTheClockEffects {
+  public complete$ = createEffect(() => this.actions$.pipe(
+    ofType(atcCompleteStart),
+    withLatestFrom(
+      this.store.select(selectGameId),
+      this.store.select(selectCurrentPlayerId),
+    ),
+    // TOOD: check is not nil: gameId, playerId - throw error
+    switchMap(([_, gameId, PlayerId]) => this.atcApi.complete(gameId ?? 0, PlayerId ?? 0)),
+    map(() => atcCompleteSuccess())
+  ));
+
   public throw$ = createEffect(() => this.actions$.pipe(
     ofType(atcTrowStart),
     withLatestFrom(
@@ -19,8 +30,8 @@ export class AroundTheClockEffects {
       this.store.select(selectCurrentPlayerId),
     ),
     switchMap(([{ hit }, gameId, sector, playerId]) =>
-      // TOOD: throw error if no gameId and playerId
-      this.atcApi.throw(sector, hit, gameId ?? 0, playerId ?? 0)
+      // TOOD: check is not nil: sector, gameId, playerId - throw error
+      this.atcApi.throw(sector ?? 0, hit, gameId ?? 0, playerId ?? 0)
         .pipe(map(() => atcTrowSuccess({ hit })))
     )
   ));
