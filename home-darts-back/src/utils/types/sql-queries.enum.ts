@@ -6,4 +6,6 @@ export enum SqlQueries {
   History = 'history',
   Players = 'players',
   TotalPlayingTime = 'total-playing-time',
+  Throws = 'throws',
+  ThrowsGrouped = 'throws-grouped',
 }

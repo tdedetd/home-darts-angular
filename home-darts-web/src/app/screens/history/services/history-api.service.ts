@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { apiPrefix, playerId } from '@config';
+import { apiPrefix, defaultPlayerId } from '@config';
 import { PaginationParams } from '@models/pagination-params.interface';
 import { HistoryApi } from '../models/history-api.interface';
 import { Observable } from 'rxjs';
@@ -12,6 +12,6 @@ export class HistoryApiService {
   constructor(private http: HttpClient) {}
 
   public getHistory(params?: PaginationParams): Observable<HistoryApi[]> {
-    return this.http.get<HistoryApi[]>(this.apiPrefix, { params: { ...params, playerId } });
+    return this.http.get<HistoryApi[]>(this.apiPrefix, { params: { ...params, playerId: defaultPlayerId } });
   }
 }

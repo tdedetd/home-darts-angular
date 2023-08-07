@@ -4,7 +4,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { MenuComponent } from './components/menu/menu.component';
-import { PlayerApiService } from './services/player-api.service';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
+import { GameInfoEffects } from './store/effects/game-info.effects';
 
 @NgModule({
   declarations: [
@@ -15,9 +18,9 @@ import { PlayerApiService } from './services/player-api.service';
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-  ],
-  providers: [
-    PlayerApiService,
+    StoreModule.forRoot(),
+    EffectsModule.forRoot([GameInfoEffects]),
+    StoreDevtoolsModule.instrument({ logOnly: true }),
   ],
   bootstrap: [AppComponent]
 })

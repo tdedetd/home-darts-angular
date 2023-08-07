@@ -1,21 +1,30 @@
-<p class="erorr-debug">errorDebug: {{ errorDebug | json }}; gameId: {{ gameId }}; hits: {{ hits }} / {{ throws }} ({{ (hits / throws * 100) | number: '1.3-3' }}%)</p>
-<div class="nominal-panel">
-  <p class="nominal-panel__current">{{ currentSection }}</p>
-  <p *ngIf="getSection(hits + 1) as nextSection" class="nominal-panel__next">{{ nextSection }}</p>
-  <p *ngIf="getSection(hits + 2) as nextSection" class="nominal-panel__next">{{ nextSection }}</p>
+<div *ngIf="isGameNotCompleted$ | async; else gameCompleted" class="container">
+  <ul class="atc-game__participants">
+    <li *ngFor="let player of players$ | async">
+      <hd-atc-game-participant
+        [active]="isPlayerActive(player.id) | async"
+        [turnHits]="[true, true, true]"
+        [username]="player.username"
+        [hits]="player.hits"
+        [throws]="player.throws"
+      ></hd-atc-game-participant>
+    </li>
+  </ul>
+  <div *ngIf="currentPlayer$ | async as currentPlayer" class="atc-game__output">{{ currentPlayer.username }} turns</div>
+  <div class="atc-game__sections">
+    <div *ngFor="let sector of upcomingSectors$ | async" class="atc-game__digit">{{ sector }}</div>
+  </div>
+  <div class="atc-game__tools-container">
+    <button
+      *ngIf="canCompleteGame$ | async"
+      class="atc-game__tool-btn atc-game__tool-btn-complete"
+      (click)="onCompleteClick()">Complete</button>
+    <div class="atc-game__tools container">
+      <button class="atc-game__tool-btn" [disabled]="loading" (click)="throw(true)">Hit</button>
+      <button class="atc-game__tool-btn" [disabled]="loading" (click)="throw(false)">Miss</button>
+      <button class="atc-game__tool-btn" [disabled]="loading" (click)="undo()">Undo</button>
+    </div>
+  </div>
 </div>
-<ul class="tools">
-  <li>
-    <button class="btn tools__btn" [disabled]="buttonDisabled || !currentSection" (click)="onHit()">Hit</button>
-  </li>
-  <li>
-    <button class="btn tools__btn" [disabled]="buttonDisabled || !currentSection" (click)="onMiss()">Miss</button>
-  </li>
-  <li>
-    <button class="btn tools__btn" [disabled]="buttonDisabled" (click)="onUndo()">Undo</button>
-  </li>
-</ul>
-<div class="complete-tools">
-  <button class="btn game-btn" [disabled]="buttonDisabled" (click)="onCompleteBtnClick()">Complete</button>
-</div>
-<p *ngIf="isCompleted">Game is completed</p>
+
+<ng-template #gameCompleted>Game is completed</ng-template>

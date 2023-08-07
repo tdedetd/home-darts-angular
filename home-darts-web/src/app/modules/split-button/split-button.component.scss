@@ -1,0 +1,26 @@
+.split-btn__btn {
+  border-radius: 1em;
+  padding: .2em .4em;
+}
+
+.split-btn__btn:first-child {
+  padding-left: .6em;
+}
+
+.split-btn__btn:last-child {
+  padding-right: .6em;
+}
+
+.split-btn__btn:not(:disabled) {
+  cursor: pointer;
+}
+
+.split-btn__btn:not(:first-child) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.split-btn__btn:not(:last-child) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}

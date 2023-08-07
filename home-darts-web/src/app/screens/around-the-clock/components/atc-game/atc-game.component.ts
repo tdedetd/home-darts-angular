@@ -1,10 +1,20 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { getSectionsForAroundTheClock } from '../../utils/functions/get-sections-for-around-the-clock';
-import { GameDirections } from '../../models/game-directions.enum';
-import { AroundTheClockApiService } from '../../service/around-the-clock-api.service';
-import { catchError } from 'rxjs';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { AroundTheClockState } from '../../models/around-the-clock-state.interface';
+import { Store } from '@ngrx/store';
+import { ActivatedRoute } from '@angular/router';
+import { startGameInfoLoading } from '../../../../store/actions/game-info.actions';
+import { Observable, map } from 'rxjs';
+import { selectPlayersState } from '../../store/selectors/players-state.selector';
+import { AtcParticipant } from '../../models/atc-participant.interface';
+import { PlayerApi } from '@models/player-api.interface';
+import { selectCurrentPlayer } from '../../store/selectors/current-player.selector';
+import { selectUpcomingSectorsForCurrentPlayer } from '../../store/selectors/upcoming-sectors-for-current-player.selector';
+import { atcCompleteStart, atcResetGame, atcTrowStart, atcUndoStart } from '../../store/actions/around-the-clock.actions';
+import { selectLoading } from '../../store/selectors/loading.selector';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { selectIsPlayerTurn } from '../../store/selectors/is-player-turn.selector';
+import { selectCanCompleteGame } from '../../store/selectors/can-complete-game.selector';
+import { selectIsGameCompleted } from '../../store/selectors/is-game-completed.selector';
 
 @UntilDestroy()
 @Component({
@@ -13,119 +23,46 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   styleUrls: ['./atc-game.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AtcGameComponent implements OnInit {
-  public get buttonDisabled(): boolean {
-    return this.loading || this.isCompleted;
-  };
-
-  public get currentSection(): number | undefined {
-    return this.getSection(this.hits);
-  }
-
-  public errorDebug = '';
-  public loading = false;
-  public throws = 0;
-  public hits = 0;
-  public gameId: number | null = null;
-  public isCompleted = false;
-
-  private sections = getSectionsForAroundTheClock(GameDirections.ForwardBackward, true);
+export class AtcGameComponent implements OnInit, OnDestroy {
+  public canCompleteGame$: Observable<boolean> = this.store.select(selectCanCompleteGame);
+  public currentPlayer$: Observable<PlayerApi | null> = this.store.select(selectCurrentPlayer);
+  public isGameNotCompleted$: Observable<boolean> = this.store.select(selectIsGameCompleted).pipe(map(completed => !completed));
+  public loading = true;
+  public players$: Observable<(AtcParticipant & PlayerApi)[]> = this.store.select(selectPlayersState);
+  public upcomingSectors$: Observable<number[]> = this.store.select(selectUpcomingSectorsForCurrentPlayer);
 
   constructor(
     private activatedRoute: ActivatedRoute,
+    private store: Store<{ aroundTheClock: AroundTheClockState }>,
     private cdr: ChangeDetectorRef,
-    private atcApi: AroundTheClockApiService,
-    private router: Router,
   ) {}
 
   public ngOnInit(): void {
-    this.gameId = Number(this.activatedRoute.snapshot.paramMap.get('gameId'));
-    if (isNaN(this.gameId)) {
-      this.router.navigate(['../'], { relativeTo: this.activatedRoute });
-    }
+    const gameId = Number(this.activatedRoute.snapshot.paramMap.get('gameId'));
+    this.store.dispatch(startGameInfoLoading({ gameId }));
+    this.store.select(selectLoading).pipe(untilDestroyed(this)).subscribe(loading => {
+      this.loading = loading;
+      this.cdr.detectChanges();
+    });
   }
 
-  public onCompleteBtnClick(): void {
-    if (this.gameId === null) return;
-
-    this.atcApi.complete(this.gameId)
-      .pipe(
-        catchError((err) => {
-          this.loading = false;
-          this.errorDebug = 'complete';
-          this.cdr.detectChanges();
-          return err;
-        }),
-        untilDestroyed(this)
-      )
-      .subscribe(() => {
-        this.loading = false;
-        this.isCompleted = true;
-        this.cdr.detectChanges();
-      });
+  public ngOnDestroy(): void {
+    this.store.dispatch(atcResetGame());
   }
 
-  public onHit(): void {
-    this.throw(this.currentSection, true);
+  public isPlayerActive(playerId: number): Observable<boolean> {
+    return this.store.select(selectIsPlayerTurn(playerId));
   }
 
-  public onMiss(): void {
-    this.throw(this.currentSection, false);
+  public onCompleteClick(): void {
+    this.store.dispatch(atcCompleteStart());
   }
 
-  public getSection(index: number): number | undefined {
-    return this.sections[index];
+  public throw(hit: boolean): void {
+    this.store.dispatch(atcTrowStart({ hit }));
   }
 
-  public onUndo(): void {
-    if (this.gameId === null) return;
-
-    this.loading = true;
-    this.cdr.detectChanges();
-
-    this.atcApi.undo(this.gameId)
-      .pipe(untilDestroyed(this))
-      .subscribe({
-        next: (deletedThrow) => {
-          this.loading = false;
-
-          if (deletedThrow) {
-            this.throws--;
-            if (deletedThrow.hit) this.hits--;
-          }
-
-          this.cdr.detectChanges();
-        },
-        error: (err) => {
-          this.loading = false;
-          this.errorDebug = 'undo';
-          this.cdr.detectChanges();
-          return err;
-        }
-      });
-  }
-
-  private throw(nominal: number | undefined, hit: boolean): void {
-    if (this.gameId === null || typeof nominal === 'undefined') return;
-
-    this.loading = true;
-    this.cdr.detectChanges();
-
-    this.atcApi.throw(nominal, hit, this.gameId)
-      .pipe(
-        catchError((err) => {
-          this.loading = false;
-          this.errorDebug = `throw - hit ${hit}`;
-          this.cdr.detectChanges();
-          return err;
-        }),
-        untilDestroyed(this)
-      )
-      .subscribe(() => {
-        this.loading = false;
-        this.throws++;
-        if (hit) this.hits++;
-        this.cdr.detectChanges();
-      });
+  public undo(): void {
+    this.store.dispatch(atcUndoStart());
   }
 }

@@ -14,17 +14,18 @@ import { isEmpty } from '../../../utils/functions/is-empty.js';
 import { SqlQueries } from '../../../utils/types/sql-queries.enum.js';
 import { AroundTheClockStartParams } from '../../../utils/models/around-the-clock-start-params.interface.js';
 import { Throw } from '../../../utils/models/throw.interface.js';
+import { Player } from '../../../utils/models/player.interface.js';
 
 export const aroundTheClockRouter = Router();
 
-aroundTheClockRouter.use(queryPlayerId, checkPlayerExistence);
-aroundTheClockRouter.use('/:gameId([0-9]+)', paramGameId, checkGameExistence, completedGamesReadOnly, playerParticipation);
+aroundTheClockRouter.use('/:gameId([0-9]+)', queryPlayerId, checkPlayerExistence, paramGameId,
+  checkGameExistence, completedGamesReadOnly, playerParticipation);
 
+// TODO: +checkPlayersInBodySpecified, +checkBodyPlayersExistence
 aroundTheClockRouter.post('/start', async (
-  req: Request<unknown, unknown, AroundTheClockStartParams>,
+  req: Request<unknown, unknown, AroundTheClockStartParams & { players: Player['id'][] }>,
   res: Response<{ gameId: number }, { playerId: number }>
 ) => {
-  const playerId = res.locals.playerId;
   await getPgClient().query('BEGIN');
   const insertGameResult = await getPgClient().query<{ id: number }>(
     'INSERT INTO public.game (creation_date, gamemode_name) VALUES ($1, $2) RETURNING id',
@@ -32,7 +33,10 @@ aroundTheClockRouter.post('/start', async (
   );
 
   const gameId = insertGameResult.rows[0].id;
-  await getPgClient().query('INSERT INTO public.game_player (game_id, player_id) VALUES ($1, $2)', [gameId, playerId]);
+  req.body.players.forEach(async (playerId) => {
+    // TODO: via bulk insert
+    await getPgClient().query('INSERT INTO public.game_player (game_id, player_id) VALUES ($1, $2)', [gameId, playerId]);
+  });
 
   // TODO: via bulk insert
   const insertGameParamsQuery = 'INSERT INTO public.game_param (game_id, param_name, value) VALUES ($1, $2, $3)';

@@ -1,57 +1,55 @@
-.game-btn {
-  width: 160px;
+.atc-game__tools-container {
+  padding: 20px;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 125px;
+  box-sizing: border-box;
 }
 
-.erorr-debug {
-  color: #a00;
+.atc-game__participants {
+  margin-bottom: 10px;
 }
 
-.nominal-panel {
-  padding: 40px 0;
-  text-align: center;
-  font-weight: 700;
+.atc-game__output {
+  margin-bottom: 48px;
+}
+
+.atc-game__sections {
+  font-size: 24px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.nominal-panel__current {
-  font-size: 172px;
+.atc-game__digit:first-child {
+  font-size: 128px;
 }
 
-.nominal-panel__next {
-  font-size: 22px;
-  padding-left: 18px;
+.atc-game__digit:not(:last-child) {
+  margin-right: 20px;
 }
 
-.tools {
-  padding: 0;
-  margin: 0;
-  list-style: none;
+.atc-game__tools {
   display: flex;
   justify-content: space-around;
-  margin-bottom: 24px;
+  align-items: center;
 }
 
-.tools > li:not(:last-child) {
-  margin-right: 12px;
-}
-
-.tools__btn {
-  width: 80px;
-}
-
-.btn {
+.atc-game__tool-btn {
   font-size: 24px;
+  width: 80px;
   padding: 24px 0;
   text-transform: uppercase;
 }
 
-.btn:not(:disabled) {
+.atc-game__tool-btn:not(:disabled) {
   cursor: pointer;
 }
 
-.complete-tools {
-  display: flex;
-  justify-content: center;
+.atc-game__tool-btn-complete {
+  position: absolute;
+  bottom: 100%;
+  width: 50%;
 }

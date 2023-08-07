@@ -16,20 +16,20 @@ gamesRouter.use('/around-the-clock', aroundTheClockRouter);
 
 gamesRouter.get('/:gameId([0-9]+)',
   paramGameId,
-  checkGameExistence, async (
+  checkGameExistence,
+  // TODO: check permissions auth 403
+  async (
     req: Request,
     res: Response<GameInfo, { gameId: number }>
   ) => {
     const gameId = res.locals.gameId;
-    await getPgClient().query('BEGIN');
+
     const gameRecordResult = await getPgClient().query<Omit<GameInfo, 'params' | 'players'>>(
       'SELECT g.id, g.creation_date as "creationDate", g.gamemode_name as "gamemodeName", g.is_completed as "isCompleted" FROM public.game g WHERE id = $1',
       [gameId]
     );
     const paramsResult = await getPgClient().query<GameParam>(getSql(SqlQueries.GameParams), [gameId]);
     const playersResult = await getPgClient().query<Player>(getSql(SqlQueries.GameParticipants), [gameId]);
-
-    await getPgClient().query('COMMIT');
 
     res.json({
       ...gameRecordResult.rows[0],

@@ -3,6 +3,11 @@ html {
   color: #333;
 }
 
+body {
+  margin: 0;
+  padding: 10px;
+}
+
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
 }
@@ -24,6 +29,6 @@ p {
 
 .container {
   display: block;
-  max-width: 360px;
+  max-width: 720px;
   margin: 0 auto;
 }
