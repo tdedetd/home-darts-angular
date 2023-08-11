@@ -5,7 +5,7 @@ import { getPgClient } from '../../config/pg-connect.js';
 import { getSql } from '../../utils/functions/get-sql.js';
 import { SqlQueries } from '../../utils/types/sql-queries.enum.js';
 import { Throw } from '../../utils/models/throw.interface.js';
-import { ThrowsGrouped } from '../../utils/models/throws-grouped.js';
+import { ThrowsGrouped } from '../../utils/models/throws-grouped.interface.js';
 
 export const throwsRouter = Router();
 

@@ -7,6 +7,7 @@ import { getSql } from '../../utils/functions/get-sql.js';
 import { SqlQueries } from '../../utils/types/sql-queries.enum.js';
 import { Player } from '../../utils/models/player.interface.js';
 import { PlayerStats } from '../../utils/models/player-stats.interface.js';
+import { ThrowsHits } from '../../utils/models/throws-hits.interface.js';
 
 export const playersRouter = Router();
 
@@ -29,9 +30,14 @@ playersRouter.get('/:playerId([0-9]+)/stats', paramPlayerId, checkPlayerExistenc
   const totalPlayingTimeResult = await getPgClient()
     .query<{ totalPlayingTimeSeconds: number }>(getSql(SqlQueries.TotalPlayingTime), [playerId, maxThrowTimeSeconds]);
 
+  const atcThrowsHitsResult = await getPgClient().query<ThrowsHits>(getSql(SqlQueries.AtcThrowsHits), [playerId]);
+
   res.json({
     ...gamesCountResult.rows[0],
     ...throwsCountResult.rows[0],
     ...totalPlayingTimeResult.rows[0],
+    aroundTheClock: {
+      ...atcThrowsHitsResult.rows[0]
+    }
   });
 });
