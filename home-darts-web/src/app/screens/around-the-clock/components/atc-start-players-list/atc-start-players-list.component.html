@@ -9,7 +9,7 @@
 </ul>
 <select>
   <option
-    *ngFor="let player of players | filteredPlayers: 'remove': value"
+    *ngFor="let player of players | filteredPlayers: 'exclude': value"
     [ngValue]="player"
     (click)="onItemChange(player)">{{ player.username }}</option>
 </select>

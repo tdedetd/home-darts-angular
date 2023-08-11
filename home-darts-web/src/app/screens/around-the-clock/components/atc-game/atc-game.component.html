@@ -20,8 +20,8 @@
       class="atc-game__tool-btn atc-game__tool-btn-complete"
       (click)="onCompleteClick()">Complete</button>
     <div class="atc-game__tools container">
-      <button class="atc-game__tool-btn" [disabled]="loading" (click)="throw(true)">Hit</button>
-      <button class="atc-game__tool-btn" [disabled]="loading" (click)="throw(false)">Miss</button>
+      <button class="atc-game__tool-btn" [disabled]="loading || (currentPlayerCompleted$ | async)" (click)="throw(true)">Hit</button>
+      <button class="atc-game__tool-btn" [disabled]="loading || (currentPlayerCompleted$ | async)" (click)="throw(false)">Miss</button>
       <button class="atc-game__tool-btn" [disabled]="loading" (click)="undo()">Undo</button>
     </div>
   </div>

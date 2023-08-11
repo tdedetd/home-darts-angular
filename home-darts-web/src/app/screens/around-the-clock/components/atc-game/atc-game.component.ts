@@ -15,6 +15,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { selectIsPlayerTurn } from '../../store/selectors/is-player-turn.selector';
 import { selectCanCompleteGame } from '../../store/selectors/can-complete-game.selector';
 import { selectIsGameCompleted } from '../../store/selectors/is-game-completed.selector';
+import { selectIsCurrentPlayerCompleted } from '../../store/selectors/is-current-player-completed.selector';
 
 @UntilDestroy()
 @Component({
@@ -26,6 +27,7 @@ import { selectIsGameCompleted } from '../../store/selectors/is-game-completed.s
 export class AtcGameComponent implements OnInit, OnDestroy {
   public canCompleteGame$: Observable<boolean> = this.store.select(selectCanCompleteGame);
   public currentPlayer$: Observable<PlayerApi | null> = this.store.select(selectCurrentPlayer);
+  public currentPlayerCompleted$: Observable<boolean> = this.store.select(selectIsCurrentPlayerCompleted);
   public isGameNotCompleted$: Observable<boolean> = this.store.select(selectIsGameCompleted).pipe(map(completed => !completed));
   public loading = true;
   public players$: Observable<(AtcParticipant & PlayerApi)[]> = this.store.select(selectPlayersState);
