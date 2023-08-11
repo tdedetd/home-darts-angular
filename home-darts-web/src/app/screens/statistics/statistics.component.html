@@ -10,5 +10,8 @@
     <p>Games count - {{ stats.gamesCount }}</p>
     <p>Throws count - {{ stats.throwsCount }}</p>
     <p>Total playing time - {{ stats.totalPlayingTimeSeconds | formatTimeInterval }}</p>
+
+    <h3>Around the clock</h3>
+    <p>Hit rate - {{ (stats.aroundTheClock.hits / stats.aroundTheClock.throws * 100) | number: '1.2-2' }}%</p>
   </div>
 </div>
