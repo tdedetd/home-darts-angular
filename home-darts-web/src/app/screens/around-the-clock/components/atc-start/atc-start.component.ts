@@ -11,7 +11,7 @@ import { sectionTypes } from '../../utils/constants/section-types';
 import { PlayerApiService } from '../../../../services/player-api.service';
 import { Observable } from 'rxjs';
 import { PlayerApi } from '@models/player-api.interface';
-import { arrayMinLengthValidator } from '../../../../utils/functions/array-min-length.validator';
+import { arrayMinLengthValidator } from '@functions/array-min-length.validator';
 
 @UntilDestroy()
 @Component({

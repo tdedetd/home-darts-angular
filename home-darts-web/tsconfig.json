@@ -27,6 +27,7 @@
     "paths": {
       "@config": ["src/app/config"],
       "@constants/*": ["src/app/utils/constants/*"],
+      "@functions/*": ["src/app/utils/functions/*"],
       "@models/*": ["src/app/models/*"],
       "@modules/*": ["src/app/modules/*"],
     }

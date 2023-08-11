@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { PlayerApi } from '@models/player-api.interface';
-import { isNotEmpty } from '../../../utils/functions/is-not-empty';
+import { isNotEmpty } from '@functions/is-not-empty';
 
 @Pipe({
   name: 'filteredPlayers'
