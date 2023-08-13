@@ -16,6 +16,8 @@ import { selectIsPlayerTurn } from '../../store/selectors/is-player-turn.selecto
 import { selectCanCompleteGame } from '../../store/selectors/can-complete-game.selector';
 import { selectIsGameCompleted } from '../../store/selectors/is-game-completed.selector';
 import { selectIsCurrentPlayerCompleted } from '../../store/selectors/is-current-player-completed.selector';
+import { selectTurnThrows } from '../../store/selectors/turn-throws.selector';
+import { TurnThrows } from '../../models/turn-throws.type';
 
 @UntilDestroy()
 @Component({
@@ -52,7 +54,7 @@ export class AtcGameComponent implements OnInit, OnDestroy {
     this.store.dispatch(atcResetGame());
   }
 
-  public isPlayerActive(playerId: number): Observable<boolean> {
+  public isPlayerActive$(playerId: number): Observable<boolean> {
     return this.store.select(selectIsPlayerTurn(playerId));
   }
 
@@ -62,6 +64,10 @@ export class AtcGameComponent implements OnInit, OnDestroy {
 
   public throw(hit: boolean): void {
     this.store.dispatch(atcTrowStart({ hit }));
+  }
+
+  public turnThrows$(playerId: number): Observable<TurnThrows> {
+    return this.store.select(selectTurnThrows(playerId));
   }
 
   public undo(): void {

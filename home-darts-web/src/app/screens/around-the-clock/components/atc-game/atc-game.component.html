@@ -2,8 +2,8 @@
   <ul class="atc-game__participants">
     <li *ngFor="let player of players$ | async">
       <hd-atc-game-participant
-        [active]="isPlayerActive(player.id) | async"
-        [turnHits]="[true, true, true]"
+        [active]="isPlayerActive$(player.id) | async"
+        [turnHits]="(turnThrows$(player.id) | async) ?? []"
         [username]="player.username"
         [hits]="player.hits"
         [throws]="player.throws"

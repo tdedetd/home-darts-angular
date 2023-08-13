@@ -6,6 +6,8 @@ import { atcCompleteSuccess, atcResetGame, atcTrowStart, atcTrowSuccess, atcUndo
 import { getSectionsForAroundTheClock } from '../../utils/functions/get-sections-for-around-the-clock';
 import { GameLoadingStatuses } from '@models/game-loading-statuses.enum';
 import { getParticipantAfterThrow } from './utils/get-participant-after-throw';
+import { checkIfTurnOverAndGetNextPlayerId } from './utils/check-if-turn-over-and-get-next-player-id';
+import { getCurrentPlayerOnLoad } from './utils/get-current-player-on-load';
 
 const initialState: AroundTheClockState = {
   currentPlayerId: null,
@@ -22,16 +24,18 @@ export const aroundTheClockReducer = createReducer<AroundTheClockState>(
     const sections = getSectionsForAroundTheClock(gameInfo.params.direction, gameInfo.params.includeBull);
     return {
       ...state,
-      currentPlayerId: gameInfo.players[0]?.id ?? null,
+      currentPlayerId: getCurrentPlayerOnLoad(gameInfo, throwsGrouped),
       gameInfo,
       loading: false,
       loadingStatus: GameLoadingStatuses.Initiated,
       sections,
+      // TODO: default values for non-existing participants
       participants: throwsGrouped.reduce<AroundTheClockState['participants']>((acc, { playerId, hits, throws }) => ({
         ...acc,
         [playerId]: {
           hits, throws,
-          isCompleted: hits === sections.length
+          isCompleted: hits === sections.length,
+          turnThrows: [],
         }
       }), {}),
     };
@@ -45,6 +49,7 @@ export const aroundTheClockReducer = createReducer<AroundTheClockState>(
   on(atcTrowSuccess, (state, { hit }) =>
     state.currentPlayerId ? {
       ...state,
+      currentPlayerId: checkIfTurnOverAndGetNextPlayerId(state),
       loading: false,
       participants: {
         ...state.participants,

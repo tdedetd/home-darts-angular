@@ -1,5 +1,5 @@
 import { createSelector } from '@ngrx/store';
-import { PlayerApi } from '../../../../models/player-api.interface';
+import { PlayerApi } from '@models/player-api.interface';
 import { selectCurrentPlayerId } from './current-player-id.selector';
 import { selectPlayers } from './players.selector';
 

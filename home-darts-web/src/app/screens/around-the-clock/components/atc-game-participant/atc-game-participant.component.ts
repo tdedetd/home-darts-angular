@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { TurnThrows } from '../../models/turn-throws.type';
 import { throwsPerTurn } from '@constants/throws-per-turn';
 
 const turnIndexes = Array(throwsPerTurn).fill(0).map((_, i) => i);
@@ -10,11 +11,11 @@ const turnIndexes = Array(throwsPerTurn).fill(0).map((_, i) => i);
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AtcGameParticipantComponent {
-  @Input() active: boolean | null = false;
-  @Input() hits = 0;
-  @Input() username = '';
-  @Input() throws = 1;
-  @Input() turnHits: [boolean, boolean, boolean] | [boolean, boolean] | [boolean] | [] = [];
+  @Input() public active: boolean | null = false;
+  @Input() public hits = 0;
+  @Input() public username = '';
+  @Input() public throws = 1;
+  @Input() public turnHits: TurnThrows = [];
 
   public readonly turnIndexes = turnIndexes;
 }

@@ -9,6 +9,6 @@ export interface AroundTheClockState {
   gameInfo: GameInfoApi<AroundTheClockParams> | null;
   loading: boolean;
   loadingStatus: GameLoadingStatuses,
-  participants: Record<PlayerApi['id'], AtcParticipant>;
+  participants: Partial<Record<PlayerApi['id'], AtcParticipant>>;
   sections: number[];
 }
