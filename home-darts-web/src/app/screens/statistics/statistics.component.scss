@@ -5,3 +5,7 @@
 .statistics__dropdown {
   font-size: 2rem;
 }
+
+.statistics__section:not(:last-child) {
+  margin-bottom: 10px;
+}

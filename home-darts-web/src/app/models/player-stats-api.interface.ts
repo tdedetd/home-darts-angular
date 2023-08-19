@@ -5,5 +5,6 @@ export interface PlayerStatsApi {
   aroundTheClock: {
     throws: number;
     hits: number;
+    longestHitsStreak: number;
   }
 }
