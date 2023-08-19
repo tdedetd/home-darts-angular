@@ -32,12 +32,16 @@ playersRouter.get('/:playerId([0-9]+)/stats', paramPlayerId, checkPlayerExistenc
 
   const atcThrowsHitsResult = await getPgClient().query<ThrowsHits>(getSql(SqlQueries.AtcThrowsHits), [playerId]);
 
+  const longestHitsStreakResult = await getPgClient()
+    .query<{ longestHitsStreak: number }>('SELECT public.get_longest_hits_streak($1) as "longestHitsStreak"', [playerId]);
+
   res.json({
     ...gamesCountResult.rows[0],
     ...throwsCountResult.rows[0],
     ...totalPlayingTimeResult.rows[0],
     aroundTheClock: {
-      ...atcThrowsHitsResult.rows[0]
+      ...atcThrowsHitsResult.rows[0],
+      ...longestHitsStreakResult.rows[0],
     }
   });
 });
