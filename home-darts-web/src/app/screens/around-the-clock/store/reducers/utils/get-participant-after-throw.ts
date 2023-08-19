@@ -9,8 +9,13 @@ export const getParticipantAfterThrow = (
   const throws = participant ? (participant.throws + (undo ? -1 : 1)) : 1;
   const hits = participant ? (participant.hits + (undo ? -Number(hit) : Number(hit))) : Number(hit);
   const isCompleted = hits >= sectors.length;
+  const oldTurnThrows = participant?.turnThrows ?? [];
   return {
     throws, hits, isCompleted,
-    turnThrows: participant?.turnThrows ?? []
+    turnThrows: undo
+      ? oldTurnThrows
+      : oldTurnThrows.length !== 3
+      ? [...oldTurnThrows, hit]
+      : [],
   };
 };
