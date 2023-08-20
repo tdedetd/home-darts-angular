@@ -6,18 +6,23 @@
     </select>
   </div>
 
-  <div *ngIf="stats$ | async as stats">
-    <div class="statistics__section">
-      <p>Games count - {{ stats.gamesCount }}</p>
-      <p>Throws count - {{ stats.throwsCount }}</p>
-      <p>Total playing time - {{ stats.totalPlayingTimeSeconds | formatTimeInterval }}</p>
-    </div>
+  <div>
+    <ng-container *ngIf="stats$ | async as stats; else playerNotSelected">
+      <div class="statistics__section">
+        <h3>General</h3>
+        <p>Games count - {{ stats.gamesCount }}</p>
+        <p>Throws count - {{ stats.throwsCount }}</p>
+        <p>Total playing time - {{ stats.totalPlayingTimeSeconds | formatTimeInterval }}</p>
+      </div>
 
-    <div class="statistics__section">
-      <h3>Around the clock</h3>
-      <p>Throws count - {{ stats.aroundTheClock.throws }}</p>
-      <p>Hit rate - {{ (stats.aroundTheClock.hits / stats.aroundTheClock.throws * 100) | number: '1.2-2' }}%</p>
-      <p>Longest hits streak - {{ stats.aroundTheClock.longestHitsStreak }}</p>
-    </div>
+      <div class="statistics__section">
+        <h3>Around the clock</h3>
+        <p>Throws count - {{ stats.aroundTheClock.throws }}</p>
+        <p>Hit rate - {{ (stats.aroundTheClock.hits / stats.aroundTheClock.throws * 100) | number: '1.2-2' }}%</p>
+        <p>Longest hits streak - {{ stats.aroundTheClock.longestHitsStreak }}</p>
+      </div>
+    </ng-container>
   </div>
+
+  <ng-template #playerNotSelected>Select player</ng-template>
 </div>

@@ -4,22 +4,31 @@ import { GameInfoApi } from '@models/game-info-api.interface';
 import { AroundTheClockParams } from '../../../models/around-the-clock-params.interface';
 import { throwsPerTurn } from '@constants/throws-per-turn';
 import { AroundTheClockInitError } from '../../../models/errors/around-the-clock-init-error';
+import { getIsCompleted } from './get-is-completed';
 
 interface PlayersTrows {
   playerId: PlayerApi['id'],
   throws: number;
+  isCompleted: boolean;
 }
 
 export function getCurrentPlayerOnLoad(
   gameInfo: GameInfoApi<AroundTheClockParams>,
-  throwsGrouped: ThrowsGrouped[]
+  throwsGrouped: ThrowsGrouped[],
+  sections: number[]
 ): PlayerApi['id'] | null {
   const players = gameInfo.players;
 
-  const playersThrows: PlayersTrows[] = players.map(({ id }) => ({
-    playerId: id,
-    throws: throwsGrouped.find((playerThrows) => playerThrows.playerId === id)?.throws ?? 0
-  }));
+  const playersThrows: PlayersTrows[] = players
+    .map(({ id }) => {
+      const playerThrows = throwsGrouped.find((playerThrows) => playerThrows.playerId === id);
+      return {
+        playerId: id,
+        throws: playerThrows?.throws ?? 0,
+        isCompleted: playerThrows ? getIsCompleted(playerThrows.hits, sections) : false,
+      };
+    })
+    .filter((playerThrows) => !playerThrows.isCompleted);
 
   const uniqueSortedThrows = Array.from(new Set(playersThrows.map(({ throws }) => throws))).sort((a, b) => b - a);
   validateThrowsCount(uniqueSortedThrows, gameInfo.id);

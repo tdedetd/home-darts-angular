@@ -4,7 +4,8 @@ import { AroundTheClockState } from '../../../models/around-the-clock-state.inte
 export function getNextPlayerId(state: AroundTheClockState): PlayerApi['id'] | null {
   if (!state.gameInfo || state.gameInfo.players.length === 0) return state.currentPlayerId;
 
-  const players = state.gameInfo.players;
+  const players = state.gameInfo.players
+    .filter(({ id }) => !state.participants[id] || !state.participants[id]?.isCompleted);
   const currentPlayer = players.find(({ id }) => id === state.currentPlayerId);
   if (!currentPlayer) return state.currentPlayerId;
 

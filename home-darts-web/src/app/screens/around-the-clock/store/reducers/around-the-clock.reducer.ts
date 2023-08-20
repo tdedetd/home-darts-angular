@@ -11,6 +11,7 @@ import { getCurrentPlayerOnLoad } from './utils/get-current-player-on-load';
 import { checkTurnOver } from './utils/check-turn-over';
 import { isNotEmpty } from '@functions/is-not-empty';
 import { AtcParticipants } from '../../models/atc-participants.type';
+import { getIsCompleted } from './utils/get-is-completed';
 
 const initialState: AroundTheClockState = {
   currentPlayerId: null,
@@ -27,7 +28,7 @@ export const aroundTheClockReducer = createReducer<AroundTheClockState>(
     const sections = getSectionsForAroundTheClock(gameInfo.params.direction, gameInfo.params.includeBull);
     return {
       ...state,
-      currentPlayerId: getCurrentPlayerOnLoad(gameInfo, throwsGrouped),
+      currentPlayerId: getCurrentPlayerOnLoad(gameInfo, throwsGrouped, sections),
       gameInfo,
       loading: false,
       loadingStatus: GameLoadingStatuses.Initiated,
@@ -37,7 +38,7 @@ export const aroundTheClockReducer = createReducer<AroundTheClockState>(
         ...acc,
         [playerId]: {
           hits, throws,
-          isCompleted: hits === sections.length,
+          isCompleted: getIsCompleted(hits, sections),
           turnThrows: [],
         }
       }), {}),
@@ -50,32 +51,32 @@ export const aroundTheClockReducer = createReducer<AroundTheClockState>(
   on(atcResetGame, () => initialState),
   on(atcTrowStart, (state) => ({ ...state, loading: true })),
   on(atcTrowSuccess, (state, { hit }) => {
+    if (state.currentPlayerId === null) return state;
+
     const isTurnOver = checkTurnOver(state);
-    const newCurrentPlayerId = isTurnOver ? getNextPlayerId(state) : state.currentPlayerId;
+    const participantAfterThrow = getParticipantAfterThrow(state.sections, hit, false, state.participants[state.currentPlayerId]);
+    const newCurrentPlayerId = isTurnOver || participantAfterThrow.isCompleted ? getNextPlayerId(state) : state.currentPlayerId;
 
     const newParticipantTurnHits: AtcParticipants | {} = (
       isTurnOver && isNotEmpty(newCurrentPlayerId) && state.participants[newCurrentPlayerId] ? {
         [newCurrentPlayerId]: {
           ...state.participants[newCurrentPlayerId],
-          turnThrows: []
+          ...(state.currentPlayerId === newCurrentPlayerId ? participantAfterThrow : {}),
+          turnThrows: [],
         }
       } : {}
     );
 
-    return state.currentPlayerId ? {
+    return {
       ...state,
       currentPlayerId: newCurrentPlayerId,
       loading: false,
       participants: {
         ...state.participants,
-        [state.currentPlayerId]: (
-          state.participants[state.currentPlayerId]
-            ? getParticipantAfterThrow(state.sections, hit, false, state.participants[state.currentPlayerId])
-            : getParticipantAfterThrow(state.sections, hit, false)
-        ),
+        [state.currentPlayerId]: participantAfterThrow,
         ...newParticipantTurnHits
       }
-    } : state
+    }
   }),
   on(atcUndoSuccess, (state, { lastThrow }) => 
     state.currentPlayerId && state.participants[state.currentPlayerId] && lastThrow ? {
