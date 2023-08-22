@@ -5,8 +5,8 @@ export const dartboardRealSizesMm = {
     innerBull: 12.7,
   },
   radius: {
-    doubles: 107,
-    tripples: 170,
+    doubles: 170,
+    tripples: 107,
   },
   ringWidth: 8,
 };
