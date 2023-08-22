@@ -7,7 +7,7 @@ import { Observable, map } from 'rxjs';
 import { selectPlayersState } from '../../store/selectors/players-state.selector';
 import { AtcParticipant } from '../../models/atc-participant.interface';
 import { PlayerApi } from '@models/player-api.interface';
-import { selectCurrentPlayer } from '../../store/selectors/current-player.selector';
+import { selectCurrentSectorForCurrentPlayer } from '../../store/selectors/current-sector-for-current-player.selector';
 import { selectUpcomingSectorsForCurrentPlayer } from '../../store/selectors/upcoming-sectors-for-current-player.selector';
 import { atcCompleteStart, atcResetGame, atcTrowStart, atcUndoStart } from '../../store/actions/around-the-clock.actions';
 import { selectLoading } from '../../store/selectors/loading.selector';
@@ -28,7 +28,7 @@ import { TurnThrows } from '../../models/turn-throws.type';
 })
 export class AtcGameComponent implements OnInit, OnDestroy {
   public canCompleteGame$: Observable<boolean> = this.store.select(selectCanCompleteGame);
-  public currentPlayer$: Observable<PlayerApi | null> = this.store.select(selectCurrentPlayer);
+  public selectCurrentSectorForCurrentPlayer$: Observable<number | undefined> = this.store.select(selectCurrentSectorForCurrentPlayer);
   public currentPlayerCompleted$: Observable<boolean> = this.store.select(selectIsCurrentPlayerCompleted);
   public isGameNotCompleted$: Observable<boolean> = this.store.select(selectIsGameCompleted).pipe(map(completed => !completed));
   public loading = true;

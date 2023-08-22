@@ -1,4 +1,13 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { SectionTypes } from '@models/section-types.enum';
 import { DartboardRenderer } from './classes/dartboard-renderer.class';
 
@@ -8,10 +17,10 @@ import { DartboardRenderer } from './classes/dartboard-renderer.class';
   styleUrls: ['./dartboard.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DartboardComponent implements AfterViewInit {
+export class DartboardComponent implements OnChanges, AfterViewInit {
   @ViewChild('dartboard') dartboard!: ElementRef<HTMLCanvasElement>;
 
-  @Input() sector: number = 25;
+  @Input() sector = 0;
   @Input() sectorType: SectionTypes = SectionTypes.Any;
 
   private dartboardRenderer?: DartboardRenderer;
@@ -19,22 +28,33 @@ export class DartboardComponent implements AfterViewInit {
 
   constructor() { }
 
-  public ngAfterViewInit(): void {
-    const context = this.dartboard.nativeElement.getContext('2d');
-    this.dartboard.nativeElement.width = this.dartboard.nativeElement.clientWidth;
-    this.dartboard.nativeElement.height = this.dartboard.nativeElement.clientWidth;
-    if (context) {
-      this.dartboardRenderer = new DartboardRenderer(context, 0, 0);
+  public ngOnChanges(changes: SimpleChanges): void {
+    const sectorChange = changes['sector'];
+    if (sectorChange && sectorChange.currentValue !== sectorChange.previousValue) {
+      this.dartboardRenderer?.focusSector(this.sector);
     }
-    this.updateCanvasResolution = this.updateCanvasResolution.bind(this);
-    new ResizeObserver(this.updateCanvasResolution).observe(this.dartboard.nativeElement);
+  }
+
+  public ngAfterViewInit(): void {
+    const el = this.dartboard.nativeElement;
+    const context = el.getContext('2d');
+    if (context) {
+      el.width = el.clientWidth;
+      el.height = el.clientWidth;
+      this.dartboardRenderer = new DartboardRenderer(context, 0, 0);
+      this.dartboardRenderer.focusSector(this.sector);
+      this.updateCanvasResolution = this.updateCanvasResolution.bind(this);
+      new ResizeObserver(this.updateCanvasResolution).observe(el);
+    }
   }
 
   private updateCanvasResolution(): void {
+    if (!this.dartboardRenderer) return;
+
     this.dartboard.nativeElement.width = this.dartboard.nativeElement.clientWidth * this.renderQuality;
     this.dartboard.nativeElement.height = this.dartboard.nativeElement.clientWidth * this.renderQuality;
     const { width, height } = this.dartboard.nativeElement;
-    this.dartboardRenderer?.updateRenderResolution(width, height);
-    this.dartboardRenderer?.render();
+    this.dartboardRenderer.updateRenderResolution(width, height);
+    this.dartboardRenderer.render();
   }
 }

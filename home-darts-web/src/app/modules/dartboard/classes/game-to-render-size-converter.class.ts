@@ -1,5 +1,3 @@
-import { Point } from '../models/point.interface';
-
 export class GameToRenderSizeConverter {
   private renderLength: number = 0;
 
@@ -7,13 +5,6 @@ export class GameToRenderSizeConverter {
     if (typeof renderLength !== 'undefined') {
       this.setRenderLength(renderLength);
     }
-  }
-
-  public coords(gameCoords: Point): Point {
-    return {
-      x: this.size(gameCoords.x),
-      y: this.size(gameCoords.y),
-    };
   }
 
   public setRenderLength(renderLength: number): void {

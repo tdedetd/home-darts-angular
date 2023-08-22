@@ -10,7 +10,9 @@
       ></hd-atc-game-participant>
     </li>
   </ul>
-  <div *ngIf="currentPlayer$ | async as currentPlayer" class="atc-game__output">{{ currentPlayer.username }} turns</div>
+  <div class="atc-game__dartboard-container">
+    <hd-dartboard [sector]="(selectCurrentSectorForCurrentPlayer$ | async) ?? 0"></hd-dartboard>
+  </div>
   <div class="atc-game__sections">
     <div *ngFor="let sector of upcomingSectors$ | async" class="atc-game__digit">{{ sector }}</div>
   </div>

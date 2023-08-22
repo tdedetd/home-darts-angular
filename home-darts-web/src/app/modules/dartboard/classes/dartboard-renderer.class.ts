@@ -5,13 +5,16 @@ import { DartboardPalette } from '../models/dartboard-palette.enum';
 import { CoordinateSystemConverter } from './coordinate-system-converter.class';
 import { Point } from '../models/point.interface';
 import { getSingleOrDoubleDigit } from '../utils/get-single-or-double-digit';
+import { defaultCamera } from '../constants/default-camera';
 
 const gameOuterRadius = 0.49;
 
 export class DartboardRenderer {
   private readonly renderSizeConverter: GameToRenderSizeConverter = new GameToRenderSizeConverter();
+  private readonly bgColor: string = DartboardPalette.White;
   private readonly context: CanvasRenderingContext2D;
   private renderLength!: number;
+  private camera = defaultCamera;
 
   private readonly data = {
     dartboardCenter: { x: 0.5, y: 0.5 },
@@ -43,7 +46,25 @@ export class DartboardRenderer {
     this.updateRenderResolution(width, height);
   }
 
+  public focusSector(sector: number): void {
+    const index = this.data.sectors.indexOf(sector);
+    this.camera = sector === 25
+      ? { position: this.data.dartboardCenter, zoom: 4 }
+      : index === -1
+      ? defaultCamera
+      : {
+          position: CoordinateSystemConverter.toCartesian({
+            radians: this.getSectorRadians(index) + this.radiansHalfSector,
+            radius: this.data.radiuses.outer / 3 * 2
+          }, this.data.dartboardCenter),
+          zoom: 2.5
+        };
+    this.updateLabelsConfig(this.renderLength);
+    this.render();
+  }
+
   public render(): void {
+    this.clear();
     this.renderCircle(DartboardPalette.Black, this.data.radiuses.outer);
 
     this.data.sectors.forEach((sector, index) => {
@@ -59,27 +80,39 @@ export class DartboardRenderer {
     this.renderLength = width;
     this.renderSizeConverter.setRenderLength(this.renderLength);
     this.updateLabelsConfig(this.renderLength);
+    this.render();
+  }
+
+  private clear(): void {
+    this.context.fillStyle = this.bgColor;
+    this.context.beginPath();
+    this.context.rect(0, 0, this.renderLength, this.renderLength);
+    this.context.fill();
   }
 
   private getGameSize(realSize: number): number {
     return realSize * gameOuterRadius / (dartboardRealSizesMm.diameter.outer / 2);
   }
 
+  private getSectorRadians(index: number): number {
+    return (this.degreesStart + this.degreesPerSector * index) * Math.PI / 180;
+  }
+
   private renderCircle(color: DartboardPalette, radius: number, origin: Point = this.data.dartboardCenter): void {
     this.context.fillStyle = color;
     this.context.beginPath();
     this.context.ellipse(
-      this.renderSizeConverter.size(origin.x),
-      this.renderSizeConverter.size(origin.y),
-      this.renderSizeConverter.size(radius),
-      this.renderSizeConverter.size(radius),
+      this.renderSizeConverter.size(origin.x - (this.camera.position.x - 0.5) * this.camera.zoom),
+      this.renderSizeConverter.size(origin.y - (this.camera.position.y - 0.5) * this.camera.zoom),
+      this.renderSizeConverter.size(radius * this.camera.zoom),
+      this.renderSizeConverter.size(radius * this.camera.zoom),
       0, 0, Math.PI * 2
     );
     this.context.fill();
   }
 
   private renderSector(sector: number, index: number): void {
-    const rotationRadians = (this.degreesStart + this.degreesPerSector * index) * Math.PI / 180;
+    const rotationRadians = this.getSectorRadians(index);
 
     const ringsColor = index % 2 === 0 ? DartboardPalette.Green : DartboardPalette.Red;
     const singleColor = index % 2 === 0 ? DartboardPalette.White : DartboardPalette.Black;
@@ -96,7 +129,7 @@ export class DartboardRenderer {
     const numberPoint = CoordinateSystemConverter.toCartesian(
       {
         radians: radians + this.radiansHalfSector,
-        radius: this.data.radiuses.labels,
+        radius: this.data.radiuses.labels * this.camera.zoom,
       },
       this.data.dartboardCenter
     );
@@ -104,8 +137,12 @@ export class DartboardRenderer {
     this.context.fillStyle = DartboardPalette.White;
     this.context.fillText(
       String(sector),
-      this.renderSizeConverter.size(numberPoint.x) - this.labelsConfig.xAdjustment[getSingleOrDoubleDigit(sector)],
-      this.renderSizeConverter.size(numberPoint.y) + this.labelsConfig.yAdjustment,
+      this.renderSizeConverter.size(
+        numberPoint.x - (this.camera.position.x - 0.5) * this.camera.zoom
+      ) - this.labelsConfig.xAdjustment[getSingleOrDoubleDigit(sector)],
+      this.renderSizeConverter.size(
+        numberPoint.y - (this.camera.position.y - 0.5) * this.camera.zoom
+      ) + this.labelsConfig.yAdjustment,
     );
   }
 
@@ -115,22 +152,25 @@ export class DartboardRenderer {
     outerRadius: number,
     innerRadius: number,
   ): void {
+    const xCoord = this.renderSizeConverter.size(this.data.dartboardCenter.x - (this.camera.position.x - 0.5) * this.camera.zoom);
+    const yCoord = this.renderSizeConverter.size(this.data.dartboardCenter.y - (this.camera.position.y - 0.5) * this.camera.zoom);
+    const innerRenderRadius = this.renderSizeConverter.size(innerRadius * this.camera.zoom);
+    const outerRenderRadius = this.renderSizeConverter.size(outerRadius * this.camera.zoom);
+
     this.context.fillStyle = color;
     this.context.beginPath();
     this.context.ellipse(
-      this.renderSizeConverter.size(this.data.dartboardCenter.x),
-      this.renderSizeConverter.size(this.data.dartboardCenter.y),
-      this.renderSizeConverter.size(outerRadius),
-      this.renderSizeConverter.size(outerRadius),
+      xCoord, yCoord,
+      outerRenderRadius,
+      outerRenderRadius,
       rotationRadians,
       0,
       this.radiansPerSector,
     );
     this.context.ellipse(
-      this.renderSizeConverter.size(this.data.dartboardCenter.x),
-      this.renderSizeConverter.size(this.data.dartboardCenter.y),
-      this.renderSizeConverter.size(innerRadius),
-      this.renderSizeConverter.size(innerRadius),
+      xCoord, yCoord,
+      innerRenderRadius,
+      innerRenderRadius,
       rotationRadians,
       this.radiansPerSector,
       0,
@@ -140,7 +180,7 @@ export class DartboardRenderer {
   }
 
   private updateLabelsConfig(renderLength: number): void {
-    const fontSize = (renderLength / 15) * (gameOuterRadius / 0.5);
+    const fontSize = (renderLength / 15) * (gameOuterRadius / 0.5) * this.camera.zoom;
     this.context.font = `${Math.round(fontSize)}px sans-serif`;
     this.labelsConfig = {
       xAdjustment: {

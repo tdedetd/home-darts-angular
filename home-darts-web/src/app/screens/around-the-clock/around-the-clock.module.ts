@@ -14,6 +14,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SplitButtonModule } from '@modules/split-button/split-button.module';
 import { FilteredPlayersPipe } from './pipes/filtered-players.pipe';
 import { AtcStartPlayersListComponent } from './components/atc-start-players-list/atc-start-players-list.component';
+import { DartboardModule } from '../../modules/dartboard/dartboard.module';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import { AtcStartPlayersListComponent } from './components/atc-start-players-lis
     FormsModule,
     ReactiveFormsModule,
     SplitButtonModule,
+    DartboardModule,
   ],
   providers: [
     AroundTheClockApiService,

@@ -12,8 +12,9 @@
   margin-bottom: 10px;
 }
 
-.atc-game__output {
-  margin-bottom: 48px;
+.atc-game__dartboard-container {
+  margin: 0 auto;
+  max-width: 320px;
 }
 
 .atc-game__sections {
@@ -21,10 +22,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.atc-game__digit:first-child {
-  font-size: 128px;
 }
 
 .atc-game__digit:not(:last-child) {
