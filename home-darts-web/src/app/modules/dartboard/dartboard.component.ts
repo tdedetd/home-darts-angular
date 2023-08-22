@@ -30,8 +30,11 @@ export class DartboardComponent implements OnChanges, AfterViewInit {
 
   public ngOnChanges(changes: SimpleChanges): void {
     const sectorChange = changes['sector'];
-    if (sectorChange && sectorChange.currentValue !== sectorChange.previousValue) {
-      this.dartboardRenderer?.focusSector(this.sector);
+    const sectorTypeChange = changes['sectorType'];
+    if (sectorChange && sectorChange.currentValue !== sectorChange.previousValue ||
+      sectorTypeChange && sectorTypeChange.currentValue !== sectorTypeChange.previousValue) {
+
+      this.dartboardRenderer?.focusSector(this.sector, this.sectorType);
     }
   }
 
@@ -42,7 +45,7 @@ export class DartboardComponent implements OnChanges, AfterViewInit {
       el.width = el.clientWidth;
       el.height = el.clientWidth;
       this.dartboardRenderer = new DartboardRenderer(context, 0, 0);
-      this.dartboardRenderer.focusSector(this.sector);
+      this.dartboardRenderer.focusSector(this.sector, this.sectorType);
       this.updateCanvasResolution = this.updateCanvasResolution.bind(this);
       new ResizeObserver(this.updateCanvasResolution).observe(el);
     }

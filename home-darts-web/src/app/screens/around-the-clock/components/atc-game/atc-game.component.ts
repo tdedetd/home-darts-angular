@@ -18,6 +18,8 @@ import { selectIsGameCompleted } from '../../store/selectors/is-game-completed.s
 import { selectIsCurrentPlayerCompleted } from '../../store/selectors/is-current-player-completed.selector';
 import { selectTurnThrows } from '../../store/selectors/turn-throws.selector';
 import { TurnThrows } from '../../models/turn-throws.type';
+import { SectionTypes } from '@models/section-types.enum';
+import { selectHitDetectionMode } from '../../store/selectors/hit-detection-mode.selector';
 
 @UntilDestroy()
 @Component({
@@ -31,6 +33,7 @@ export class AtcGameComponent implements OnInit, OnDestroy {
   public selectCurrentSectorForCurrentPlayer$: Observable<number | undefined> = this.store.select(selectCurrentSectorForCurrentPlayer);
   public currentPlayerCompleted$: Observable<boolean> = this.store.select(selectIsCurrentPlayerCompleted);
   public isGameNotCompleted$: Observable<boolean> = this.store.select(selectIsGameCompleted).pipe(map(completed => !completed));
+  public selectHitDetectionMode$: Observable<SectionTypes | null> = this.store.select(selectHitDetectionMode);
   public loading = true;
   public players$: Observable<(AtcParticipant & PlayerApi)[]> = this.store.select(selectPlayersState);
   public upcomingSectors$: Observable<number[]> = this.store.select(selectUpcomingSectorsForCurrentPlayer);

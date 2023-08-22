@@ -10,8 +10,10 @@
       ></hd-atc-game-participant>
     </li>
   </ul>
-  <div class="atc-game__dartboard-container">
-    <hd-dartboard [sector]="(selectCurrentSectorForCurrentPlayer$ | async) ?? 0"></hd-dartboard>
+  <div *ngIf="(selectHitDetectionMode$ | async) as selectHitDetectionMode" class="atc-game__dartboard-container">
+    <hd-dartboard
+      [sector]="(selectCurrentSectorForCurrentPlayer$ | async) ?? 0"
+      [sectorType]="selectHitDetectionMode"></hd-dartboard>
   </div>
   <div class="atc-game__sections">
     <div *ngFor="let sector of upcomingSectors$ | async" class="atc-game__digit">{{ sector }}</div>
