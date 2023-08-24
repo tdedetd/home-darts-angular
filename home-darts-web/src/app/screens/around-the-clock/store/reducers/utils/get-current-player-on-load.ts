@@ -31,6 +31,8 @@ export function getCurrentPlayerOnLoad(
     .filter((playerThrows) => !playerThrows.isCompleted);
 
   const uniqueSortedThrows = Array.from(new Set(playersThrows.map(({ throws }) => throws))).sort((a, b) => b - a);
+  if (!uniqueSortedThrows.length) return null;
+
   validateThrowsCount(uniqueSortedThrows, gameInfo.id);
 
   return uniqueSortedThrows.length === 1
