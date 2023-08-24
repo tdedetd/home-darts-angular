@@ -50,7 +50,7 @@ aroundTheClockRouter.post('/start', async (
 });
 
 aroundTheClockRouter.post('/:gameId([0-9]+)/throw', async (
-  req: Request<unknown, unknown, { nominal: number, hit: boolean }>,
+  req: Request<unknown, unknown, { nominal: number, hit: boolean, multiplier?: number }>,
   res: Response<void, { playerId: number, gameId: number }>
 ) => {
   const playerId = res.locals.playerId;
@@ -61,13 +61,12 @@ aroundTheClockRouter.post('/:gameId([0-9]+)/throw', async (
     return;
   }
 
-  const nominal = req.body.nominal;
-  const hit = req.body.hit;
+  const { hit, nominal, multiplier } = req.body;
 
   await getPgClient().query('BEGIN');
   await getPgClient().query(
     'INSERT INTO public.throw (creation_date, game_id, player_id, hit, nominal, multiplier) VALUES ($1, $2, $3, $4, $5, $6)',
-    [getUtcDate(), gameId, playerId, hit, nominal, 1]
+    [getUtcDate(), gameId, playerId, hit, nominal, multiplier ?? 1]
   );
   await getPgClient().query('COMMIT');
   res.status(201).json();

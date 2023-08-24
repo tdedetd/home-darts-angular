@@ -8,6 +8,7 @@ import { SqlQueries } from '../../utils/types/sql-queries.enum.js';
 import { Player } from '../../utils/models/player.interface.js';
 import { PlayerStats } from '../../utils/models/player-stats.interface.js';
 import { ThrowsHits } from '../../utils/models/throws-hits.interface.js';
+import { SectionTypes } from '../../utils/types/section-types.enum.js';
 
 export const playersRouter = Router();
 
@@ -31,9 +32,13 @@ playersRouter.get('/:playerId([0-9]+)/stats', paramPlayerId, checkPlayerExistenc
     .query<{ totalPlayingTimeSeconds: number }>(getSql(SqlQueries.TotalPlayingTime), [playerId, maxThrowTimeSeconds]);
 
   const atcThrowsHitsResult = await getPgClient().query<ThrowsHits>(getSql(SqlQueries.AtcThrowsHits), [playerId]);
+  const atcThrowsHitsBySectionTypesResult = await getPgClient()
+    .query<{ sectionType: SectionTypes } & ThrowsHits>(getSql(SqlQueries.AtcThrowsHitsBySectionTypes), [playerId]);
 
   const longestHitsStreakResult = await getPgClient()
     .query<{ longestHitsStreak: number }>('SELECT public.get_longest_hits_streak($1) as "longestHitsStreak"', [playerId]);
+  const longestHitsStreakBySectionTypesResult = await getPgClient()
+    .query<{ sectionType: SectionTypes, longestHitsStreak: number }>(getSql(SqlQueries.LongestHitsStreakBySectionTypes), [playerId]);
 
   res.json({
     ...gamesCountResult.rows[0],
@@ -42,6 +47,8 @@ playersRouter.get('/:playerId([0-9]+)/stats', paramPlayerId, checkPlayerExistenc
     aroundTheClock: {
       ...atcThrowsHitsResult.rows[0],
       ...longestHitsStreakResult.rows[0],
+      throwsHits: atcThrowsHitsBySectionTypesResult.rows,
+      hitsStreak: longestHitsStreakBySectionTypesResult.rows,
     }
   });
 });

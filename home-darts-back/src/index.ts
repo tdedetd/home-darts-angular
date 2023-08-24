@@ -4,6 +4,7 @@ import express from 'express';
 import { debugInfo } from './handlers/debug-info.js';
 import { isProduction, port } from './config/index.js';
 import { router } from './routes/index.js';
+import { debugInfoProd } from './handlers/debug-info-prod.js';
 
 const app = express();
 // TODO: sql cast number
@@ -12,7 +13,11 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-if (!isProduction) app.use(debugInfo);
+if (isProduction) {
+  app.use(debugInfoProd);
+} else {
+  app.use(debugInfo);
+}
 app.use(router);
 
 app.listen(port, () => {

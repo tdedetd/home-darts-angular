@@ -86,33 +86,36 @@ INSERT INTO public.game_param_type (name, description, "datatype") values
 
 -- functions
 
-CREATE OR REPLACE FUNCTION public.get_longest_hits_streak(in_player_id int)
+CREATE OR REPLACE FUNCTION public.get_longest_hits_streak(
+	in_player_id int,
+	in_section_type text default 'any'
+)
 RETURNS int AS $$
 DECLARE
 	current_hits_streak int = 0;
 	max_hits_streak int = 0;
 	previous_game_id int = null;
-	record public.throw%rowtype;
+	reс record;
 BEGIN
-	FOR record in (
-		SELECT *
-		FROM public.throw t
-		WHERE t.player_id = in_player_id
+	FOR reс in (
+		SELECT t.game_id, t.hit
+		FROM public.throw t inner join public.game_param gp on t.game_id = gp.game_id
+		WHERE gp.param_name = 'hitDetection' and gp.value = in_section_type and t.player_id = in_player_id
 		ORDER BY t.game_id, t.creation_date
 	)
 	LOOP
-		IF previous_game_id != record.game_id THEN
+		IF previous_game_id != reс.game_id THEN
 			current_hits_streak := 0;
 		END IF;
 
-		IF record.hit THEN
+		IF reс.hit THEN
 			current_hits_streak := current_hits_streak + 1;
 			max_hits_streak := GREATEST(max_hits_streak, current_hits_streak);
 		ELSE
 			current_hits_streak := 0;
 		END IF;
 
-		previous_game_id := record.game_id;
+		previous_game_id := reс.game_id;
 	END LOOP;
 
 	RETURN max_hits_streak;
