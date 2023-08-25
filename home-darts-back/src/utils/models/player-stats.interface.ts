@@ -9,5 +9,6 @@ export interface PlayerStats {
     longestHitsStreak: number;
     throwsHits: ({ sectionType: SectionTypes } & ThrowsHits)[];
     hitsStreak: { sectionType: SectionTypes, longestHitsStreak: number }[];
+    gamesCount: { sectionType: SectionTypes, gamesCount: number }[];
   };
 }

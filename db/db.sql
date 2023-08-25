@@ -99,8 +99,14 @@ DECLARE
 BEGIN
 	FOR reс in (
 		SELECT t.game_id, t.hit
-		FROM public.throw t inner join public.game_param gp on t.game_id = gp.game_id
-		WHERE gp.param_name = 'hitDetection' and gp.value = in_section_type and t.player_id = in_player_id
+		FROM public.throw t
+			inner join public.game_param gp on t.game_id = gp.game_id
+			inner join public.game g on t.game_id = g.id
+		WHERE
+			gp.param_name = 'hitDetection' and
+			g.gamemode_name = 'aroundTheClock' and
+			gp.value = in_section_type and
+			t.player_id = in_player_id
 		ORDER BY t.game_id, t.creation_date
 	)
 	LOOP
