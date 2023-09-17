@@ -60,9 +60,9 @@ export class DartboardRenderer {
       : {
           position: CoordinateSystemConverter.toCartesian({
             radians: this.getSectorRadians(index) + this.radiansHalfSector,
-            radius: this.data.radiuses.outer * 0.6
+            radius: this.data.radiuses.outer * (type === SectionTypes.Double ? 0.75 : 0.6)
           }, this.data.dartboardCenter),
-          zoom: 2.5
+          zoom: type === SectionTypes.Double ? 3.5 : 2.5
         };
     this.updateLabelsConfig(this.renderLength);
     this.render();
@@ -141,9 +141,7 @@ export class DartboardRenderer {
         sectorSelected.type === SectionTypes.Any ? this.data.radiuses.bullOuter : this.data.radiuses.bullInner);
     } else if (sectorSelected.type === SectionTypes.Any) {
       this.renderSectorPart('stroke', DartboardPalette.Highlight, radians,
-        this.data.radiuses.doubleRingInner, this.data.radiuses.trippleRingOuter);
-      this.renderSectorPart('stroke', DartboardPalette.Highlight, radians,
-        this.data.radiuses.trippleRingInner, this.data.radiuses.bullOuter);
+        this.data.radiuses.doubleRingOuter, this.data.radiuses.bullOuter);
     } else if (sectorSelected.type === SectionTypes.Double) {
       this.renderSectorPart('stroke', DartboardPalette.Highlight, radians,
         this.data.radiuses.doubleRingOuter, this.data.radiuses.doubleRingInner);

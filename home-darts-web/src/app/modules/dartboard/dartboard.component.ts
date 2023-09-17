@@ -24,7 +24,7 @@ export class DartboardComponent implements OnChanges, AfterViewInit {
   @Input() sectorType: SectionTypes = SectionTypes.Any;
 
   private dartboardRenderer?: DartboardRenderer;
-  private renderQuality = 1;
+  private renderQuality = 2;
 
   constructor() { }
 
