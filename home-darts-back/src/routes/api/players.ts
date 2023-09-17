@@ -34,12 +34,9 @@ playersRouter.get('/:playerId([0-9]+)/stats', paramPlayerId, checkPlayerExistenc
   const atcGamesCountBySectionTypesResult = await getPgClient()
     .query<{ sectionType: SectionTypes, gamesCount: number }>(getSql(SqlQueries.AtcGamesCountBySectionType), [playerId]);
 
-  const atcThrowsHitsResult = await getPgClient().query<ThrowsHits>(getSql(SqlQueries.AtcThrowsHits), [playerId]);
   const atcThrowsHitsBySectionTypesResult = await getPgClient()
     .query<{ sectionType: SectionTypes } & ThrowsHits>(getSql(SqlQueries.AtcThrowsHitsBySectionTypes), [playerId]);
 
-  const longestHitsStreakResult = await getPgClient()
-    .query<{ longestHitsStreak: number }>('SELECT public.get_longest_hits_streak($1) as "longestHitsStreak"', [playerId]);
   const atcLongestHitsStreakBySectionTypesResult = await getPgClient()
     .query<{ sectionType: SectionTypes, longestHitsStreak: number }>(getSql(SqlQueries.LongestHitsStreakBySectionTypes), [playerId]);
 
@@ -48,8 +45,6 @@ playersRouter.get('/:playerId([0-9]+)/stats', paramPlayerId, checkPlayerExistenc
     ...throwsCountResult.rows[0],
     ...totalPlayingTimeResult.rows[0],
     aroundTheClock: {
-      ...atcThrowsHitsResult.rows[0],
-      ...longestHitsStreakResult.rows[0],
       gamesCount: atcGamesCountBySectionTypesResult.rows,
       throwsHits: atcThrowsHitsBySectionTypesResult.rows,
       hitsStreak: atcLongestHitsStreakBySectionTypesResult.rows,
