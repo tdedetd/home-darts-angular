@@ -17,12 +17,8 @@
 
       <div class="statistics__section">
         <h3>Around the clock</h3>
-        <p>Throws count - {{ stats.aroundTheClock.throws }}</p>
-        <p>Hit rate - {{ (stats.aroundTheClock.hits / stats.aroundTheClock.throws * 100) | number: '1.2-2' }}%</p>
-        <p>Longest hits streak - {{ stats.aroundTheClock.longestHitsStreak }}</p>
+        <hd-atc-statistics class="statistics__section" [stats]="stats.aroundTheClock"></hd-atc-statistics>
       </div>
-
-      <hd-atc-statistics [stats]="stats.aroundTheClock"></hd-atc-statistics>
     </ng-container>
   </div>
 

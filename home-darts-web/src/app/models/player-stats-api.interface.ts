@@ -5,16 +5,6 @@ export interface PlayerStatsApi {
   throwsCount: number;
   totalPlayingTimeSeconds: number;
   aroundTheClock: {
-
-    /** @deprecated */
-    throws: number;
-
-    /** @deprecated */
-    hits: number;
-
-    /** @deprecated */
-    longestHitsStreak: number;
-
     gamesCount: {
       gamesCount: number;
       sectionType: SectionTypes;
