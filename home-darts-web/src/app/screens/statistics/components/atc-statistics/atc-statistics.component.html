@@ -1,0 +1,27 @@
+<table *ngIf="stats">
+  <thead>
+    <tr>
+      <th></th>
+      <th>All</th>
+      <th *ngFor="let item of sectionTypesItems">{{ item.label }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Games count</td>
+      <td *ngFor="let item of stats.gamesCount | atcStatsItems">{{ item.gamesCount ?? 0 }}</td>
+    </tr>
+    <tr>
+      <td>Throws</td>
+      <td *ngFor="let item of stats.throwsHits | atcStatsItems">{{ item.throws ?? 0 }}</td>
+    </tr>
+    <tr>
+      <td>Hit rate</td>
+      <td *ngFor="let item of stats.throwsHits | atcStatsItems">{{ item.hits ?? 0 }}</td>
+    </tr>
+    <tr>
+      <td>Longest hits streak</td>
+      <td *ngFor="let item of stats.hitsStreak | atcStatsItems: 'max'">{{ item.longestHitsStreak ?? 0 }}</td>
+    </tr>
+  </tbody>
+</table>

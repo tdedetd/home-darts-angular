@@ -21,6 +21,8 @@
         <p>Hit rate - {{ (stats.aroundTheClock.hits / stats.aroundTheClock.throws * 100) | number: '1.2-2' }}%</p>
         <p>Longest hits streak - {{ stats.aroundTheClock.longestHitsStreak }}</p>
       </div>
+
+      <hd-atc-statistics [stats]="stats.aroundTheClock"></hd-atc-statistics>
     </ng-container>
   </div>
 

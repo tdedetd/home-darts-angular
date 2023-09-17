@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { defaultPlayerId } from '@config';
 import { FormBuilder } from '@angular/forms';
 import { gameDirectionItems } from '../../utils/constants/game-direction-items';
-import { sectionTypes } from '../../utils/constants/section-types';
+import { sectionTypesItems } from '@constants/section-type-items';
 import { PlayerApiService } from '../../../../services/player-api.service';
 import { Observable } from 'rxjs';
 import { PlayerApi } from '@models/player-api.interface';
@@ -22,7 +22,7 @@ import { arrayMinLengthValidator } from '@functions/array-min-length.validator';
 })
 export class AtcStartComponent {
   public readonly gameDirectionItems = gameDirectionItems;
-  public readonly sectionTypes = sectionTypes;
+  public readonly sectionTypes = sectionTypesItems;
   public readonly players$: Observable<PlayerApi[]> = this.playerApi.getPlayers();
 
   public form = this.fb.group({

@@ -16,7 +16,7 @@ export class StatisticsComponent {
 
   public readonly stats$ = this.playerControl.valueChanges.pipe(
     filter(Boolean),
-    switchMap(player => this.playerApi.getPlayerStats(player!.id)),
+    switchMap(player => this.playerApi.getPlayerStats(player?.id)),
   );
 
   constructor(private playerApi: PlayerApiService) {}
