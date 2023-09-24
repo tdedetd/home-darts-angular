@@ -8,6 +8,9 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { GameInfoEffects } from './store/effects/game-info.effects';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -21,6 +24,9 @@ import { GameInfoEffects } from './store/effects/game-info.effects';
     StoreModule.forRoot(),
     EffectsModule.forRoot([GameInfoEffects]),
     StoreDevtoolsModule.instrument({ logOnly: true }),
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonModule,
   ],
   bootstrap: [AppComponent]
 })
