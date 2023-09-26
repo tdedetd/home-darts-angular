@@ -1,13 +1,10 @@
 <div class="container">
-  <ul>
-    <li class="manu__item">
-      <a class="menu__btn" routerLink="./around-the-clock">Around the Clock</a>
-    </li>
-    <li class="manu__item">
-      <a class="menu__btn" routerLink="./history">History</a>
-    </li>
-    <li class="manu__item">
-      <a class="menu__btn" routerLink="./statistics">Statistics</a>
+  <ul cdkMenu>
+    <li *ngFor="let item of menuItems" class="item" cdkMenuItem>
+      <a mat-raised-button color="primary" class="btn" [routerLink]="item.link">
+        <mat-icon>{{ item.icon }}</mat-icon>
+        <span>{{ item.name }}</span>
+      </a>
     </li>
   </ul>
 </div>

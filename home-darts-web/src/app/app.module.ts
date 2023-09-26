@@ -11,6 +11,7 @@ import { GameInfoEffects } from './store/effects/game-info.effects';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { CdkMenuModule } from '@angular/cdk/menu'; 
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
+    CdkMenuModule,
   ],
   bootstrap: [AppComponent]
 })
