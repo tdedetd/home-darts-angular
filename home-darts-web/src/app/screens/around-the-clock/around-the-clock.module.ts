@@ -15,6 +15,7 @@ import { SplitButtonModule } from '@modules/split-button/split-button.module';
 import { FilteredPlayersPipe } from './pipes/filtered-players.pipe';
 import { AtcStartPlayersListComponent } from './components/atc-start-players-list/atc-start-players-list.component';
 import { DartboardModule } from '../../modules/dartboard/dartboard.module';
+import { AtcVibrateService } from './service/atc-vibrate.service';
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import { DartboardModule } from '../../modules/dartboard/dartboard.module';
   providers: [
     AroundTheClockApiService,
     AtcGameIdParamGuard,
+    AtcVibrateService,
   ],
 })
 export class AroundTheClockModule { }
