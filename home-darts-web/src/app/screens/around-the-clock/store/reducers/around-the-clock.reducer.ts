@@ -20,6 +20,7 @@ const initialState: AroundTheClockState = {
   loadingStatus: GameLoadingStatuses.Pending,
   sections: [],
   participants: {},
+  turnOverOnLastThrow: false,
 };
 
 export const aroundTheClockReducer = createReducer<AroundTheClockState>(
@@ -75,7 +76,8 @@ export const aroundTheClockReducer = createReducer<AroundTheClockState>(
         ...state.participants,
         [state.currentPlayerId]: participantAfterThrow,
         ...newParticipantTurnHits
-      }
+      },
+      turnOverOnLastThrow: isTurnOver || participantAfterThrow.isCompleted,
     }
   }),
   on(atcUndoSuccess, (state, { lastThrow }) => 

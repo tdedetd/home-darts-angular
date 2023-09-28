@@ -20,6 +20,7 @@ import { selectTurnThrows } from '../../store/selectors/turn-throws.selector';
 import { TurnThrows } from '../../models/turn-throws.type';
 import { SectionTypes } from '@models/section-types.enum';
 import { selectHitDetectionMode } from '../../store/selectors/hit-detection-mode.selector';
+import { AtcVibrateService } from '../../service/atc-vibrate.service';
 
 @UntilDestroy()
 @Component({
@@ -42,6 +43,7 @@ export class AtcGameComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private store: Store<{ aroundTheClock: AroundTheClockState }>,
     private cdr: ChangeDetectorRef,
+    private atcVibrate: AtcVibrateService,
   ) {}
 
   public ngOnInit(): void {
@@ -51,6 +53,9 @@ export class AtcGameComponent implements OnInit, OnDestroy {
       this.loading = loading;
       this.cdr.detectChanges();
     });
+
+    // TODO: settings vibrate mobile phones
+    this.atcVibrate.activate().pipe(untilDestroyed(this)).subscribe();
   }
 
   public ngOnDestroy(): void {

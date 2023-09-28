@@ -10,4 +10,5 @@ export interface AroundTheClockState {
   loadingStatus: GameLoadingStatuses,
   participants: AtcParticipants;
   sections: number[];
+  turnOverOnLastThrow: boolean;
 }
