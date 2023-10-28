@@ -1,4 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { selectGlobalProgressBarShown } from './store/selectors/global-progress-bar-shown.selector';
 
 @Component({
   selector: 'hd-root',
@@ -6,4 +9,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AppComponent {}
+export class AppComponent {
+  public progressBarShown$: Observable<boolean> = this.store.select(selectGlobalProgressBarShown);
+
+  constructor(private store: Store) { }
+}

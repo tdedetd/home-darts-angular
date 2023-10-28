@@ -5,3 +5,8 @@
   <h1>Home darts</h1>
 </mat-toolbar>
 <router-outlet></router-outlet>
+
+<mat-progress-bar
+  *ngIf="progressBarShown$ | async"
+  class="global-progress-bar"
+  mode="indeterminate"></mat-progress-bar>

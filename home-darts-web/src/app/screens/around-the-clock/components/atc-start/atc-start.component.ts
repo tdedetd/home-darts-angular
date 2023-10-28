@@ -12,6 +12,8 @@ import { PlayerApiService } from '../../../../services/player-api.service';
 import { Observable } from 'rxjs';
 import { PlayerApi } from '@models/player-api.interface';
 import { arrayMinLengthValidator } from '@functions/array-min-length.validator';
+import { Store } from '@ngrx/store';
+import { hideGlobalProgressBar, showGlobalProgressBar } from '../../../../store/actions/global-progress-bar.actions';
 
 @UntilDestroy()
 @Component({
@@ -41,9 +43,11 @@ export class AtcStartComponent {
     private activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
     private playerApi: PlayerApiService,
+    private store: Store,
   ) { }
 
   public submit(): void {
+    this.store.dispatch(showGlobalProgressBar());
     this.loading = true;
     this.cdr.detectChanges();
 
@@ -51,9 +55,11 @@ export class AtcStartComponent {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: ({ gameId }) => {
+          this.store.dispatch(hideGlobalProgressBar());
           this.router.navigate([`./${gameId}`], { relativeTo: this.activatedRoute });
         },
         error: (err) => {
+          this.store.dispatch(hideGlobalProgressBar());
           this.loading = false;
           this.cdr.detectChanges();
           return err;
