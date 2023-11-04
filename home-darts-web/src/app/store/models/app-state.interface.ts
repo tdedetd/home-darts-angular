@@ -1,5 +1,6 @@
+import { GlobalProgressBarState } from './global-progress-bar-state';
+
 export interface AppState {
-  globalProgressBar: {
-    shown: boolean;
-  };
+  globalProgressBar: GlobalProgressBarState;
+  sidenavOpened: boolean;
 }

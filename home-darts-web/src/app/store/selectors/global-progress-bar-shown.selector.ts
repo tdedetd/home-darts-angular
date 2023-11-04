@@ -1,8 +1,8 @@
 import { createSelector } from '@ngrx/store';
 import { selectGlobalProgressBarState } from './global-progress-bar-state.selector';
-import { AppState } from '../models/app-state.interface';
+import { GlobalProgressBarState } from '../models/global-progress-bar-state';
 
 export const selectGlobalProgressBarShown = createSelector(
   selectGlobalProgressBarState,
-  (state: AppState['globalProgressBar']) => state.shown
+  (state: GlobalProgressBarState) => state.shown
 );

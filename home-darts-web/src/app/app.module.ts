@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { CdkMenuModule } from '@angular/cdk/menu'; 
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { reducers } from './store/reducers';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { reducers } from './store/reducers';
     MatButtonModule,
     CdkMenuModule,
     MatProgressBarModule,
+    MatSidenavModule,
   ],
   bootstrap: [AppComponent]
 })

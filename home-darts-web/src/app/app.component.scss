@@ -1,9 +1,25 @@
+$header-height: 56px;
+$header-spacing: 20px;
+
 .header {
-  margin-bottom: 20px;
+  height: $header-height;
+}
+
+.menu-button-container {
+  width: 48px;
+}
+
+.sidenav-container {
+  height: calc(100vh - $header-height);
+}
+
+.sidenav-content {
+  padding-top: $header-spacing;
 }
 
 .global-progress-bar {
   position: fixed;
   width: 100%;
   bottom: 0;
+  z-index: 1;
 }

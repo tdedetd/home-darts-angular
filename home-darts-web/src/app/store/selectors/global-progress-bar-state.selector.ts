@@ -1,4 +1,5 @@
 import { createFeatureSelector } from '@ngrx/store';
-import { AppState } from '../models/app-state.interface';
+import { GlobalProgressBarState } from '../models/global-progress-bar-state';
+import { globalProgressBarKey } from '../constants/state-features/global-progress-bar-key';
 
-export const selectGlobalProgressBarState = createFeatureSelector<AppState['globalProgressBar']>('globalProgressBar');
+export const selectGlobalProgressBarState = createFeatureSelector<GlobalProgressBarState>(globalProgressBarKey);

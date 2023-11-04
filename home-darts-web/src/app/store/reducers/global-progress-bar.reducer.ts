@@ -1,8 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
 import { hideGlobalProgressBar, showGlobalProgressBar } from '../actions/global-progress-bar.actions';
-import { AppState } from '../models/app-state.interface';
+import { GlobalProgressBarState } from '../models/global-progress-bar-state';
 
-const defaultValue: AppState['globalProgressBar'] = {
+const defaultValue: GlobalProgressBarState = {
   shown: false
 };
 
