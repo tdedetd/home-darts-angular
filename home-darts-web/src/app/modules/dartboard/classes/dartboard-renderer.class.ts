@@ -6,7 +6,7 @@ import { CoordinateSystemConverter } from './coordinate-system-converter.class';
 import { Point } from '../models/point.interface';
 import { getSingleOrDoubleDigit } from '../utils/get-single-or-double-digit';
 import { defaultCamera } from '../constants/default-camera';
-import { SectionTypes } from '@models/section-types.enum';
+import { SectionTypes } from '@models/enums/section-types.enum';
 
 const gameOuterRadius = 0.49;
 

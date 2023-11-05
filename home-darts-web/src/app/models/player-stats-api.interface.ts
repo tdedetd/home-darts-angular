@@ -1,4 +1,4 @@
-import { SectionTypes } from './section-types.enum';
+import { SectionTypes } from './enums/section-types.enum';
 
 export interface PlayerStatsApi {
   gamesCount: number;

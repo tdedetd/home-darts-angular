@@ -8,7 +8,7 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { SectionTypes } from '@models/section-types.enum';
+import { SectionTypes } from '@models/enums/section-types.enum';
 import { DartboardRenderer } from './classes/dartboard-renderer.class';
 
 @Component({

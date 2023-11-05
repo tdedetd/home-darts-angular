@@ -1,0 +1,13 @@
+@import '../../../styles/variables';
+
+.sidenav-container {
+  height: calc(100vh - $header-height);
+}
+
+.sidenav-content {
+  padding-top: $header-spacing;
+}
+
+::ng-deep mat-drawer-container.mat-drawer-container {
+  background-color: inherit;
+}

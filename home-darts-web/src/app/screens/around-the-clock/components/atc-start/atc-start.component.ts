@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { AroundTheClockApiService } from '../../service/around-the-clock-api.service';
 import { GameDirections } from '../../models/game-directions.enum';
-import { SectionTypes } from '@models/section-types.enum';
+import { SectionTypes } from '@models/enums/section-types.enum';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ActivatedRoute, Router } from '@angular/router';
 import { defaultPlayerId } from '@config';

@@ -1,5 +1,4 @@
-$header-height: 56px;
-$header-spacing: 20px;
+@import '../styles/variables';
 
 .header {
   height: $header-height;
@@ -7,14 +6,6 @@ $header-spacing: 20px;
 
 .menu-button-container {
   width: 48px;
-}
-
-.sidenav-container {
-  height: calc(100vh - $header-height);
-}
-
-.sidenav-content {
-  padding-top: $header-spacing;
 }
 
 .global-progress-bar {

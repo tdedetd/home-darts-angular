@@ -18,7 +18,7 @@ import { selectIsGameCompleted } from '../../store/selectors/is-game-completed.s
 import { selectIsCurrentPlayerCompleted } from '../../store/selectors/is-current-player-completed.selector';
 import { selectTurnThrows } from '../../store/selectors/turn-throws.selector';
 import { TurnThrows } from '../../models/turn-throws.type';
-import { SectionTypes } from '@models/section-types.enum';
+import { SectionTypes } from '@models/enums/section-types.enum';
 import { selectHitDetectionMode } from '../../store/selectors/hit-detection-mode.selector';
 import { AtcVibrateService } from '../../service/atc-vibrate.service';
 
@@ -54,7 +54,6 @@ export class AtcGameComponent implements OnInit, OnDestroy {
       this.cdr.detectChanges();
     });
 
-    // TODO: settings vibrate mobile phones
     this.atcVibrate.activate().pipe(untilDestroyed(this)).subscribe();
   }
 
