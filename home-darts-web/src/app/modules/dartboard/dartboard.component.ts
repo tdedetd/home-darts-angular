@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { SectionTypes } from '@models/enums/section-types.enum';
 import { DartboardRenderer } from './classes/dartboard-renderer.class';
+import { materialPalette } from './constants/palettes/material-palette';
 
 @Component({
   selector: 'hd-dartboard',
@@ -44,7 +45,7 @@ export class DartboardComponent implements OnChanges, AfterViewInit {
     if (context) {
       el.width = el.clientWidth;
       el.height = el.clientWidth;
-      this.dartboardRenderer = new DartboardRenderer(context, 0, 0);
+      this.dartboardRenderer = new DartboardRenderer(context, 0, 0, materialPalette);
       this.dartboardRenderer.focusSector(this.sector, this.sectorType);
       this.updateCanvasResolution = this.updateCanvasResolution.bind(this);
       new ResizeObserver(this.updateCanvasResolution).observe(el);
