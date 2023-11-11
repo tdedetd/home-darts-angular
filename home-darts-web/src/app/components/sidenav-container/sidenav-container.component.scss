@@ -1,13 +1,26 @@
 @import '../../../styles/variables';
 
-.sidenav-container {
+.drawer-container {
   height: calc(100vh - $header-height);
-}
-
-.sidenav-content {
-  padding-top: $header-spacing;
 }
 
 ::ng-deep mat-drawer-container.mat-drawer-container {
   background-color: inherit;
+}
+
+.drawer-content {
+  height: 100%;
+  display: flex;
+}
+
+.sidenav-menu {
+  display: inherit;
+  border-radius: 0;
+  margin-right: 16px;
+}
+
+@media screen and (max-width: $breakpoint-mobile) {
+  .sidenav-menu {
+    display: none;
+  }
 }

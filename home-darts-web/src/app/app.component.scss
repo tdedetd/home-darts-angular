@@ -8,6 +8,20 @@
   width: 48px;
 }
 
+.menu-button {
+  display: none;
+}
+
+@media screen and (max-width: $breakpoint-mobile) {
+  .menu-button {
+    display: initial;
+  }
+}
+
+.sidenav-container {
+  padding-top: $header-spacing;
+}
+
 .global-progress-bar {
   position: fixed;
   width: 100%;
