@@ -11,6 +11,7 @@ import {
 import { SectionTypes } from '@models/enums/section-types.enum';
 import { DartboardRenderer } from './classes/dartboard-renderer.class';
 import { materialPalette } from './constants/palettes/material-palette';
+import { DartboardSector } from '@models/types/dartboard-sector.type';
 
 @Component({
   selector: 'hd-dartboard',
@@ -21,7 +22,7 @@ import { materialPalette } from './constants/palettes/material-palette';
 export class DartboardComponent implements OnChanges, AfterViewInit {
   @ViewChild('dartboard') dartboard!: ElementRef<HTMLCanvasElement>;
 
-  @Input() sector = 0;
+  @Input() sector: DartboardSector = 0;
   @Input() sectorType: SectionTypes = SectionTypes.Any;
 
   private dartboardRenderer?: DartboardRenderer;

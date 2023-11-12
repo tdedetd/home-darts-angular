@@ -8,10 +8,11 @@ import { defaultCamera } from '../constants/default-camera';
 import { SectionTypes } from '@models/enums/section-types.enum';
 import { DartboardPalette } from '../models/dartboard-palette.interface';
 import { defaultPalette } from '../constants/palettes/default-palette';
+import { DartboardSector } from '@models/types/dartboard-sector.type';
 
 const gameOuterRadius = 0.49;
 
-type SectorSelected = { sector: number, type: SectionTypes };
+type SectorSelected = { sector: DartboardSector, type: SectionTypes };
 
 export class DartboardRenderer {
   private readonly renderSizeConverter: GameToRenderSizeConverter = new GameToRenderSizeConverter();
@@ -58,7 +59,7 @@ export class DartboardRenderer {
     this.updateRenderResolution(width, height);
   }
 
-  public focusSector(sector: number, type: SectionTypes): void {
+  public focusSector(sector: DartboardSector, type: SectionTypes): void {
     this.sectorSelected = sector === 0 ? null : { sector, type };
     const index = this.data.sectors.indexOf(sector);
     this.camera = sector === 25
@@ -145,17 +146,35 @@ export class DartboardRenderer {
     const radians = this.getSectorRadians(index);
 
     if (sectorSelected.sector === 25) {
-      this.renderCircle('stroke', this.palette.highlight,
-        sectorSelected.type === SectionTypes.Any ? this.data.radiuses.bullOuter : this.data.radiuses.bullInner);
+      this.renderCircle(
+        'stroke',
+        this.palette.highlight,
+        sectorSelected.type === SectionTypes.Any ? this.data.radiuses.bullOuter : this.data.radiuses.bullInner
+      );
     } else if (sectorSelected.type === SectionTypes.Any) {
-      this.renderSectorPart('stroke', this.palette.highlight, radians,
-        this.data.radiuses.doubleRingOuter, this.data.radiuses.bullOuter);
+      this.renderSectorPart(
+        'stroke',
+        this.palette.highlight,
+        radians,
+        this.data.radiuses.doubleRingOuter,
+        this.data.radiuses.bullOuter
+      );
     } else if (sectorSelected.type === SectionTypes.Double) {
-      this.renderSectorPart('stroke', this.palette.highlight, radians,
-        this.data.radiuses.doubleRingOuter, this.data.radiuses.doubleRingInner);
+      this.renderSectorPart(
+        'stroke',
+        this.palette.highlight,
+        radians,
+        this.data.radiuses.doubleRingOuter,
+        this.data.radiuses.doubleRingInner
+      );
     } else if (sectorSelected.type === SectionTypes.Triple) {
-      this.renderSectorPart('stroke', this.palette.highlight, radians,
-        this.data.radiuses.trippleRingOuter, this.data.radiuses.trippleRingInner);
+      this.renderSectorPart(
+        'stroke',
+        this.palette.highlight,
+        radians,
+        this.data.radiuses.trippleRingOuter,
+        this.data.radiuses.trippleRingInner
+      );
     }
   }
 

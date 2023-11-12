@@ -4,12 +4,13 @@ import { AtcParticipant } from '../../models/atc-participant.interface';
 import { selectCurrentPlayerId } from './current-player-id.selector';
 import { selectSectors } from './sectors.selector';
 import { throwsPerTurn } from '@constants/throws-per-turn';
+import { DartboardSector } from '@models/types/dartboard-sector.type';
 
 export const selectUpcomingSectorsForCurrentPlayer = createSelector(
   selectCurrentPlayerId,
   selectParticipants,
   selectSectors,
-  (playerId: number | null, participants: Partial<Record<number, AtcParticipant>>, sectors: number[]) => {
+  (playerId: number | null, participants: Partial<Record<number, AtcParticipant>>, sectors: DartboardSector[]) => {
     if (playerId === null) return [];
     const hits = participants[playerId]?.hits ?? 0;
     return sectors.slice(hits, hits + throwsPerTurn);

@@ -9,7 +9,7 @@ import { getParticipantAfterThrow } from './utils/get-participant-after-throw';
 import { getNextPlayerId } from './utils/get-next-player-id';
 import { getCurrentPlayerOnLoad } from './utils/get-current-player-on-load';
 import { checkTurnOver } from './utils/check-turn-over';
-import { isNotEmpty } from '@functions/is-not-empty';
+import { isNotEmpty } from '@functions/type-guards/is-not-empty';
 import { AtcParticipants } from '../../models/atc-participants.type';
 import { getIsCompleted } from './utils/get-is-completed';
 

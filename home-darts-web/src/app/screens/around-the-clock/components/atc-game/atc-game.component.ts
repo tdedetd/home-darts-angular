@@ -21,6 +21,7 @@ import { TurnThrows } from '../../models/turn-throws.type';
 import { SectionTypes } from '@models/enums/section-types.enum';
 import { selectHitDetectionMode } from '../../store/selectors/hit-detection-mode.selector';
 import { AtcVibrateService } from '../../service/atc-vibrate.service';
+import { DartboardSector } from '@models/types/dartboard-sector.type';
 
 @UntilDestroy()
 @Component({
@@ -31,7 +32,7 @@ import { AtcVibrateService } from '../../service/atc-vibrate.service';
 })
 export class AtcGameComponent implements OnInit, OnDestroy {
   public canCompleteGame$: Observable<boolean> = this.store.select(selectCanCompleteGame);
-  public selectCurrentSectorForCurrentPlayer$: Observable<number | undefined> = this.store.select(selectCurrentSectorForCurrentPlayer);
+  public selectCurrentSectorForCurrentPlayer$: Observable<DartboardSector | undefined> = this.store.select(selectCurrentSectorForCurrentPlayer);
   public currentPlayerCompleted$: Observable<boolean> = this.store.select(selectIsCurrentPlayerCompleted);
   public isGameNotCompleted$: Observable<boolean> = this.store.select(selectIsGameCompleted).pipe(map(completed => !completed));
   public selectHitDetectionMode$: Observable<SectionTypes | null> = this.store.select(selectHitDetectionMode);
