@@ -1,4 +1,26 @@
-<h1 class="app__title">
-  <a routerLink="/">Home darts</a>
-</h1>
-<router-outlet></router-outlet>
+<mat-toolbar class="header" color="primary">
+  <div class="menu-button-container">
+    <button
+      *ngIf="isNotRoot$ | async"
+      mat-icon-button
+      class="menu-button"
+      (click)="toggleMobileMenu()"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
+  <h1>
+    <a routerLink="/" (click)="closeSidenav()">Home darts</a>
+  </h1>
+</mat-toolbar>
+
+<hd-sidenav-container>
+  <div class="sidenav-container">
+    <router-outlet></router-outlet>
+  </div>
+</hd-sidenav-container>
+
+<mat-progress-bar
+  *ngIf="progressBarShown$ | async"
+  class="global-progress-bar"
+  mode="indeterminate"></mat-progress-bar>

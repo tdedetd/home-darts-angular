@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { GameInfoApi } from '@models/game-info-api.interface';
-import { GameParamTypes } from '@models/game-param-types.enum';
+import { GameParamTypes } from '@models/enums/game-param-types.enum';
 import { ThrowsGrouped } from '@models/throws-grouped.interface';
 
 const source = '[Game Info]';

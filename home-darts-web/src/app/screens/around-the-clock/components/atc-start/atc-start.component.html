@@ -8,26 +8,37 @@
     </div>
     <div class="atc-start__param">
       <h3>Direction</h3>
-      <select formControlName="direction">
-        <option *ngFor="let item of gameDirectionItems" [value]="item.value">{{ item.label }}</option>
-      </select>
+      <mat-form-field>
+        <mat-select formControlName="direction">
+          <mat-option
+            *ngFor="let item of gameDirectionItems"
+            [value]="item.value">{{ item.label }}</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
     <div class="atc-start__param">
-      <label>
-        <input type="checkbox" formControlName="fastGame">
-        <span>Fast game</span>
-      </label>
+      <mat-checkbox formControlName="fastGame" color="primary">Fast game</mat-checkbox>
     </div>
     <div class="atc-start__param">
       <h3>Hit detection</h3>
-      <hd-split-button formControlName="hitDetection" [items]="sectionTypes"></hd-split-button>
+
+      <mat-button-toggle-group
+        name="fontStyle"
+        aria-label="Hit detection mode"
+        formControlName="hitDetection">
+        <mat-button-toggle
+          *ngFor="let sectionType of sectionTypes"
+          [value]="sectionType.value">{{ sectionType.label }}</mat-button-toggle>
+      </mat-button-toggle-group>
+
     </div>
     <div class="atc-start__param">
-      <label>
-        <input type="checkbox" formControlName="includeBull">
-        <span>Include bull</span>
-      </label>
+      <mat-checkbox formControlName="includeBull" color="primary">Include bull</mat-checkbox>
     </div>
-    <input class="btn game-btn" [disabled]="loading || !form.valid" type="submit" value="Start">
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="loading || !form.valid">Start</button>
   </form>
 </div>

@@ -16,8 +16,8 @@ import { PlayerApi } from '@models/player-api.interface';
 export class AtcStartPlayersListComponent implements ControlValueAccessor {
   @Input() public players: PlayerApi[] = [];
 
-  public onChange: ((item: PlayerApi['id'][]) => void) | undefined;
-  public onTouched: (() => void) | undefined;
+  public onChange?: (item: PlayerApi['id'][]) => void;
+  public onTouched?: () => void;
   public value: PlayerApi['id'][] = [];
 
   private touched = false;

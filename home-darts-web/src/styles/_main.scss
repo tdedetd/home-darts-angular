@@ -1,0 +1,52 @@
+@import './colors';
+
+html, body {
+  height: 100%;
+}
+
+html {
+  font-family: sans-serif;
+  color: $text-color;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  background-color: $background-color;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+p {
+  margin: 0;
+}
+
+.btn-large {
+  padding: 20px;
+  font-size: 20px;
+}
+
+.container {
+  display: block;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.block {
+  background: $block-color;
+  border-radius: 4px;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, .12);
+}

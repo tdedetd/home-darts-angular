@@ -4,12 +4,12 @@ import { gameInfoLoadingError, getGameInfoLoadingSuccess } from '../../../../sto
 import { AroundTheClockParams } from '../../models/around-the-clock-params.interface';
 import { atcCompleteSuccess, atcResetGame, atcTrowStart, atcTrowSuccess, atcUndoSuccess } from '../actions/around-the-clock.actions';
 import { getSectionsForAroundTheClock } from '../../utils/functions/get-sections-for-around-the-clock';
-import { GameLoadingStatuses } from '@models/game-loading-statuses.enum';
+import { GameLoadingStatuses } from '@models/enums/game-loading-statuses.enum';
 import { getParticipantAfterThrow } from './utils/get-participant-after-throw';
 import { getNextPlayerId } from './utils/get-next-player-id';
 import { getCurrentPlayerOnLoad } from './utils/get-current-player-on-load';
 import { checkTurnOver } from './utils/check-turn-over';
-import { isNotEmpty } from '@functions/is-not-empty';
+import { isNotEmpty } from '@functions/type-guards/is-not-empty';
 import { AtcParticipants } from '../../models/atc-participants.type';
 import { getIsCompleted } from './utils/get-is-completed';
 

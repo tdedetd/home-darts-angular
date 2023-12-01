@@ -1,15 +1,17 @@
-<ul>
-  <li *ngFor="let player of players | filteredPlayers: 'only': value" class="player-start-players-list__li">
-    <p>{{ player.username }}</p>
-    <button
-      class="player-start-players-list__close-btn"
-      type="button"
-      (click)="onCloseClick(player)">&#10006;</button>
-  </li>
-</ul>
-<select>
-  <option
-    *ngFor="let player of players | filteredPlayers: 'exclude': value"
-    [ngValue]="player"
-    (click)="onItemChange(player)">{{ player.username }}</option>
-</select>
+<mat-chip-listbox aria-label="Players list">
+  <mat-chip *ngFor="let player of players | filteredPlayers: 'only': value">
+    {{ player.username }}
+    <button matChipRemove [attr.aria-label]="'Remove user ' + player.username" (click)="onCloseClick(player)">
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </mat-chip>
+</mat-chip-listbox>
+
+<mat-form-field>
+  <mat-label>Select player</mat-label>
+  <mat-select (valueChange)="onItemChange($event)">
+    <mat-option
+      *ngFor="let player of players | filteredPlayers: 'exclude': value"
+      [value]="player">{{ player.username }}</mat-option>
+  </mat-select>
+</mat-form-field>

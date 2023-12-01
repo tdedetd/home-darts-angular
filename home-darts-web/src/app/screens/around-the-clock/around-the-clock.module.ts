@@ -11,11 +11,19 @@ import { AtcGameParticipantComponent } from './components/atc-game-participant/a
 import { EffectsModule } from '@ngrx/effects';
 import { AroundTheClockEffects } from './store/effects/around-the-clock.effects';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SplitButtonModule } from '@modules/split-button/split-button.module';
 import { FilteredPlayersPipe } from './pipes/filtered-players.pipe';
 import { AtcStartPlayersListComponent } from './components/atc-start-players-list/atc-start-players-list.component';
 import { DartboardModule } from '../../modules/dartboard/dartboard.module';
 import { AtcVibrateService } from './service/atc-vibrate.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { MatChipsModule } from '@angular/material/chips';
 
 
 @NgModule({
@@ -33,8 +41,16 @@ import { AtcVibrateService } from './service/atc-vibrate.service';
     EffectsModule.forFeature([AroundTheClockEffects]),
     FormsModule,
     ReactiveFormsModule,
-    SplitButtonModule,
     DartboardModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatButtonToggleModule,
+    MatSelectModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatDividerModule,
+    MatIconModule,
+    MatChipsModule,
   ],
   providers: [
     AroundTheClockApiService,

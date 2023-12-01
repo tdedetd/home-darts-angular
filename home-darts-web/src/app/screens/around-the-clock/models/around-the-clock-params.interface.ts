@@ -1,5 +1,5 @@
-import { GameParamTypes } from '@models/game-param-types.enum';
-import { SectionTypes } from '@models/section-types.enum';
+import { GameParamTypes } from '@models/enums/game-param-types.enum';
+import { SectionTypes } from '@models/enums/section-types.enum';
 import { GameDirections } from './game-directions.enum';
 
 export interface AroundTheClockParams {
