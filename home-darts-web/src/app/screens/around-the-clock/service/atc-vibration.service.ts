@@ -5,7 +5,7 @@ import { Observable, combineLatest, filter, map, tap } from 'rxjs';
 import { selectTurnOverOnLastThrow } from '../store/selectors/turn-over-on-last-throw.selector';
 
 @Injectable()
-export class AtcVibrateService {
+export class AtcVibrationService {
   private onTurnOver$ = this.store.select(selectTurnOverOnLastThrow).pipe(
     filter(Boolean),
     tap(() => navigator.vibrate(200)),

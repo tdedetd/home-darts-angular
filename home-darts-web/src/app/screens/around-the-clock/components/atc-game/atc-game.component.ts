@@ -20,7 +20,7 @@ import { selectTurnThrows } from '../../store/selectors/turn-throws.selector';
 import { TurnThrows } from '../../models/turn-throws.type';
 import { SectionTypes } from '@models/enums/section-types.enum';
 import { selectHitDetectionMode } from '../../store/selectors/hit-detection-mode.selector';
-import { AtcVibrateService } from '../../service/atc-vibrate.service';
+import { AtcVibrationService } from '../../service/atc-vibration.service';
 import { DartboardSector } from '@models/types/dartboard-sector.type';
 
 @UntilDestroy()
@@ -44,7 +44,7 @@ export class AtcGameComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private store: Store<{ aroundTheClock: AroundTheClockState }>,
     private cdr: ChangeDetectorRef,
-    private atcVibrate: AtcVibrateService,
+    private atcVibration: AtcVibrationService,
   ) {}
 
   public ngOnInit(): void {
@@ -55,7 +55,7 @@ export class AtcGameComponent implements OnInit, OnDestroy {
       this.cdr.detectChanges();
     });
 
-    this.atcVibrate.activate().pipe(untilDestroyed(this)).subscribe();
+    this.atcVibration.activate().pipe(untilDestroyed(this)).subscribe();
   }
 
   public ngOnDestroy(): void {
