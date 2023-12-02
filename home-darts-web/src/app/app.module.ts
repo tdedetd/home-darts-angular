@@ -20,6 +20,7 @@ import { SidenavContainerComponent } from './components/sidenav-container/sidena
 import { SidenavMenuComponent } from './components/sidenav-menu/sidenav-menu.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
+import { SettingsEffects } from './store/effects/settings.effects';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,7 @@ import { MatListModule } from '@angular/material/list';
     AppRoutingModule,
     BrowserAnimationsModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([GameInfoEffects]),
+    EffectsModule.forRoot([GameInfoEffects, SettingsEffects]),
     StoreDevtoolsModule.instrument({ logOnly: true }),
     MatToolbarModule,
     MatIconModule,

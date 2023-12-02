@@ -12,12 +12,14 @@
   <h1>
     <a routerLink="/" (click)="closeSidenav()">Home darts</a>
   </h1>
+  <div class="toolbar-spacer"></div>
+  <a mat-icon-button routerLink="./settings">
+    <mat-icon>settings</mat-icon>
+  </a>
 </mat-toolbar>
 
 <hd-sidenav-container>
-  <div class="sidenav-container">
-    <router-outlet></router-outlet>
-  </div>
+  <router-outlet></router-outlet>
 </hd-sidenav-container>
 
 <mat-progress-bar

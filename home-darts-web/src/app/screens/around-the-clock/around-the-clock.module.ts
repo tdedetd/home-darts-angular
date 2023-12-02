@@ -14,7 +14,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilteredPlayersPipe } from './pipes/filtered-players.pipe';
 import { AtcStartPlayersListComponent } from './components/atc-start-players-list/atc-start-players-list.component';
 import { DartboardModule } from '../../modules/dartboard/dartboard.module';
-import { AtcVibrationService } from './service/atc-vibration.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -55,7 +54,6 @@ import { MatChipsModule } from '@angular/material/chips';
   providers: [
     AroundTheClockApiService,
     AtcGameIdParamGuard,
-    AtcVibrationService,
   ],
 })
 export class AroundTheClockModule { }

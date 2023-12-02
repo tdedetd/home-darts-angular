@@ -1,4 +1,4 @@
-<div *ngIf="isGameNotCompleted$ | async; else gameCompleted" class="container">
+<div *ngIf="isGameNotCompleted$ | async; else gameCompleted" class="screen-container">
   <ul class="atc-game__participants">
     <li *ngFor="let player of players$ | async">
       <hd-atc-game-participant
@@ -23,7 +23,7 @@
       *ngIf="canCompleteGame$ | async"
       class="atc-game__tool-btn atc-game__tool-btn-complete"
       (click)="onCompleteClick()">Complete</button>
-    <div class="atc-game__tools container">
+    <div class="atc-game__tools">
       <button class="atc-game__tool-btn" [disabled]="loading || (currentPlayerCompleted$ | async)" (click)="throw(true)">Hit</button>
       <button class="atc-game__tool-btn" [disabled]="loading || (currentPlayerCompleted$ | async)" (click)="throw(false)">Miss</button>
       <button class="atc-game__tool-btn" [disabled]="loading" (click)="undo()">Undo</button>

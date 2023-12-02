@@ -20,6 +20,10 @@ const routes: Routes = [
     path: 'statistics',
     loadChildren: () => import('./screens/statistics/statistics.module').then(m => m.StatisticsModule),
   },
+  {
+    path: 'settings',
+    loadChildren: () => import('./screens/settings/settings.module').then(m => m.SettingsModule),
+  },
 ];
 
 @NgModule({
