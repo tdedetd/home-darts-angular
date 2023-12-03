@@ -5,7 +5,16 @@
   display: block;
   width: 100%;
   height: calc(100dvh - $header-height);
-  background-color: $block-color;
+
+  @media screen and (max-width: $breakpoint-mobile) {
+    background-color: $block-color;
+  }
+}
+
+.settings-block {
+  @media screen and (min-width: $breakpoint-mobile) {
+    padding: 16px;
+  }
 }
 
 .settings-param-name {

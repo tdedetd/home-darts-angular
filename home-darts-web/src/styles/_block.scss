@@ -1,0 +1,18 @@
+@import './colors';
+@import './variables';
+
+@mixin block {
+  background: $block-color;
+  border-radius: 4px;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, .12);
+}
+
+.block {
+  @include block;
+}
+
+.block-md {
+  @media screen and (min-width: $breakpoint-mobile) {
+    @include block;
+  }
+}

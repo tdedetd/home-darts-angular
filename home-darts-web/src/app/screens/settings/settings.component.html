@@ -1,10 +1,14 @@
-<form [formGroup]="form" class="screen-container">
-  <div class="settings-slide-item">
-    <p class="settings-param-name">Vibration</p>
-    <mat-slide-toggle color="primary" formControlName="vibration" [hideIcon]="true"></mat-slide-toggle>
+<div class="screen-container">
+  <div class="block-md settings-block">
+    <form [formGroup]="form">
+      <div class="settings-slide-item">
+        <p class="settings-param-name">Vibration</p>
+        <mat-slide-toggle color="primary" formControlName="vibration" [hideIcon]="true"></mat-slide-toggle>
+      </div>
+      <div class="settings-slide-item">
+        <p class="settings-param-name">Sounds</p>
+        <mat-slide-toggle color="primary" formControlName="sounds" [hideIcon]="true"></mat-slide-toggle>
+      </div>
+    </form>
   </div>
-  <div class="settings-slide-item">
-    <p class="settings-param-name">Sounds</p>
-    <mat-slide-toggle color="primary" formControlName="sounds" [hideIcon]="true"></mat-slide-toggle>
-  </div>
-</form>
+</div>
