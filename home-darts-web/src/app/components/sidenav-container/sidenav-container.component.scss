@@ -10,17 +10,24 @@
 
 .drawer-content {
   height: 100%;
-  display: flex;
+
+  @media screen and (min-width: $breakpoint-mobile) {
+    display: flex;
+  }
 }
 
 .sidenav-menu {
   display: inherit;
   border-radius: 0;
   margin-right: 16px;
+
+  @media screen and (max-width: $breakpoint-mobile) {
+    display: none;
+  }
 }
 
-@media screen and (max-width: $breakpoint-mobile) {
-  .sidenav-menu {
-    display: none;
+.main-content {
+  @media screen and (min-width: $breakpoint-mobile) {
+    flex: 1 1;
   }
 }

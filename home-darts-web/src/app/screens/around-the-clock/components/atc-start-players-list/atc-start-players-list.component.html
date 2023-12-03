@@ -1,3 +1,16 @@
+<mat-form-field class="mb-16 w-100">
+  <mat-label>Select player</mat-label>
+  <mat-select (valueChange)="onItemChange($event)">
+    <mat-option
+      *ngFor="let player of players | filteredPlayers: 'exclude': value"
+      [value]="player">{{ player.username }}</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<div class="mb-16">
+  <mat-checkbox [formControl]="randomOrderControl" color="primary">Random order</mat-checkbox>
+</div>
+
 <mat-chip-listbox aria-label="Players list">
   <mat-chip *ngFor="let player of players | filteredPlayers: 'only': value">
     {{ player.username }}
@@ -6,12 +19,3 @@
     </button>
   </mat-chip>
 </mat-chip-listbox>
-
-<mat-form-field>
-  <mat-label>Select player</mat-label>
-  <mat-select (valueChange)="onItemChange($event)">
-    <mat-option
-      *ngFor="let player of players | filteredPlayers: 'exclude': value"
-      [value]="player">{{ player.username }}</mat-option>
-  </mat-select>
-</mat-form-field>

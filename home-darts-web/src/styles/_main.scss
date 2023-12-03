@@ -30,13 +30,8 @@ ul {
   padding: 0;
 }
 
-p {
-  margin: 0;
-}
-
-.btn-large {
-  padding: 20px;
-  font-size: 20px;
+.flex-1-1 {
+  flex: 1 1;
 }
 
 .screen-container {
@@ -47,4 +42,8 @@ p {
   background: $block-color;
   border-radius: 4px;
   box-shadow: 0 2px 2px rgba(0, 0, 0, .12);
+}
+
+.w-100 {
+  width: 100%;
 }

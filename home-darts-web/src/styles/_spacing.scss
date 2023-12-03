@@ -1,0 +1,13 @@
+@mixin spacing($sizes...) {
+  @each $size in $sizes {
+    .p-#{$size} {
+      padding: #{$size}px;
+    }
+
+    .mb-#{$size} {
+      margin-bottom: #{$size}px;
+    }
+  }
+}
+
+@include spacing(8, 12, 16, 24);

@@ -3,7 +3,7 @@
 
 :host {
   display: block;
-  width: 100dvw;
+  width: 100%;
   height: calc(100dvh - $header-height);
   background-color: $block-color;
 }
