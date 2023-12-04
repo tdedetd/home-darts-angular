@@ -6,6 +6,10 @@ import { selectSettings } from '../../store/selectors/settings.selector';
 import { take } from 'rxjs';
 import { updateSettings } from '../../store/actions/settings.actions';
 import { isSettings } from '@functions/type-guards/is-settings';
+import { DartboardStyles } from '@models/enums/dartboard-styles.enum';
+import { FormControlsOf } from '@models/types/form-controls.type';
+import { SettingsState } from '@models/settings-state.interface';
+import { dartboardStyleItems } from '../../utils/constants/dartboard-style-items';
 
 @UntilDestroy()
 @Component({
@@ -15,9 +19,12 @@ import { isSettings } from '@functions/type-guards/is-settings';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class SettingsComponent implements OnInit {
-  public form = this.fb.group({
-    sounds: this.fb.nonNullable.control<boolean>(false, Validators.required),
-    vibration: this.fb.nonNullable.control<boolean>(false, Validators.required),
+  public readonly dartboardStyleItems = dartboardStyleItems;
+
+  public form = this.fb.group<FormControlsOf<SettingsState>>({
+    dartboardStyle: this.fb.nonNullable.control(DartboardStyles.Material, Validators.required),
+    sounds: this.fb.nonNullable.control(false, Validators.required),
+    vibration: this.fb.nonNullable.control(false, Validators.required),
   });
 
   constructor(

@@ -3,7 +3,7 @@ import { AroundTheClockState } from '../../models/around-the-clock-state.interfa
 import { Store } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
 import { startGameInfoLoading } from '../../../../store/actions/game-info.actions';
-import { Observable, map } from 'rxjs';
+import { Observable, combineLatest, map } from 'rxjs';
 import { selectPlayersState } from '../../store/selectors/players-state.selector';
 import { AtcParticipant } from '../../models/atc-participant.interface';
 import { PlayerApi } from '@models/player-api.interface';
@@ -21,6 +21,8 @@ import { TurnThrows } from '../../models/turn-throws.type';
 import { SectionTypes } from '@models/enums/section-types.enum';
 import { selectHitDetectionMode } from '../../store/selectors/hit-detection-mode.selector';
 import { DartboardSector } from '@models/types/dartboard-sector.type';
+import { selectDartboardStyle } from '../../../../store/selectors/dartboard-style.selector';
+import { DartboardStyles } from '@models/enums/dartboard-styles.enum';
 
 @UntilDestroy()
 @Component({
@@ -31,12 +33,13 @@ import { DartboardSector } from '@models/types/dartboard-sector.type';
 })
 export class AtcGameComponent implements OnInit, OnDestroy {
   public canCompleteGame$: Observable<boolean> = this.store.select(selectCanCompleteGame);
-  public selectCurrentSectorForCurrentPlayer$: Observable<DartboardSector | undefined> = this.store.select(selectCurrentSectorForCurrentPlayer);
   public currentPlayerCompleted$: Observable<boolean> = this.store.select(selectIsCurrentPlayerCompleted);
+  public dartboardStyle: DartboardStyles | null = null;
   public isGameNotCompleted$: Observable<boolean> = this.store.select(selectIsGameCompleted).pipe(map(completed => !completed));
-  public selectHitDetectionMode$: Observable<SectionTypes | null> = this.store.select(selectHitDetectionMode);
+  public hitDetectionMode: SectionTypes | null = null;
   public loading = true;
   public players$: Observable<(AtcParticipant & PlayerApi)[]> = this.store.select(selectPlayersState);
+  public selectCurrentSectorForCurrentPlayer$: Observable<DartboardSector | undefined> = this.store.select(selectCurrentSectorForCurrentPlayer);
   public upcomingSectors$: Observable<number[]> = this.store.select(selectUpcomingSectorsForCurrentPlayer);
 
   constructor(
@@ -48,8 +51,20 @@ export class AtcGameComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     const gameId = Number(this.activatedRoute.snapshot.paramMap.get('gameId'));
     this.store.dispatch(startGameInfoLoading({ gameId }));
+
     this.store.select(selectLoading).pipe(untilDestroyed(this)).subscribe(loading => {
       this.loading = loading;
+      this.cdr.detectChanges();
+    });
+
+    combineLatest([
+      this.store.select(selectDartboardStyle),
+      this.store.select(selectHitDetectionMode),
+    ]).pipe(
+      untilDestroyed(this)
+    ).subscribe(([dartboardStyle, hitDetectionMode]) => {
+      this.dartboardStyle = dartboardStyle;
+      this.hitDetectionMode = hitDetectionMode;
       this.cdr.detectChanges();
     });
   }

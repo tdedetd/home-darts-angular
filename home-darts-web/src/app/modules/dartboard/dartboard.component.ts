@@ -10,8 +10,9 @@ import {
 } from '@angular/core';
 import { SectionTypes } from '@models/enums/section-types.enum';
 import { DartboardRenderer } from './classes/dartboard-renderer.class';
-import { materialPalette } from './constants/palettes/material-palette';
 import { DartboardSector } from '@models/types/dartboard-sector.type';
+import { DartboardStyles } from '@models/enums/dartboard-styles.enum';
+import { dartboardStyleMapper } from './constants/dartboard-style-mapper';
 
 @Component({
   selector: 'hd-dartboard',
@@ -22,8 +23,9 @@ import { DartboardSector } from '@models/types/dartboard-sector.type';
 export class DartboardComponent implements OnChanges, AfterViewInit {
   @ViewChild('dartboard') dartboard!: ElementRef<HTMLCanvasElement>;
 
-  @Input() sector: DartboardSector = 0;
-  @Input() sectorType: SectionTypes = SectionTypes.Any;
+  @Input() public sector: DartboardSector = 0;
+  @Input() public sectorType: SectionTypes = SectionTypes.Any;
+  @Input() public style: DartboardStyles = DartboardStyles.Material;
 
   private dartboardRenderer?: DartboardRenderer;
   private renderQuality = 2;
@@ -46,7 +48,7 @@ export class DartboardComponent implements OnChanges, AfterViewInit {
     if (context) {
       el.width = el.clientWidth;
       el.height = el.clientWidth;
-      this.dartboardRenderer = new DartboardRenderer(context, 0, 0, materialPalette);
+      this.dartboardRenderer = new DartboardRenderer(context, 0, 0, dartboardStyleMapper[this.style]);
       this.dartboardRenderer.focusSector(this.sector, this.sectorType);
       this.updateCanvasResolution = this.updateCanvasResolution.bind(this);
       new ResizeObserver(this.updateCanvasResolution).observe(el);

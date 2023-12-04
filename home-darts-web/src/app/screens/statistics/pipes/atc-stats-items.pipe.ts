@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { sectionTypesItems } from '@constants/section-type-items';
 import { SectionTypes } from '@models/enums/section-types.enum';
-import { AggregateOperation } from '@models/aggregate-operation.type';
+import { AggregateOperation } from '@models/types/aggregate-operation.type';
 
 const aggregateFnMap: Record<AggregateOperation, (a: number, b: number) => number> = {
   max: (a, b) => Math.max(a, b),

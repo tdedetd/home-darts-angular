@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { SettingsState } from '@models/settings-state';
+import { SettingsState } from '@models/settings-state.interface';
 
 const source = '[Settings]';
 

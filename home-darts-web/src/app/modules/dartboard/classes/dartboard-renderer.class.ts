@@ -6,9 +6,8 @@ import { Point } from '../models/point.interface';
 import { getSingleOrDoubleDigit } from '../utils/get-single-or-double-digit';
 import { defaultCamera } from '../constants/default-camera';
 import { SectionTypes } from '@models/enums/section-types.enum';
-import { DartboardPalette } from '../models/dartboard-palette.interface';
-import { defaultPalette } from '../constants/palettes/default-palette';
 import { DartboardSector } from '@models/types/dartboard-sector.type';
+import { DartboardStyle } from '../models/dartboard-style.interface';
 
 const gameOuterRadius = 0.49;
 
@@ -17,8 +16,6 @@ type SectorSelected = { sector: DartboardSector, type: SectionTypes };
 export class DartboardRenderer {
   private readonly renderSizeConverter: GameToRenderSizeConverter = new GameToRenderSizeConverter();
   private readonly bgColor: string = 'white';
-  private readonly context: CanvasRenderingContext2D;
-  private readonly palette: DartboardPalette;
   private renderLength!: number;
   private camera = defaultCamera;
   private sectorSelected: SectorSelected | null = null;
@@ -49,13 +46,11 @@ export class DartboardRenderer {
   private readonly radiansHalfSector = this.degreesPerSector / 2 * Math.PI / 180;
 
   constructor(
-    context: CanvasRenderingContext2D,
+    private readonly context: CanvasRenderingContext2D,
     width: number,
     height: number,
-    palette: DartboardPalette = defaultPalette
+    private readonly style: DartboardStyle,
   ) {
-    this.context = context;
-    this.palette = palette;
     this.updateRenderResolution(width, height);
   }
 
@@ -79,14 +74,14 @@ export class DartboardRenderer {
 
   public render(): void {
     this.clear();
-    this.renderCircle('fill', this.palette.black, this.data.radiuses.outer);
+    this.renderCircle('fill', this.style.palette.black, this.data.radiuses.outer);
 
     this.data.sectors.forEach((sector, index) => {
       this.renderSector(sector, index);
     });
 
-    this.renderCircle('fill', this.palette.green, this.data.radiuses.bullOuter);
-    this.renderCircle('fill', this.palette.red, this.data.radiuses.bullInner);
+    this.renderCircle('fill', this.style.palette.green, this.data.radiuses.bullOuter);
+    this.renderCircle('fill', this.style.palette.red, this.data.radiuses.bullInner);
 
     if (this.sectorSelected) {
       this.renderSectorHighlight(this.sectorSelected);
@@ -147,30 +142,30 @@ export class DartboardRenderer {
 
     if (sectorSelected.sector === 25) {
       this.renderCircle(
-        'stroke',
-        this.palette.highlight,
+        this.style.sectorHighlightMode,
+        this.style.palette.highlight,
         sectorSelected.type === SectionTypes.Any ? this.data.radiuses.bullOuter : this.data.radiuses.bullInner
       );
     } else if (sectorSelected.type === SectionTypes.Any) {
       this.renderSectorPart(
-        'stroke',
-        this.palette.highlight,
+        this.style.sectorHighlightMode,
+        this.style.palette.highlight,
         radians,
         this.data.radiuses.doubleRingOuter,
         this.data.radiuses.bullOuter
       );
     } else if (sectorSelected.type === SectionTypes.Double) {
       this.renderSectorPart(
-        'stroke',
-        this.palette.highlight,
+        this.style.sectorHighlightMode,
+        this.style.palette.highlight,
         radians,
         this.data.radiuses.doubleRingOuter,
         this.data.radiuses.doubleRingInner
       );
     } else if (sectorSelected.type === SectionTypes.Triple) {
       this.renderSectorPart(
-        'stroke',
-        this.palette.highlight,
+        this.style.sectorHighlightMode,
+        this.style.palette.highlight,
         radians,
         this.data.radiuses.trippleRingOuter,
         this.data.radiuses.trippleRingInner
@@ -181,8 +176,8 @@ export class DartboardRenderer {
   private renderSector(sector: number, index: number): void {
     const rotationRadians = this.getSectorRadians(index);
 
-    const ringsColor = index % 2 === 0 ? this.palette.green : this.palette.red;
-    const singleColor = index % 2 === 0 ? this.palette.white : this.palette.black;
+    const ringsColor = index % 2 === 0 ? this.style.palette.green : this.style.palette.red;
+    const singleColor = index % 2 === 0 ? this.style.palette.white : this.style.palette.black;
 
     this.renderSectorPart('fill', ringsColor, rotationRadians, this.data.radiuses.doubleRingOuter, this.data.radiuses.doubleRingInner);
     this.renderSectorPart('fill', singleColor, rotationRadians, this.data.radiuses.doubleRingInner, this.data.radiuses.trippleRingOuter);
@@ -201,7 +196,7 @@ export class DartboardRenderer {
       this.data.dartboardCenter
     );
 
-    this.context.fillStyle = this.palette.white;
+    this.context.fillStyle = this.style.palette.white;
     this.context.fillText(
       String(sector),
       this.renderSizeConverter.size(

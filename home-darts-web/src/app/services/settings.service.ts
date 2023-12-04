@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SettingsState } from '@models/settings-state';
+import { SettingsState } from '@models/settings-state.interface';
 import { defaultSettings } from '@constants/default-settings';
 import { md5 } from 'js-md5';
 
@@ -35,6 +35,7 @@ export class SettingsService {
     const settingsParsed: Partial<SettingsState> = JSON.parse(settingsStr);
 
     return {
+      dartboardStyle: settingsParsed.dartboardStyle ?? defaultSettings.dartboardStyle,
       sounds: settingsParsed.sounds ?? defaultSettings.sounds,
       vibration: settingsParsed.vibration ?? defaultSettings.vibration,
     };
