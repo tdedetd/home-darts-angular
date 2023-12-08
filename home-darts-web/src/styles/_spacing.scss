@@ -1,10 +1,18 @@
 @mixin spacing($sizes...) {
   @each $size in $sizes {
-    .p-#{$size} {
+    .mat-typography .p-#{$size} {
       padding: #{$size}px;
     }
 
-    .mb-#{$size} {
+    .mat-typography .pl-#{$size} {
+      padding-left: #{$size}px;
+    }
+
+    .mat-typography .mr-#{$size} {
+      margin-right: #{$size}px;
+    }
+
+    .mat-typography .mb-#{$size} {
       margin-bottom: #{$size}px;
     }
   }

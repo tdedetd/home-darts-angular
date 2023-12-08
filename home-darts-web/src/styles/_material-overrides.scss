@@ -1,4 +1,13 @@
+.mat-typography {
+  p, h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 0;
+  }
+}
+
 .mat-mdc-button-base.btn {
-  width: 100%;
   height: 46px;
+}
+
+mat-form-field.mat-mdc-form-field.mat-form-no-subscript > .mat-mdc-form-field-subscript-wrapper {
+  display: none;
 }

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { apiPrefix } from '@config';
 import { ThrowApi } from '@models/throw-api.interface';
 import { AroundTheClockParams } from '../models/around-the-clock-params.interface';
-import { PlayerApi } from '../../../models/player-api.interface';
+import { PlayerApi } from '@models/player-api.interface';
 
 @Injectable()
 export class AroundTheClockApiService {
