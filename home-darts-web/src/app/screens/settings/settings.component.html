@@ -22,6 +22,11 @@
             [value]="styleItem.value">{{ styleItem.label }}</mat-button-toggle>
         </mat-button-toggle-group>
       </div>
+
+      <div class="settings-slide-item">
+        <p class="settings-param-name">Counters animations</p>
+        <mat-slide-toggle color="primary" formControlName="countersAnimations" [hideIcon]="true"></mat-slide-toggle>
+      </div>
     </form>
   </div>
 </div>

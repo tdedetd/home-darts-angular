@@ -5,4 +5,5 @@ export const defaultSettings: SettingsState = {
   dartboardStyle: DartboardStyles.Material,
   sounds: true,
   vibration: true,
+  countersAnimations: true,
 };

@@ -25,6 +25,7 @@ export class SettingsComponent implements OnInit {
     dartboardStyle: this.fb.nonNullable.control(DartboardStyles.Material, Validators.required),
     sounds: this.fb.nonNullable.control(false, Validators.required),
     vibration: this.fb.nonNullable.control(false, Validators.required),
+    countersAnimations: this.fb.nonNullable.control(false, Validators.required),
   });
 
   constructor(

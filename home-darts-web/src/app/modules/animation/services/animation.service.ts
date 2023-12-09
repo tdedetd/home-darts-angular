@@ -3,6 +3,10 @@ import { AnimateCallback } from '../models/animate-callback.type';
 import { AnimationOptions } from '../models/animation-options.interface';
 import { AnimationsList } from '../classes/animations-list';
 import { AnimationInterruptionMode } from '../models/animation-interruption-mode.enum';
+import { TimingFunction } from '../models/timing-function.type';
+import { isNotEmpty } from '../../../utils/functions/type-guards/is-not-empty';
+import { TimingFunctions } from '../models/timing-functions.enum';
+import { timingFunctionsMapper } from '../constants/timing-functions-mapper';
 
 @Injectable()
 export class AnimationService {
@@ -20,6 +24,11 @@ export class AnimationService {
     const startTimeMs = AnimationService.nowMs;
     const { durationMs } = options;
     const refreshTimeout = options.refreshTimeout ?? 100;
+    const timingFunction: TimingFunction = isNotEmpty(options.timingFunction)
+      ? typeof options.timingFunction === 'function'
+        ? options.timingFunction
+        : timingFunctionsMapper[options.timingFunction]
+      : timingFunctionsMapper[TimingFunctions.Linear];
 
     callback(0);
     const intervalId = window.setInterval(() => {
@@ -33,8 +42,7 @@ export class AnimationService {
         ? 1
         : timeDifferenceMs / durationMs;
 
-      const animationPhase = this.getAnimationPhase(timePhase);
-      callback(animationPhase);
+      callback(timingFunction(timePhase));
     }, refreshTimeout);
     this.animationsList.add(intervalId, callback, options);
 
@@ -43,9 +51,5 @@ export class AnimationService {
 
   public interrupt(intervalId: number, interruptionMode: AnimationInterruptionMode = AnimationInterruptionMode.LeaveAsIs): void {
     this.animationsList.interrupt(intervalId, interruptionMode);
-  }
-
-  private getAnimationPhase(timePhase: number): number {
-    return timePhase;
   }
 }

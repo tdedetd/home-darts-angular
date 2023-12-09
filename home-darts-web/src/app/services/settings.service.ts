@@ -38,6 +38,7 @@ export class SettingsService {
       dartboardStyle: settingsParsed.dartboardStyle ?? defaultSettings.dartboardStyle,
       sounds: settingsParsed.sounds ?? defaultSettings.sounds,
       vibration: settingsParsed.vibration ?? defaultSettings.vibration,
+      countersAnimations: settingsParsed.countersAnimations ?? defaultSettings.countersAnimations,
     };
   }
 

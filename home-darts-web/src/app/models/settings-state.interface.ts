@@ -4,4 +4,5 @@ export interface SettingsState {
   dartboardStyle: DartboardStyles;
   sounds: boolean;
   vibration: boolean;
+  countersAnimations: boolean;
 }
