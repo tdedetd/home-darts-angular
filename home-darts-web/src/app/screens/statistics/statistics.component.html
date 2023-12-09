@@ -13,16 +13,16 @@
     <div class="mb-12 flex text-align-center">
       <div class="block flex-1-1 p-16 mr-12">
         <p class="mb-12">Total games</p>
-        <h2>{{ stats.gamesCount }}</h2>
+        <h2>{{ stats.gamesCount | animated: animationPipeCallback: animationOptions | async }}</h2>
       </div>
       <div class="block flex-1-1 p-16">
         <p class="mb-12">Total throws</p>
-        <h2>{{ stats.throwsCount }}</h2>
+        <h2>{{ stats.throwsCount | animated: animationPipeCallback: animationOptions | async }}</h2>
       </div>
     </div>
 
     <div class="block mb-24 p-16 text-align-center">
-      <p>Total playing time - <span class="statistics-font-weight-500">{{ stats.totalPlayingTimeSeconds | formatTimeInterval }}</span></p>
+      <p>Total playing time - <span class="statistics-font-weight-500">{{ (stats.totalPlayingTimeSeconds | animated: animationPipeCallback: animationOptions | async) ?? 0 | formatTimeInterval }}</span></p>
     </div>
 
     <div class="block p-16">

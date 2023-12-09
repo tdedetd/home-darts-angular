@@ -7,6 +7,7 @@ import { FormatTimeIntervalModule } from '../../modules/format-date-interval/for
 import { AtcStatisticsComponent } from './components/atc-statistics/atc-statistics.component';
 import { AtcStatsItemsPipe } from './pipes/atc-stats-items.pipe';
 import { MatSelectModule } from '@angular/material/select';
+import { AnimationModule } from '../../modules/animation/animation.module';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { MatSelectModule } from '@angular/material/select';
     StatisticsRoutingModule,
     FormatTimeIntervalModule,
     MatSelectModule,
+    AnimationModule,
   ]
 })
 export class StatisticsModule { }
