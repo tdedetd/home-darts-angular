@@ -28,7 +28,6 @@ export class StatisticsComponent implements OnInit {
     switchMap(player => this.playerApi.getPlayerStats(player.id)),
   );
 
-  public readonly animationPipeCallback: AnimatedPipeCallback<number> = (value, phase) => Math.round(value * phase);
   public readonly animationOptions: AnimationOptions = {
     durationMs: 1000,
     refreshTimeout: 10,
@@ -49,4 +48,6 @@ export class StatisticsComponent implements OnInit {
       this.cdr.detectChanges();
     });
   }
+
+  public animationPipeCallback: AnimatedPipeCallback<number> = (value, phase) => Math.round(value * phase);
 }

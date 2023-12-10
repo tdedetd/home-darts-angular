@@ -7,7 +7,7 @@ const aggregateFnMap: Record<AggregateOperation, (a: number, b: number) => numbe
   max: (a, b) => Math.max(a, b),
   min: (a, b) => Math.min(a, b),
   sum: (a, b) => a + b,
-}
+};
 
 // TODO: typing
 @Pipe({

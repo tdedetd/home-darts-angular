@@ -18,7 +18,9 @@
     <tr>
       <td>Hit rate</td>
       <td *ngFor="let item of stats.throwsHits | atcStatsItems">
-        <ng-container *ngIf="(item.throws ?? 0) > 0; else noThrows">{{ ((item.hits ?? 0) / (item.throws ?? 0) * 100) | number: '1.2-2' }}%</ng-container>
+        <ng-container *ngIf="(item.throws ?? 0) > 0; else noThrows">
+          {{ ((item.hits ?? 0) / (item.throws ?? 0) * 100) | number: '1.2-2' }}%
+        </ng-container>
       </td>
     </tr>
     <tr>

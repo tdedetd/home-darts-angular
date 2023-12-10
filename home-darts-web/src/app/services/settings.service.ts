@@ -43,6 +43,6 @@ export class SettingsService {
   }
 
   public save(settings: SettingsState): void {
-    localStorage.setItem(this.key, JSON.stringify(settings))
+    localStorage.setItem(this.key, JSON.stringify(settings));
   }
 }

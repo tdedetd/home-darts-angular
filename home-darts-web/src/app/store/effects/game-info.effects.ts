@@ -7,15 +7,17 @@ import { ThrowsApiService } from '../../services/throws-api.service';
 
 @Injectable()
 export class GameInfoEffects {
-  public loadGameInfo$ = createEffect(() => this.actions$.pipe(
-    ofType(startGameInfoLoading),
-    switchMap(({ gameId }) => forkJoin([
-      this.gameApi.getGameInfo(gameId),
-      this.throwsApi.getThrowsGrouped(gameId)
-    ])),
-    map(([gameInfo, throwsGrouped]) => gameInfoLoadingSuccess({ gameInfo, throwsGrouped })),
-    catchError(() => of(gameInfoLoadingError())))
-  );
+  public loadGameInfo$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(startGameInfoLoading),
+      switchMap(({ gameId }) => forkJoin([
+        this.gameApi.getGameInfo(gameId),
+        this.throwsApi.getThrowsGrouped(gameId)
+      ])),
+      map(([gameInfo, throwsGrouped]) => gameInfoLoadingSuccess({ gameInfo, throwsGrouped })),
+      catchError(() => of(gameInfoLoadingError()))
+    );
+  });
 
   constructor(
     private actions$: Actions,

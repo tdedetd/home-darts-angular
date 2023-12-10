@@ -45,20 +45,24 @@ export const aroundTheClockReducer = createReducer<AroundTheClockState>(
       }), {}),
     };
   }),
-  on(gameInfoLoadingError, () => ({
+  on(gameInfoLoadingError, (): AroundTheClockState => ({
     ...initialState,
     loadingStatus: GameLoadingStatuses.Error,
   })),
-  on(atcResetGame, () => initialState),
-  on(atcTrowStart, (state) => ({ ...state, loading: true })),
-  on(atcTrowSuccess, (state, { hit }) => {
+  on(atcResetGame, (): AroundTheClockState => initialState),
+  on(atcTrowStart, (state): AroundTheClockState => ({ ...state, loading: true })),
+  on(atcTrowSuccess, (state, { hit }): AroundTheClockState => {
     if (state.currentPlayerId === null) return state;
 
     const isTurnOver = checkTurnOver(state);
-    const participantAfterThrow = getParticipantAfterThrow(state.sections, hit, false, state.participants[state.currentPlayerId]);
-    const newCurrentPlayerId = isTurnOver || participantAfterThrow.isCompleted ? getNextPlayerId(state) : state.currentPlayerId;
+    const participantAfterThrow = getParticipantAfterThrow(
+      state.sections, hit, false, state.participants[state.currentPlayerId]
+    );
 
-    const newParticipantTurnHits: AtcParticipants | {} = (
+    const newCurrentPlayerId = isTurnOver || participantAfterThrow.isCompleted
+      ? getNextPlayerId(state) : state.currentPlayerId;
+
+    const newParticipantTurnHits: AtcParticipants | object = (
       isTurnOver && isNotEmpty(newCurrentPlayerId) && state.participants[newCurrentPlayerId] ? {
         [newCurrentPlayerId]: {
           ...state.participants[newCurrentPlayerId],
@@ -78,9 +82,9 @@ export const aroundTheClockReducer = createReducer<AroundTheClockState>(
         ...newParticipantTurnHits
       },
       turnOverOnLastThrow: isTurnOver || participantAfterThrow.isCompleted,
-    }
+    };
   }),
-  on(atcUndoSuccess, (state, { lastThrow }) => 
+  on(atcUndoSuccess, (state, { lastThrow }): AroundTheClockState => 
     state.currentPlayerId && state.participants[state.currentPlayerId] && lastThrow ? {
       ...state,
       loading: false,
@@ -91,7 +95,7 @@ export const aroundTheClockReducer = createReducer<AroundTheClockState>(
       }
     } : state
   ),
-  on(atcCompleteSuccess, (state) => ({
+  on(atcCompleteSuccess, (state): AroundTheClockState => ({
     ...state,
     gameInfo: state.gameInfo ? {
       ...state.gameInfo,

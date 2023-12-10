@@ -49,7 +49,10 @@ export class AnimationService {
     return intervalId;
   }
 
-  public interrupt(intervalId: number, interruptionMode: AnimationInterruptionMode = AnimationInterruptionMode.LeaveAsIs): void {
+  public interrupt(
+    intervalId: number,
+    interruptionMode: AnimationInterruptionMode = AnimationInterruptionMode.LeaveAsIs
+  ): void {
     this.animationsList.interrupt(intervalId, interruptionMode);
   }
 }

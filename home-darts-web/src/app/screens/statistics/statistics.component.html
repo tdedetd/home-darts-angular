@@ -16,14 +16,18 @@
         <div class="block flex-1-1 p-16 mr-12">
           <p class="mb-12">Total games</p>
           <h2>
-            <ng-container *ngIf="isCounterAnimationsOn">{{ stats.gamesCount | animated: animationPipeCallback: animationOptions | async }}</ng-container>
+            <ng-container *ngIf="isCounterAnimationsOn">
+              {{ stats.gamesCount | animated: animationPipeCallback: animationOptions | async }}
+            </ng-container>
             <ng-container *ngIf="!isCounterAnimationsOn">{{ stats.gamesCount }}</ng-container>
           </h2>
         </div>
         <div class="block flex-1-1 p-16">
           <p class="mb-12">Total throws</p>
           <h2>
-            <ng-container *ngIf="isCounterAnimationsOn">{{ stats.throwsCount | animated: animationPipeCallback: animationOptions | async }}</ng-container>
+            <ng-container *ngIf="isCounterAnimationsOn">
+              {{ stats.throwsCount | animated: animationPipeCallback: animationOptions | async }}
+            </ng-container>
             <ng-container *ngIf="!isCounterAnimationsOn">{{ stats.throwsCount }}</ng-container>
           </h2>
         </div>
@@ -31,8 +35,15 @@
 
       <div class="block mb-24 p-16 text-align-center">
         <p>Total playing time - <span class="statistics-font-weight-500">
-          <ng-container *ngIf="isCounterAnimationsOn">{{ (stats.totalPlayingTimeSeconds | animated: animationPipeCallback: animationOptions | async) ?? 0 | formatTimeInterval }}</ng-container>
-          <ng-container *ngIf="!isCounterAnimationsOn">{{ stats.totalPlayingTimeSeconds | formatTimeInterval }}</ng-container>
+          <ng-container *ngIf="isCounterAnimationsOn">
+            {{
+              (stats.totalPlayingTimeSeconds | animated: animationPipeCallback: animationOptions | async) ?? 0
+                | formatTimeInterval
+            }}
+          </ng-container>
+          <ng-container *ngIf="!isCounterAnimationsOn">
+            {{ stats.totalPlayingTimeSeconds | formatTimeInterval }}
+          </ng-container>
         </span></p>
       </div>
 

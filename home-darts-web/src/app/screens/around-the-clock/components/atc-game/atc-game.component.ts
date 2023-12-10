@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { AroundTheClockState } from '../../models/around-the-clock-state.interface';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
 import { startGameInfoLoading } from '../../../../store/actions/game-info.actions';
-import { Observable, combineLatest, filter, map, take } from 'rxjs';
+import { Observable, combineLatest, filter, take } from 'rxjs';
 import { selectPlayersState } from '../../store/selectors/players-state.selector';
 import { AtcParticipant } from '../../models/atc-participant.interface';
 import { PlayerApi } from '@models/player-api.interface';
@@ -14,7 +13,6 @@ import { selectLoading } from '../../store/selectors/loading.selector';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { selectIsPlayerTurn } from '../../store/selectors/is-player-turn.selector';
 import { selectCanCompleteGame } from '../../store/selectors/can-complete-game.selector';
-import { selectIsGameCompleted } from '../../store/selectors/is-game-completed.selector';
 import { selectIsCurrentPlayerCompleted } from '../../store/selectors/is-current-player-completed.selector';
 import { selectTurnThrows } from '../../store/selectors/turn-throws.selector';
 import { TurnThrows } from '../../models/turn-throws.type';
@@ -24,6 +22,7 @@ import { DartboardSector } from '@models/types/dartboard-sector.type';
 import { selectDartboardStyle } from '../../../../store/selectors/dartboard-style.selector';
 import { DartboardStyles } from '@models/enums/dartboard-styles.enum';
 import { isNotEmpty } from '@functions/type-guards/is-not-empty';
+import { selectIsGameNotCompleted } from '../../store/selectors/is-game-not-completed.selector';
 
 @UntilDestroy()
 @Component({
@@ -36,16 +35,19 @@ export class AtcGameComponent implements OnInit, OnDestroy {
   public canCompleteGame$: Observable<boolean> = this.store.select(selectCanCompleteGame);
   public currentPlayerCompleted$: Observable<boolean> = this.store.select(selectIsCurrentPlayerCompleted);
   public dartboardStyle: DartboardStyles | null = null;
-  public isGameNotCompleted$: Observable<boolean> = this.store.select(selectIsGameCompleted).pipe(map(completed => !completed));
+  public isGameNotCompleted$: Observable<boolean> = this.store.select(selectIsGameNotCompleted);
   public hitDetectionMode: SectionTypes | null = null;
   public loading = true;
   public players$: Observable<(AtcParticipant & PlayerApi)[]> = this.store.select(selectPlayersState);
-  public selectCurrentSectorForCurrentPlayer$: Observable<DartboardSector | undefined> = this.store.select(selectCurrentSectorForCurrentPlayer);
+
+  public selectCurrentSectorForCurrentPlayer$: Observable<DartboardSector | undefined> =
+    this.store.select(selectCurrentSectorForCurrentPlayer);
+
   public upcomingSectors$: Observable<number[]> = this.store.select(selectUpcomingSectorsForCurrentPlayer);
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private store: Store<{ aroundTheClock: AroundTheClockState }>,
+    private store: Store,
     private cdr: ChangeDetectorRef,
   ) {}
 

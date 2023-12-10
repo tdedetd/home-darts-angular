@@ -5,13 +5,11 @@ import { AnimationOptions } from '../models/animation-options.interface';
 export class AnimationsList {
   private animations: Partial<Record<number, { callback: AnimateCallback, options: AnimationOptions }>> = {};
 
-  constructor() {}
-
   public add(intervalId: number, callback: AnimateCallback, options: AnimationOptions): void {
     this.animations = {
       ...this.animations,
       [intervalId]: { callback, options },
-    }
+    };
   }
 
   public clear(intervalId: number): void {
@@ -20,7 +18,10 @@ export class AnimationsList {
     this.animations = animations;
   }
 
-  public interrupt(intervalId: number, interruptionMode: AnimationInterruptionMode = AnimationInterruptionMode.LeaveAsIs): void {
+  public interrupt(
+    intervalId: number,
+    interruptionMode: AnimationInterruptionMode = AnimationInterruptionMode.LeaveAsIs
+  ): void {
     if (interruptionMode === AnimationInterruptionMode.SetFinalState) {
       this.animations[intervalId]?.callback(1);
     } else if (interruptionMode === AnimationInterruptionMode.SetInitialState) {

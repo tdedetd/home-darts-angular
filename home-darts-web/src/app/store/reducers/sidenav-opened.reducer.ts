@@ -5,6 +5,6 @@ const defaultValue = false;
 
 export const sidenavOpenedReducer = createReducer(
   defaultValue,
-  on(toggleSidenav, (state) => !state),
-  on(closeSidenav, () => false),
+  on(toggleSidenav, (state): boolean => !state),
+  on(closeSidenav, (): false => false),
 );

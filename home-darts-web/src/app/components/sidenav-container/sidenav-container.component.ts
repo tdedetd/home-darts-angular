@@ -15,7 +15,7 @@ import { mobileBreakpoint } from '@constants/breakpoints/mobile-breakpoint';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidenavContainerComponent implements OnInit {
-  @ViewChild(MatDrawer) drawer?: MatDrawer;
+  @ViewChild(MatDrawer) public drawer?: MatDrawer;
 
   constructor(
     private store: Store,

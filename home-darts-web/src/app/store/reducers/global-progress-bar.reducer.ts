@@ -8,6 +8,6 @@ const defaultValue: GlobalProgressBarState = {
 
 export const globalProgressBarReducer = createReducer(
   defaultValue,
-  on(showGlobalProgressBar, (state) => ({ ...state, shown: true })),
-  on(hideGlobalProgressBar, (state) => ({ ...state, shown: false })),
+  on(showGlobalProgressBar, (state): GlobalProgressBarState => ({ ...state, shown: true })),
+  on(hideGlobalProgressBar, (state): GlobalProgressBarState => ({ ...state, shown: false })),
 );

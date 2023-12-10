@@ -9,4 +9,4 @@ export interface GameInfoApi<GameParams extends object = Partial<Record<GamePara
   isCompleted: boolean;
   params: GameParams;
   players: PlayerApi[];
-};
+}

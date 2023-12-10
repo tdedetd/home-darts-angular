@@ -21,7 +21,7 @@ import { dartboardStyleMapper } from './constants/dartboard-style-mapper';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DartboardComponent implements OnChanges, AfterViewInit {
-  @ViewChild('dartboard') dartboard!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('dartboard') public dartboard!: ElementRef<HTMLCanvasElement>;
 
   @Input() public sector: DartboardSector = 0;
   @Input() public sectorType: SectionTypes = SectionTypes.Any;
@@ -29,8 +29,6 @@ export class DartboardComponent implements OnChanges, AfterViewInit {
 
   private dartboardRenderer?: DartboardRenderer;
   private renderQuality = 2;
-
-  constructor() { }
 
   public ngOnChanges(changes: SimpleChanges): void {
     const sectorChange = changes['sector'];

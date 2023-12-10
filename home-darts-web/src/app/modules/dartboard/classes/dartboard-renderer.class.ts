@@ -179,10 +179,14 @@ export class DartboardRenderer {
     const ringsColor = index % 2 === 0 ? this.style.palette.green : this.style.palette.red;
     const singleColor = index % 2 === 0 ? this.style.palette.white : this.style.palette.black;
 
-    this.renderSectorPart('fill', ringsColor, rotationRadians, this.data.radiuses.doubleRingOuter, this.data.radiuses.doubleRingInner);
-    this.renderSectorPart('fill', singleColor, rotationRadians, this.data.radiuses.doubleRingInner, this.data.radiuses.trippleRingOuter);
-    this.renderSectorPart('fill', ringsColor, rotationRadians, this.data.radiuses.trippleRingOuter, this.data.radiuses.trippleRingInner);
-    this.renderSectorPart('fill', singleColor, rotationRadians, this.data.radiuses.trippleRingInner, this.data.radiuses.bullOuter);
+    this.renderSectorPart('fill', ringsColor, rotationRadians,
+      this.data.radiuses.doubleRingOuter, this.data.radiuses.doubleRingInner);
+    this.renderSectorPart('fill', singleColor, rotationRadians,
+      this.data.radiuses.doubleRingInner, this.data.radiuses.trippleRingOuter);
+    this.renderSectorPart('fill', ringsColor, rotationRadians,
+      this.data.radiuses.trippleRingOuter, this.data.radiuses.trippleRingInner);
+    this.renderSectorPart('fill', singleColor, rotationRadians,
+      this.data.radiuses.trippleRingInner, this.data.radiuses.bullOuter);
 
     this.renderSectorLabel(sector, rotationRadians);
   }
@@ -215,8 +219,13 @@ export class DartboardRenderer {
     outerRadius: number,
     innerRadius: number,
   ): void {
-    const xCoord = this.renderSizeConverter.size(this.data.dartboardCenter.x - (this.camera.position.x - 0.5) * this.camera.zoom);
-    const yCoord = this.renderSizeConverter.size(this.data.dartboardCenter.y - (this.camera.position.y - 0.5) * this.camera.zoom);
+    const xCoord = this.renderSizeConverter.size(
+      this.data.dartboardCenter.x - (this.camera.position.x - 0.5) * this.camera.zoom
+    );
+    const yCoord = this.renderSizeConverter.size(
+      this.data.dartboardCenter.y - (this.camera.position.y - 0.5) * this.camera.zoom
+    );
+
     const innerRenderRadius = this.renderSizeConverter.size(innerRadius * this.camera.zoom);
     const outerRenderRadius = this.renderSizeConverter.size(outerRadius * this.camera.zoom);
 

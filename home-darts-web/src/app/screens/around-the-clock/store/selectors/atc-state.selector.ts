@@ -1,3 +1,4 @@
+import { createFeatureSelector } from '@ngrx/store';
 import { AroundTheClockState } from '../../models/around-the-clock-state.interface';
 
-export const selectAtcState = (state: { aroundTheClock: AroundTheClockState }) => state.aroundTheClock;
+export const selectAtcState = createFeatureSelector<AroundTheClockState>('aroundTheClock');

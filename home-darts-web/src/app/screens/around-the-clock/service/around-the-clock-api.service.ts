@@ -12,16 +12,16 @@ export class AroundTheClockApiService {
 
   constructor(private http: HttpClient) {}
 
-  public complete(gameId: number, playerId: number): Observable<void> {
-    return this.http.put<void>(`${this.apiPrefix}${gameId}/complete`, null, { params: { playerId }});
+  public complete(gameId: number, playerId: number): Observable<null> {
+    return this.http.put<null>(`${this.apiPrefix}${gameId}/complete`, null, { params: { playerId }});
   }
 
   public start(params: AroundTheClockParams & { players: PlayerApi['id'][] }): Observable<{ gameId: number }> {
     return this.http.post<{ gameId: number }>(`${this.apiPrefix}start`, params);
   }
 
-  public throw(nominal: number, hit: boolean, gameId: number, playerId: number): Observable<void> {
-    return this.http.post<void>(`${this.apiPrefix}${gameId}/throw`, { nominal, hit }, { params: { playerId } });
+  public throw(nominal: number, hit: boolean, gameId: number, playerId: number): Observable<null> {
+    return this.http.post<null>(`${this.apiPrefix}${gameId}/throw`, { nominal, hit }, { params: { playerId } });
   }
 
   public undo(gameId: number, playerId: number): Observable<ThrowApi | null> {
