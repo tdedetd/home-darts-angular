@@ -1,13 +1,15 @@
-<div class="atc-part__name" [class.atc-part__name_active]="active" [title]="username">{{ username }}</div>
-<div *ngFor="let i of turnIndexes" class="atc-part__turn">
-  <span *ngIf="turnHits[i] === true" class="atc-part__check">&#10004;</span>
-  <span *ngIf="turnHits[i] === false" class="atc-part__times">&#10006;</span>
-</div>
-<div class="atc-part__stats">
-  <p>{{ hits }} / {{ throws }}</p>
-  <p>
-    <ng-container *ngIf="throws > 0; else noThrows">{{ (hits / throws * 100) | number: '1.3-3' }}%</ng-container>
-  </p>
+<div class="block p-12 pl-16 flex flex-align-center" [class.atc-game-part-active]="active">
+  <div class="flex-1-1">{{ username }}</div>
+  <div *ngFor="let i of turnIndexes" class="atc-game-part-throw mr-24 flex flex-align-center">
+    <mat-icon *ngIf="turnHits[i] === true" class="atc-game-part-throw__green">check</mat-icon>
+    <mat-icon *ngIf="turnHits[i] === false" class="atc-game-part-throw__red">close</mat-icon>
+  </div>
+  <div class="atc-game-part-stats">
+    <p>{{ hits }} / {{ throws }}</p>
+    <p>
+      <ng-container *ngIf="throws > 0; else noThrows">{{ (hits / throws * 100) | number: '1.3-3' }}%</ng-container>
+    </p>
+  </div>
 </div>
 
 <ng-template #noThrows>-</ng-template>

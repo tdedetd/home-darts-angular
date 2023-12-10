@@ -23,6 +23,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -50,6 +51,7 @@ import { MatChipsModule } from '@angular/material/chips';
     MatDividerModule,
     MatIconModule,
     MatChipsModule,
+    MatTooltipModule,
   ],
   providers: [
     AroundTheClockApiService,

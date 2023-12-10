@@ -3,7 +3,7 @@ import { AroundTheClockState } from '../../models/around-the-clock-state.interfa
 import { Store } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
 import { startGameInfoLoading } from '../../../../store/actions/game-info.actions';
-import { Observable, combineLatest, map } from 'rxjs';
+import { Observable, combineLatest, filter, map, take } from 'rxjs';
 import { selectPlayersState } from '../../store/selectors/players-state.selector';
 import { AtcParticipant } from '../../models/atc-participant.interface';
 import { PlayerApi } from '@models/player-api.interface';
@@ -23,6 +23,7 @@ import { selectHitDetectionMode } from '../../store/selectors/hit-detection-mode
 import { DartboardSector } from '@models/types/dartboard-sector.type';
 import { selectDartboardStyle } from '../../../../store/selectors/dartboard-style.selector';
 import { DartboardStyles } from '@models/enums/dartboard-styles.enum';
+import { isNotEmpty } from '@functions/type-guards/is-not-empty';
 
 @UntilDestroy()
 @Component({
@@ -61,6 +62,8 @@ export class AtcGameComponent implements OnInit, OnDestroy {
       this.store.select(selectDartboardStyle),
       this.store.select(selectHitDetectionMode),
     ]).pipe(
+      filter(([dartboardStyle, hitDetectionMode]) => isNotEmpty(dartboardStyle) && isNotEmpty(hitDetectionMode)),
+      take(1),
       untilDestroyed(this)
     ).subscribe(([dartboardStyle, hitDetectionMode]) => {
       this.dartboardStyle = dartboardStyle;

@@ -1,6 +1,6 @@
 <div *ngIf="isGameNotCompleted$ | async; else gameCompleted" class="screen-container">
-  <ul class="atc-game__participants">
-    <li *ngFor="let player of players$ | async">
+  <ul class="mb-24">
+    <li *ngFor="let player of players$ | async" class="atc-game-particpant-container">
       <hd-atc-game-participant
         [active]="isPlayerActive$(player.id) | async"
         [turnHits]="(turnThrows$(player.id) | async) ?? []"
@@ -10,26 +10,70 @@
       ></hd-atc-game-participant>
     </li>
   </ul>
-  <div *ngIf="hitDetectionMode && dartboardStyle" class="atc-game__dartboard-container">
-    <hd-dartboard
-      [sector]="(selectCurrentSectorForCurrentPlayer$ | async) ?? 0"
-      [sectorType]="hitDetectionMode"
-      [style]="dartboardStyle"></hd-dartboard>
-  </div>
-  <div class="atc-game__sections">
-    <div *ngFor="let sector of upcomingSectors$ | async" class="atc-game__digit">{{ sector }}</div>
-  </div>
-  <div class="atc-game__tools-container">
-    <button
-      *ngIf="canCompleteGame$ | async"
-      class="atc-game__tool-btn atc-game__tool-btn-complete"
-      (click)="onCompleteClick()">Complete</button>
-    <div class="atc-game__tools">
-      <button class="atc-game__tool-btn" [disabled]="loading || (currentPlayerCompleted$ | async)" (click)="throw(true)">Hit</button>
-      <button class="atc-game__tool-btn" [disabled]="loading || (currentPlayerCompleted$ | async)" (click)="throw(false)">Miss</button>
-      <button class="atc-game__tool-btn" [disabled]="loading" (click)="undo()">Undo</button>
+
+  <div *ngIf="hitDetectionMode && dartboardStyle" class="atc-game-dartboard-container">
+    <div class="block p-16 mb-12">
+      <hd-dartboard
+        [sector]="(selectCurrentSectorForCurrentPlayer$ | async) ?? 0"
+        [sectorType]="hitDetectionMode"
+        [style]="dartboardStyle"></hd-dartboard>
+    </div>
+
+    <div class="block p-8 pl-24 flex">
+      <p class="mr-24">Next sectors</p>
+      <p class="mr-16" *ngFor="let sector of upcomingSectors$ | async">{{ sector }}</p>
     </div>
   </div>
+</div>
+
+<div class="atc-game-spacer"></div>
+
+<div class="atc-game-tools flex p-16">
+  <button
+    mat-raised-button
+    matTooltip="Hit"
+    color="primary"
+    type="button"
+    [disabled]="loading || (currentPlayerCompleted$ | async)"
+    class="atc-game-tools-button btn flex-1-1"
+    (click)="throw(true)"
+  >
+    <mat-icon>ads_click</mat-icon>
+  </button>
+  <button
+    mat-raised-button
+    matTooltip="Miss"
+    color="primary"
+    type="button"
+    [disabled]="loading || (currentPlayerCompleted$ | async)"
+    class="atc-game-tools-button btn flex-1-1"
+    (click)="throw(false)"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+  <button
+    mat-raised-button
+    matTooltip="Undo"
+    color="primary"
+    type="button"
+    [disabled]="loading"
+    class="atc-game-tools-button btn flex-1-1"
+    (click)="undo()"
+  >
+    <mat-icon>undo</mat-icon>
+  </button>
+  <button
+    *ngIf="canCompleteGame$ | async"
+    mat-raised-button
+    matTooltip="Complete"
+    color="primary"
+    type="button"
+    [disabled]="loading"
+    class="atc-game-tools-button btn flex-1-1"
+    (click)="onCompleteClick()"
+  >
+    <mat-icon>check</mat-icon>
+  </button>
 </div>
 
 <ng-template #gameCompleted>Game is completed</ng-template>

@@ -1,51 +1,24 @@
-$border: solid 2px black;
+@import '../../../../../styles/colors';
 
-:host {
-  display: flex;
-  border-bottom: $border;
+.atc-game-part-active {
+  background-color: $highlight-color;
 }
 
-.atc-part__check {
-  color: #008100;
+.atc-game-part-throw {
+  width: 24px
 }
 
-.atc-part__times {
-  color: #dd0000;
+.atc-game-part-throw__green {
+  color: $accent-green-color;
 }
 
-.atc-part__name, .atc-part__turn, .atc-part__stats {
-  padding: 5px;
-  box-sizing: border-box;
+.atc-game-part-throw__red {
+  color: $accent-red-color;
 }
 
-.atc-part__name, .atc-part__turn {
-  border-right: $border;
-}
-
-.atc-part__name {
-  flex: 1 1 auto;
-  font-style: italic;
-  font-size: 22px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.atc-part__name_active {
-  background: #ddd;
-}
-
-.atc-part__turn {
-  flex: 0 0 auto;
+.atc-game-part-stats {
+  width: 64px;
   text-align: center;
-  font-size: 24px;
-  width: 2em;
-}
-
-.atc-part__stats {
-  flex: 0 0 auto;
-  text-align: center;
-  font-size: 14px;
-  padding: 5px;
-  width: 5em;
+  font-size: 10px;
+  line-height: 12px;
 }
