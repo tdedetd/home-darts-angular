@@ -31,7 +31,9 @@ export function getCurrentPlayerOnLoad(
     .filter((playerThrows) => !playerThrows.isCompleted);
 
   const uniqueSortedThrows = Array.from(new Set(playersThrows.map(({ throws }) => throws))).sort((a, b) => b - a);
-  if (!uniqueSortedThrows.length) return null;
+  if (!uniqueSortedThrows.length) {
+    return null;
+  }
 
   validateThrowsCount(uniqueSortedThrows, gameInfo.id);
 
@@ -43,7 +45,9 @@ export function getCurrentPlayerOnLoad(
 function getPlayerIdFromUniqueValues(playersThrows: PlayersTrows[], uniqueSortedThrows: number[]): PlayerApi['id'] {
   const index = uniqueSortedThrows[0] % throwsPerTurn === 0 ? 1 : 0;
   const player = playersThrows.find(({ throws }) => throws === uniqueSortedThrows[index]);
-  if (!player) throw new AroundTheClockInitError('Error while detecting current playerId');
+  if (!player) {
+    throw new AroundTheClockInitError('Error while detecting current playerId');
+  }
   return playersThrows[playersThrows.indexOf(player)].playerId;
 }
 
@@ -52,5 +56,7 @@ function validateThrowsCount(uniqueSortedThrows: number[], gameId: number): void
   const valid = len >= 1 && len <= 3 &&
     uniqueSortedThrows[0] - uniqueSortedThrows[len - 1] <= throwsPerTurn;
 
-  if (!valid) throw new AroundTheClockInitError(`Incorrect number of throws. Game with id ${gameId} is broken`);
+  if (!valid) {
+    throw new AroundTheClockInitError(`Incorrect number of throws. Game with id ${gameId} is broken`);
+  }
 }

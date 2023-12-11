@@ -11,7 +11,9 @@ export const selectUpcomingSectorsForCurrentPlayer = createSelector(
   selectParticipants,
   selectSectors,
   (playerId: number | null, participants: Partial<Record<number, AtcParticipant>>, sectors: DartboardSector[]) => {
-    if (playerId === null) return [];
+    if (playerId === null) {
+      return [];
+    }
     const hits = participants[playerId]?.hits ?? 0;
     return sectors.slice(hits, hits + throwsPerTurn);
   }

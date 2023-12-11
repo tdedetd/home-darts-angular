@@ -34,6 +34,7 @@ export const aroundTheClockReducer = createReducer<AroundTheClockState>(
       loading: false,
       loadingStatus: GameLoadingStatuses.Initiated,
       sections,
+
       // TODO: default values for non-existing participants
       participants: throwsGrouped.reduce<AtcParticipants>((acc, { playerId, hits, throws }) => ({
         ...acc,
@@ -52,7 +53,9 @@ export const aroundTheClockReducer = createReducer<AroundTheClockState>(
   on(atcResetGame, (): AroundTheClockState => initialState),
   on(atcTrowStart, (state): AroundTheClockState => ({ ...state, loading: true })),
   on(atcTrowSuccess, (state, { hit }): AroundTheClockState => {
-    if (state.currentPlayerId === null) return state;
+    if (state.currentPlayerId === null) {
+      return state;
+    }
 
     const isTurnOver = checkTurnOver(state);
     const participantAfterThrow = getParticipantAfterThrow(

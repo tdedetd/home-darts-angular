@@ -54,7 +54,9 @@ export class DartboardComponent implements OnChanges, AfterViewInit {
   }
 
   private updateCanvasResolution(): void {
-    if (!this.dartboardRenderer) return;
+    if (!this.dartboardRenderer) {
+      return;
+    }
 
     this.dartboard.nativeElement.width = this.dartboard.nativeElement.clientWidth * this.renderQuality;
     this.dartboard.nativeElement.height = this.dartboard.nativeElement.clientWidth * this.renderQuality;

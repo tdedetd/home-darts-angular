@@ -10,6 +10,7 @@ export const startGameInfoLoading = createAction(
   props<{ gameId: number }>()
 );
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const getGameInfoLoadingSuccess = <GameParams extends object = Partial<Record<GameParamTypes, unknown>>>() =>
   createAction(
     `${source} Loading Success`,

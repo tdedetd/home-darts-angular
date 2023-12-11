@@ -89,7 +89,9 @@ export class DartboardRenderer {
   }
 
   public updateRenderResolution(width: number, height: number): void {
-    if (width !== height) throw new Error('cannot create DartboardRenderer: width !== height');
+    if (width !== height) {
+      throw new Error('cannot create DartboardRenderer: width !== height');
+    }
     this.renderLength = width;
     this.renderSizeConverter.setRenderLength(this.renderLength);
     this.context.lineWidth = this.renderLength / 70;

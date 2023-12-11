@@ -7,7 +7,10 @@ import { TimeUnits } from './models/time-units.enum';
 })
 export class FormatTimeIntervalPipe implements PipeTransform {
   public transform(seconds: number): string {
-    if (!seconds) return `0${TimeUnits.Seconds}`;
+    if (!seconds) {
+      return `0${TimeUnits.Seconds}`;
+    }
+
     return ([
       {
         unit: TimeUnits.Hours,

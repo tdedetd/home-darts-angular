@@ -57,6 +57,7 @@ export class AtcStartPlayersListComponent implements OnInit, ControlValueAccesso
 
   private emitValue(value: PlayerApi['id'][]): void {
     this.onChange?.(this.randomOrderControl.value ? shuffleList(value) : value);
+
     // TODO: writeValue doesnt work. fix it
     this.value = value;
 

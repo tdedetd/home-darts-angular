@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnIni
 import { Store } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
 import { startGameInfoLoading } from '../../../../store/actions/game-info.actions';
-import { Observable, combineLatest, filter, take } from 'rxjs';
+import { Observable, filter, take } from 'rxjs';
 import { selectPlayersState } from '../../store/selectors/players-state.selector';
 import { AtcParticipant } from '../../models/atc-participant.interface';
 import { PlayerApi } from '@models/player-api.interface';
@@ -17,12 +17,11 @@ import { selectIsCurrentPlayerCompleted } from '../../store/selectors/is-current
 import { selectTurnThrows } from '../../store/selectors/turn-throws.selector';
 import { TurnThrows } from '../../models/turn-throws.type';
 import { SectionTypes } from '@models/enums/section-types.enum';
-import { selectHitDetectionMode } from '../../store/selectors/hit-detection-mode.selector';
 import { DartboardSector } from '@models/types/dartboard-sector.type';
-import { selectDartboardStyle } from '../../../../store/selectors/dartboard-style.selector';
 import { DartboardStyles } from '@models/enums/dartboard-styles.enum';
 import { isNotEmpty } from '@functions/type-guards/is-not-empty';
 import { selectIsGameNotCompleted } from '../../store/selectors/is-game-not-completed.selector';
+import { selectDartboardSettings } from '../../store/selectors/dartboard-settings.selector';
 
 @UntilDestroy()
 @Component({
@@ -60,14 +59,11 @@ export class AtcGameComponent implements OnInit, OnDestroy {
       this.cdr.detectChanges();
     });
 
-    combineLatest([
-      this.store.select(selectDartboardStyle),
-      this.store.select(selectHitDetectionMode),
-    ]).pipe(
-      filter(([dartboardStyle, hitDetectionMode]) => isNotEmpty(dartboardStyle) && isNotEmpty(hitDetectionMode)),
+    this.store.select(selectDartboardSettings).pipe(
+      filter(({ dartboardStyle, hitDetectionMode }) => isNotEmpty(dartboardStyle) && isNotEmpty(hitDetectionMode)),
       take(1),
       untilDestroyed(this)
-    ).subscribe(([dartboardStyle, hitDetectionMode]) => {
+    ).subscribe(({ dartboardStyle, hitDetectionMode }) => {
       this.dartboardStyle = dartboardStyle;
       this.hitDetectionMode = hitDetectionMode;
       this.cdr.detectChanges();

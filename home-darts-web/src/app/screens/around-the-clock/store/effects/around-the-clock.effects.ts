@@ -19,6 +19,7 @@ export class AroundTheClockEffects {
         this.store.select(selectGameId),
         this.store.select(selectCurrentPlayerId),
       ]),
+
       // TOOD: check is not nil: gameId, playerId - throw error
       switchMap(([_, gameId, PlayerId]) => this.atcApi.complete(gameId ?? 0, PlayerId ?? 0)),
       map(() => atcCompleteSuccess())
@@ -34,6 +35,7 @@ export class AroundTheClockEffects {
         this.store.select(selectCurrentPlayerId),
       ]),
       switchMap(([{ hit }, gameId, sector, playerId]) =>
+
         // TOOD: check is not nil: sector, gameId, playerId - throw error
         this.atcApi.throw(sector ?? 0, hit, gameId ?? 0, playerId ?? 0)
           .pipe(map(() => atcTrowSuccess({ hit })))

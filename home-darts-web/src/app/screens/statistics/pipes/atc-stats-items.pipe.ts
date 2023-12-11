@@ -31,8 +31,10 @@ export class AtcStatsItemsPipe implements PipeTransform {
       });
 
     return [
+
       // actual type: ({ sectionType: 'all' } & Record<string, number>)[]
       resultItemsWithoutAggregate.reduce(
+
         // TODO: any
         (acc: any, current: any) => ({
           ...acc,
