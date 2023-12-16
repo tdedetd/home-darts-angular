@@ -12,7 +12,9 @@ export const getParticipantAfterThrow = (
   const isCompleted = getIsCompleted(hits, sectors);
   const oldTurnThrows = participant?.turnThrows ?? [];
   return {
-    throws, hits, isCompleted,
+    throws,
+    hits,
+    isCompleted,
     turnThrows: undo
       ? oldTurnThrows
       : oldTurnThrows.length !== 3

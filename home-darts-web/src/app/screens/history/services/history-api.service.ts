@@ -12,6 +12,6 @@ export class HistoryApiService {
   constructor(private http: HttpClient) {}
 
   public getHistory(params?: PaginationParams): Observable<HistoryApi[]> {
-    return this.http.get<HistoryApi[]>(this.apiPrefix, { params: { ...params, playerId: defaultPlayerId } });
+    return this.http.get<HistoryApi[]>(this.apiPrefix, { params: { ...params, playerId: defaultPlayerId }});
   }
 }

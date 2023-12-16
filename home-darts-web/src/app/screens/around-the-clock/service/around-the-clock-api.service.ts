@@ -21,10 +21,10 @@ export class AroundTheClockApiService {
   }
 
   public throw(nominal: number, hit: boolean, gameId: number, playerId: number): Observable<null> {
-    return this.http.post<null>(`${this.apiPrefix}${gameId}/throw`, { nominal, hit }, { params: { playerId } });
+    return this.http.post<null>(`${this.apiPrefix}${gameId}/throw`, { nominal, hit }, { params: { playerId }});
   }
 
   public undo(gameId: number, playerId: number): Observable<ThrowApi | null> {
-    return this.http.delete<ThrowApi | null>(`${this.apiPrefix}${gameId}/undo`, { params: { playerId } });
+    return this.http.delete<ThrowApi | null>(`${this.apiPrefix}${gameId}/undo`, { params: { playerId }});
   }
 }

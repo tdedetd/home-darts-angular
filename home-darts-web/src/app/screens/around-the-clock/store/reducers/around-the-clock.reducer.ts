@@ -39,7 +39,8 @@ export const aroundTheClockReducer = createReducer<AroundTheClockState>(
       participants: throwsGrouped.reduce<AtcParticipants>((acc, { playerId, hits, throws }) => ({
         ...acc,
         [playerId]: {
-          hits, throws,
+          hits,
+          throws,
           isCompleted: getIsCompleted(hits, sections),
           turnThrows: [],
         }
@@ -87,7 +88,7 @@ export const aroundTheClockReducer = createReducer<AroundTheClockState>(
       turnOverOnLastThrow: isTurnOver || participantAfterThrow.isCompleted,
     };
   }),
-  on(atcUndoSuccess, (state, { lastThrow }): AroundTheClockState => 
+  on(atcUndoSuccess, (state, { lastThrow }): AroundTheClockState =>
     state.currentPlayerId && state.participants[state.currentPlayerId] && lastThrow ? {
       ...state,
       loading: false,
