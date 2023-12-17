@@ -1,6 +1,6 @@
 import { AnimateCallback } from '../models/animate-callback.type';
-import { AnimationInterruptionMode } from '../models/animation-interruption-mode.enum';
 import { AnimationOptions } from '../models/animation-options.interface';
+import { AnimationStates } from '../models/animation-states.enum';
 
 export class AnimationsList {
   private animations: Partial<Record<number, { callback: AnimateCallback, options: AnimationOptions }>> = {};
@@ -18,13 +18,10 @@ export class AnimationsList {
     this.animations = animations;
   }
 
-  public interrupt(
-    intervalId: number,
-    interruptionMode: AnimationInterruptionMode = AnimationInterruptionMode.LeaveAsIs
-  ): void {
-    if (interruptionMode === AnimationInterruptionMode.SetFinalState) {
+  public interrupt(intervalId: number, setState: AnimationStates): void {
+    if (setState === AnimationStates.Final) {
       this.animations[intervalId]?.callback(1);
-    } else if (interruptionMode === AnimationInterruptionMode.SetInitialState) {
+    } else if (setState === AnimationStates.Initial) {
       this.animations[intervalId]?.callback(0);
     }
 

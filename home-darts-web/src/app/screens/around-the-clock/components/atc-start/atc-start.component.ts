@@ -47,6 +47,10 @@ export class AtcStartComponent {
   ) { }
 
   public submit(): void {
+    if (!this.form.valid) {
+      return;
+    }
+
     this.store.dispatch(showGlobalProgressBar());
     this.loading = true;
     this.cdr.detectChanges();

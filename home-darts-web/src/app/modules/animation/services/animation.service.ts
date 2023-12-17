@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { AnimateCallback } from '../models/animate-callback.type';
 import { AnimationOptions } from '../models/animation-options.interface';
 import { AnimationsList } from '../classes/animations-list';
-import { AnimationInterruptionMode } from '../models/animation-interruption-mode.enum';
 import { TimingFunction } from '../models/timing-function.type';
-import { isNotEmpty } from '../../../utils/functions/type-guards/is-not-empty';
+import { isNotEmpty } from '@functions/type-guards/is-not-empty';
 import { TimingFunctions } from '../models/timing-functions.enum';
 import { timingFunctionsMapper } from '../constants/timing-functions-mapper';
+import { AnimationStates } from '../models/animation-states.enum';
 
 @Injectable()
 export class AnimationService {
@@ -24,6 +24,7 @@ export class AnimationService {
     const startTimeMs = AnimationService.nowMs;
     const { durationMs } = options;
     const refreshTimeout = options.refreshTimeout ?? 100;
+    const onFinishState = options.onFinishState ?? AnimationStates.Final;
     const timingFunction: TimingFunction = isNotEmpty(options.timingFunction)
       ? typeof options.timingFunction === 'function'
         ? options.timingFunction
@@ -34,13 +35,14 @@ export class AnimationService {
     const intervalId = window.setInterval(() => {
       const timeDifferenceMs = AnimationService.nowMs - startTimeMs;
 
-      if (AnimationService.ended(timeDifferenceMs, durationMs)) {
+      const ended = AnimationService.ended(timeDifferenceMs, durationMs);
+      let timePhase: number;
+      if (ended) {
+        timePhase = onFinishState === AnimationStates.Initial ? 0 : 1;
         this.animationsList.clear(intervalId);
+      } else {
+        timePhase = timeDifferenceMs / durationMs;
       }
-
-      const timePhase = AnimationService.ended(timeDifferenceMs, durationMs)
-        ? 1
-        : timeDifferenceMs / durationMs;
 
       callback(timingFunction(timePhase));
     }, refreshTimeout);
@@ -51,8 +53,8 @@ export class AnimationService {
 
   public interrupt(
     intervalId: number,
-    interruptionMode: AnimationInterruptionMode = AnimationInterruptionMode.LeaveAsIs
+    setState: AnimationStates = AnimationStates.Current
   ): void {
-    this.animationsList.interrupt(intervalId, interruptionMode);
+    this.animationsList.interrupt(intervalId, setState);
   }
 }

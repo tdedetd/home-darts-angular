@@ -175,7 +175,7 @@ export class DartboardRenderer {
     }
   }
 
-  private renderSector(sector: number, index: number): void {
+  private renderSector(sector: DartboardSector, index: number): void {
     const rotationRadians = this.getSectorRadians(index);
 
     const ringsColor = index % 2 === 0 ? this.style.palette.green : this.style.palette.red;
@@ -193,7 +193,7 @@ export class DartboardRenderer {
     this.renderSectorLabel(sector, rotationRadians);
   }
 
-  private renderSectorLabel(sector: number, radians: number): void {
+  private renderSectorLabel(sector: DartboardSector, radians: number): void {
     const numberPoint = CoordinateSystemConverter.toCartesian(
       {
         radians: radians + this.radiansHalfSector,
@@ -231,8 +231,12 @@ export class DartboardRenderer {
     const innerRenderRadius = this.renderSizeConverter.size(innerRadius * this.camera.zoom);
     const outerRenderRadius = this.renderSizeConverter.size(outerRadius * this.camera.zoom);
 
-    this.context.fillStyle = color;
-    this.context.strokeStyle = color;
+    if (mode === 'fill') {
+      this.context.fillStyle = color; 
+    } else {
+      this.context.strokeStyle = color;
+    }
+
     this.context.beginPath();
     this.context.ellipse(
       xCoord, yCoord,
@@ -251,6 +255,7 @@ export class DartboardRenderer {
       0,
       true
     );
+
     if (mode === 'fill') {
       this.context.fill();
     } else {
