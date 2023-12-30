@@ -1,0 +1,24 @@
+{
+  "id": 123,
+  "creationDate": "2023-12-23T14:16:48.488Z",
+  "gamemodeName": "aroundTheClock",
+  "isCompleted": false,
+  "params": {
+    "direction": "forwardBackward",
+    "hitDetection": "any",
+    "fastGame": false,
+    "includeBull": true
+  },
+  "players": [
+    {
+      "id": 3,
+      "creationDate": "2023-05-12T21:40:29.928Z",
+      "username": "Player 1"
+    },
+    {
+      "id": 13,
+      "creationDate": "1995-04-13T23:00:00.002Z",
+      "username": "TDEDETD"
+    }
+  ]
+}

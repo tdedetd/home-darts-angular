@@ -7,7 +7,7 @@ import { take } from 'rxjs';
 import { updateSettings } from '../../store/actions/settings.actions';
 import { isSettings } from '@functions/type-guards/is-settings';
 import { DartboardStyles } from '@models/enums/dartboard-styles.enum';
-import { FormControlsOf } from '@models/types/form-controls.type';
+import { FormControlsOf } from '@models/types/form-controls-of.type';
 import { SettingsState } from '@models/settings-state.interface';
 import { dartboardStyleItems } from '@constants/dartboard-style-items';
 

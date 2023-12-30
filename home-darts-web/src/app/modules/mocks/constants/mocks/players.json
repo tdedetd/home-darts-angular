@@ -1,0 +1,27 @@
+[
+  {
+    "id": 13,
+    "creationDate": "1995-04-13T00:00:00.002Z",
+    "username": "TDEDETD"
+  },
+  {
+    "id": 3,
+    "creationDate": "2023-05-12T21:40:29.928Z",
+    "username": "Player 1"
+  },
+  {
+    "id": 6,
+    "creationDate": "2023-05-12T21:40:29.928Z",
+    "username": "Player 2"
+  },
+  {
+    "id": 8,
+    "creationDate": "2023-05-12T21:40:29.928Z",
+    "username": "Player 3"
+  },
+  {
+    "id": 10,
+    "creationDate": "2023-05-12T21:40:29.928Z",
+    "username": "Player 4"
+  }
+]

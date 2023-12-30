@@ -21,6 +21,8 @@ import { SidenavMenuComponent } from './components/sidenav-menu/sidenav-menu.com
 import { MatMenuModule } from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
 import { SettingsEffects } from './store/effects/settings.effects';
+import { environment } from '../environments/environment';
+import { MocksModule } from './modules/mocks/mocks.module';
 
 @NgModule({
   declarations: [
@@ -45,6 +47,7 @@ import { SettingsEffects } from './store/effects/settings.effects';
     MatSidenavModule,
     MatListModule,
     MatMenuModule,
+    ...(environment.mock ? [MocksModule] : []),
   ],
   bootstrap: [AppComponent]
 })

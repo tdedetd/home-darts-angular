@@ -1,0 +1,43 @@
+{
+  "gamesCount": 74,
+  "throwsCount": 8326,
+  "totalPlayingTimeSeconds": 88914,
+  "aroundTheClock": {
+    "gamesCount": [
+      {
+        "sectionType": "any",
+        "gamesCount": 69
+      },
+      {
+        "sectionType": "double",
+        "gamesCount": 5
+      }
+    ],
+    "throwsHits": [
+      {
+        "sectionType": "any",
+        "throws": 6661,
+        "hits": 1389
+      },
+      {
+        "sectionType": "double",
+        "throws": 1665,
+        "hits": 100
+      }
+    ],
+    "hitsStreak": [
+      {
+        "sectionType": "triple",
+        "longestHitsStreak": 0
+      },
+      {
+        "sectionType": "double",
+        "longestHitsStreak": 3
+      },
+      {
+        "sectionType": "any",
+        "longestHitsStreak": 2
+      }
+    ]
+  }
+}
