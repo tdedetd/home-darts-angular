@@ -91,6 +91,7 @@ export class AtcGameComponent implements OnInit, OnDestroy {
   }
 
   public undo(): void {
+
     // TODO: loading state
     this.store.dispatch(atcUndoStart());
   }

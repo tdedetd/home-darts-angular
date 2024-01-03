@@ -1,0 +1,19 @@
+@import '../../../styles/colors';
+
+:host {
+  display: block;
+  padding: 12px 16px;
+  color: $copyright-text-color;
+  text-align: center;
+}
+
+.copyright-icon {
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+  margin-right: 8px;
+}
+
+.copyright-link {
+  color: inherit;
+}

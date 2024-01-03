@@ -232,7 +232,7 @@ export class DartboardRenderer {
     const outerRenderRadius = this.renderSizeConverter.size(outerRadius * this.camera.zoom);
 
     if (mode === 'fill') {
-      this.context.fillStyle = color; 
+      this.context.fillStyle = color;
     } else {
       this.context.strokeStyle = color;
     }

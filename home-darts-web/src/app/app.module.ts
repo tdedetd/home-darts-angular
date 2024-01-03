@@ -23,6 +23,7 @@ import { MatListModule } from '@angular/material/list';
 import { SettingsEffects } from './store/effects/settings.effects';
 import { environment } from '../environments/environment';
 import { MocksModule } from './modules/mocks/mocks.module';
+import { CopyrightComponent } from './components/copyright/copyright.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { MocksModule } from './modules/mocks/mocks.module';
     HomeComponent,
     SidenavContainerComponent,
     SidenavMenuComponent,
+    CopyrightComponent,
   ],
   imports: [
     BrowserModule,
