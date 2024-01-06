@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
 import { Store } from '@ngrx/store';
-import { closeSidenav } from '../../store/actions/sidenav-opened.actions';
-import { selectSidenavOpened } from '../../store/selectors/sidenav-opened.selector';
+import { closeSidenav } from '../../../../store/actions/sidenav-opened.actions';
+import { selectSidenavOpened } from '../../../../store/selectors/sidenav-opened.selector';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { combineLatest, debounceTime, filter, fromEvent } from 'rxjs';
 import { mobileBreakpoint } from '@constants/breakpoints/mobile-breakpoint';
