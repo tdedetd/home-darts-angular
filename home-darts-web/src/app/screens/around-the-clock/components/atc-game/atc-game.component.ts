@@ -14,8 +14,8 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { selectIsPlayerTurn } from '../../store/selectors/is-player-turn.selector';
 import { selectCanCompleteGame } from '../../store/selectors/can-complete-game.selector';
 import { selectIsCurrentPlayerCompleted } from '../../store/selectors/is-current-player-completed.selector';
-import { selectTurnThrows } from '../../store/selectors/turn-throws.selector';
-import { TurnThrows } from '../../models/turn-throws.type';
+import { selectTurnHits } from '../../store/selectors/turn-throws.selector';
+import { TurnHits } from '../../models/turn-hits.type';
 import { SectionTypes } from '@models/enums/section-types.enum';
 import { DartboardSector } from '@models/types/dartboard-sector.type';
 import { DartboardStyles } from '@models/enums/dartboard-styles.enum';
@@ -86,8 +86,8 @@ export class AtcGameComponent implements OnInit, OnDestroy {
     this.store.dispatch(atcTrowStart({ hit }));
   }
 
-  public turnThrows$(playerId: number): Observable<TurnThrows> {
-    return this.store.select(selectTurnThrows(playerId));
+  public turnHits$(playerId: number): Observable<TurnHits> {
+    return this.store.select(selectTurnHits(playerId));
   }
 
   public undo(): void {

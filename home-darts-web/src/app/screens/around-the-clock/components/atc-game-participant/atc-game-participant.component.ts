@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { TurnThrows } from '../../models/turn-throws.type';
+import { TurnHits } from '../../models/turn-hits.type';
 import { throwsPerTurn } from '@constants/throws-per-turn';
 
 const turnIndexes = Array(throwsPerTurn).fill(0).map((_, i) => i);
@@ -15,7 +15,7 @@ export class AtcGameParticipantComponent {
   @Input() public hits = 0;
   @Input() public username = '';
   @Input() public throws = 1;
-  @Input() public turnHits: TurnThrows = [];
+  @Input() public turnHits: TurnHits = [];
 
   public readonly turnIndexes = turnIndexes;
 }

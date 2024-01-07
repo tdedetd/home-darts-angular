@@ -14,7 +14,7 @@ export const selectPlayersState = createSelector(
         hits: 0,
         throws: 0,
         isCompleted: false,
-        turnThrows: [],
+        turnHits: [],
       }),
       ...player,
     }))

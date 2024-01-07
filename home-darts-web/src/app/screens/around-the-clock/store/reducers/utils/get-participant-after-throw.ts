@@ -10,15 +10,15 @@ export const getParticipantAfterThrow = (
   const throws = participant ? (participant.throws + (undo ? -1 : 1)) : 1;
   const hits = participant ? (participant.hits + (undo ? -Number(hit) : Number(hit))) : Number(hit);
   const isCompleted = getIsCompleted(hits, sectors);
-  const oldTurnThrows = participant?.turnThrows ?? [];
+  const oldTurnHits = participant?.turnHits ?? [];
   return {
     throws,
     hits,
     isCompleted,
-    turnThrows: undo
-      ? oldTurnThrows
-      : oldTurnThrows.length !== 3
-      ? [...oldTurnThrows, hit]
+    turnHits: undo
+      ? oldTurnHits
+      : oldTurnHits.length !== 3
+      ? [...oldTurnHits, hit]
       : [],
   };
 };

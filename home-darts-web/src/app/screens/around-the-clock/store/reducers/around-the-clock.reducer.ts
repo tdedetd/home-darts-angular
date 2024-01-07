@@ -42,7 +42,7 @@ export const aroundTheClockReducer = createReducer<AroundTheClockState>(
           hits,
           throws,
           isCompleted: getIsCompleted(hits, sections),
-          turnThrows: [],
+          turnHits: [],
         }
       }), {}),
     };
@@ -71,7 +71,7 @@ export const aroundTheClockReducer = createReducer<AroundTheClockState>(
         [newCurrentPlayerId]: {
           ...state.participants[newCurrentPlayerId],
           ...(state.currentPlayerId === newCurrentPlayerId ? participantAfterThrow : {}),
-          turnThrows: [],
+          turnHits: [],
         }
       } : {}
     );

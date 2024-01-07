@@ -3,7 +3,7 @@
     <li *ngFor="let player of players$ | async" class="atc-game-particpant-container">
       <hd-atc-game-participant
         [active]="isPlayerActive$(player.id) | async"
-        [turnHits]="(turnThrows$(player.id) | async) ?? []"
+        [turnHits]="(turnHits$(player.id) | async) ?? []"
         [username]="player.username"
         [hits]="player.hits"
         [throws]="player.throws"
