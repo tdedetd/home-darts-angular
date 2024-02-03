@@ -22,6 +22,7 @@ import { DartboardStyles } from '@models/enums/dartboard-styles.enum';
 import { isNotEmpty } from '@functions/type-guards/is-not-empty';
 import { selectIsGameNotCompleted } from '../../store/selectors/is-game-not-completed.selector';
 import { selectDartboardSettings } from '../../store/selectors/dartboard-settings.selector';
+import { selectIsGameCompleted } from '../../store/selectors/is-game-completed.selector';
 
 @UntilDestroy()
 @Component({
@@ -34,6 +35,7 @@ export class AtcGameComponent implements OnInit, OnDestroy {
   public canCompleteGame$: Observable<boolean> = this.store.select(selectCanCompleteGame);
   public currentPlayerCompleted$: Observable<boolean> = this.store.select(selectIsCurrentPlayerCompleted);
   public dartboardStyle: DartboardStyles | null = null;
+  public isGameCompleted$: Observable<boolean> = this.store.select(selectIsGameCompleted);
   public isGameNotCompleted$: Observable<boolean> = this.store.select(selectIsGameNotCompleted);
   public hitDetectionMode: SectionTypes | null = null;
   public loading = true;

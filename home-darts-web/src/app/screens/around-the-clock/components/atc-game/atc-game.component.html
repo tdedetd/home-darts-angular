@@ -56,7 +56,7 @@
     matTooltip="Undo"
     color="primary"
     type="button"
-    [disabled]="loading"
+    [disabled]="loading || (isGameCompleted$ | async)"
     class="atc-game-tools-button btn flex-1-1"
     (click)="undo()"
   >
