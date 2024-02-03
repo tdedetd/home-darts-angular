@@ -1,16 +1,5 @@
-:host {
-  display: block;
-  background-color: #ddd;
-  padding: 15px;
-}
-
-.history-item__first-line {
+.history-item__throws-info {
   display: flex;
   justify-content: space-between;
-}
-
-.history-item__second-line {
-  display: flex;
-  justify-content: space-around;
-  padding-top: 10px;
+  padding-top: 8px;
 }

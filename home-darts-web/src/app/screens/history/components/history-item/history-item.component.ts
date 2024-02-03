@@ -11,7 +11,9 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class HistoryItemComponent {
   @Input() public data?: HistoryApi;
+
   public readonly gamemodesNames = gamemodesNames;
+  public dateNow = new Date();
 
   constructor(public route: ActivatedRoute) { }
 }

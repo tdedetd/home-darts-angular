@@ -5,5 +5,7 @@
       <hd-history-item [data]="game"></hd-history-item>
     </li>
   </ul>
-  <button *ngIf="showMoreButton" (click)="loadMore()">Load more</button>
+  <div class="history__actions">
+    <button *ngIf="showMoreButton" mat-button color="primary" (click)="loadMore()">Load more</button>
+  </div>
 </div>
