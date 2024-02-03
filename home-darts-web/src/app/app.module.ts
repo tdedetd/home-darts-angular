@@ -18,6 +18,7 @@ import { environment } from '../environments/environment';
 import { MocksModule } from './modules/mocks/mocks.module';
 import { CoreModule } from './modules/core/core.module';
 import { CommonModule } from '@angular/common';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [AppComponent],
@@ -35,6 +36,7 @@ import { CommonModule } from '@angular/common';
     MatIconModule,
     MatButtonModule,
     MatProgressBarModule,
+    MatSnackBarModule,
     ...(environment.mock ? [MocksModule] : []),
   ],
   bootstrap: [AppComponent]

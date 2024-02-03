@@ -5,7 +5,11 @@ import { selectGlobalProgressBarShown } from './store/selectors/global-progress-
 import { closeSidenav, toggleSidenav } from './store/actions/sidenav-opened.actions';
 import { NavigationEnd, Router } from '@angular/router';
 import { loadSettings } from './store/actions/settings.actions';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { IncorrectDisplayWarningService } from './services/incorrect-display-warning.service';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'hd-root',
   templateUrl: './app.component.html',
@@ -20,10 +24,16 @@ export class AppComponent implements OnInit {
 
   public progressBarShown$: Observable<boolean> = this.store.select(selectGlobalProgressBarShown);
 
-  constructor(private store: Store, private router: Router) { }
+  constructor(
+    private store: Store,
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private incorrectDisplayWarningService: IncorrectDisplayWarningService,
+  ) { }
 
   public ngOnInit(): void {
     this.store.dispatch(loadSettings());
+    this.initOpenIncorrectDisplayWarning();
   }
 
   public closeSidenav(): void {
@@ -32,5 +42,18 @@ export class AppComponent implements OnInit {
 
   public toggleMobileMenu(): void {
     this.store.dispatch(toggleSidenav());
+  }
+
+  private initOpenIncorrectDisplayWarning(): void {
+    this.incorrectDisplayWarningService.loadState().pipe(
+      filter(displayed => !displayed),
+      untilDestroyed(this),
+    ).subscribe(() => {
+      this.snackBar.open(
+        'Interface on desktop may be displayed incorrectly',
+        'OK',
+      );
+      this.incorrectDisplayWarningService.markAsDisplayed();
+    });
   }
 }
