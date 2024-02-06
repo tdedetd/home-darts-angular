@@ -9,6 +9,7 @@ import { AroundTheClockApiService } from '../../service/around-the-clock-api.ser
 import { selectCurrentPlayerId } from '../selectors/current-player-id.selector';
 import { selectIsVibrationOn } from '../../../../store/selectors/is-vibration-on.selector';
 import { selectTurnOverOnLastThrow } from '../selectors/turn-over-on-last-throw.selector';
+import { selectIsSoundsOn } from '../../../../store/selectors/is-sounds-on.selector';
 
 @Injectable()
 export class AroundTheClockEffects {
@@ -64,6 +65,17 @@ export class AroundTheClockEffects {
       ]),
       filter(([_, turnOver, vibrationOn]) => turnOver && vibrationOn),
       tap(() => navigator.vibrate(200))
+    );
+  }, { dispatch: false });
+
+  public soundOnThrowEnd$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(atcTrowSuccess),
+      concatLatestFrom(() => this.store.select(selectIsSoundsOn)),
+      filter(([_, sounds]) => sounds),
+      tap(() => {
+        new Audio('/assets/sounds/hit.ogg').play();
+      }),
     );
   }, { dispatch: false });
 
