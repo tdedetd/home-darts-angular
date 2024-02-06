@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable, filter, switchMap } from 'rxjs';
+import { Observable, debounceTime, filter, switchMap } from 'rxjs';
 import { PlayerApi } from '@models/player-api.interface';
 import { PlayerApiService } from '../../services/player-api.service';
 import { AnimatedPipeCallback } from '../../modules/animation/models/animated-pipe-callback.type';
@@ -25,6 +25,7 @@ export class StatisticsComponent implements OnInit {
 
   public readonly stats$ = this.playerControl.valueChanges.pipe(
     filter(Boolean),
+    debounceTime(250),
     switchMap(player => this.playerApi.getPlayerStats(player.id)),
   );
 
