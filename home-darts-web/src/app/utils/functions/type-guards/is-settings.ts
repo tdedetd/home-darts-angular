@@ -2,10 +2,11 @@ import { SettingsState } from '@models/settings-state.interface';
 import { isNotEmpty } from './is-not-empty';
 
 const settingsKeys: Record<keyof SettingsState, void> = {
+  countersAnimations: undefined,
   dartboardStyle: undefined,
+  language: undefined,
   sounds: undefined,
   vibration: undefined,
-  countersAnimations: undefined,
 };
 
 export function isSettings(

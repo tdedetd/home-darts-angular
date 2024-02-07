@@ -35,10 +35,11 @@ export class SettingsService {
     const settingsParsed: Partial<SettingsState> = JSON.parse(settingsStr);
 
     return {
+      countersAnimations: settingsParsed.countersAnimations ?? defaultSettings.countersAnimations,
       dartboardStyle: settingsParsed.dartboardStyle ?? defaultSettings.dartboardStyle,
+      language: settingsParsed.language ?? defaultSettings.language,
       sounds: settingsParsed.sounds ?? defaultSettings.sounds,
       vibration: settingsParsed.vibration ?? defaultSettings.vibration,
-      countersAnimations: settingsParsed.countersAnimations ?? defaultSettings.countersAnimations,
     };
   }
 

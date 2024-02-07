@@ -10,6 +10,7 @@ import { DartboardStyles } from '@models/enums/dartboard-styles.enum';
 import { FormControlsOf } from '@models/types/form-controls-of.type';
 import { SettingsState } from '@models/settings-state.interface';
 import { dartboardStyleItems } from '@constants/dartboard-style-items';
+import { Languages } from '../../models/enums/languages.enum';
 
 @UntilDestroy()
 @Component({
@@ -22,10 +23,11 @@ export class SettingsComponent implements OnInit {
   public readonly dartboardStyleItems = dartboardStyleItems;
 
   public form = this.fb.group<FormControlsOf<SettingsState>>({
+    countersAnimations: this.fb.nonNullable.control(false, Validators.required),
     dartboardStyle: this.fb.nonNullable.control(DartboardStyles.Material, Validators.required),
+    language: this.fb.nonNullable.control(Languages.English, Validators.required),
     sounds: this.fb.nonNullable.control(false, Validators.required),
     vibration: this.fb.nonNullable.control(false, Validators.required),
-    countersAnimations: this.fb.nonNullable.control(false, Validators.required),
   });
 
   constructor(
