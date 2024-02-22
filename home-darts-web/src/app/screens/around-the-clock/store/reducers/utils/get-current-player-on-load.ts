@@ -35,8 +35,6 @@ export function getCurrentPlayerOnLoad(
     return null;
   }
 
-  validateThrowsCount(uniqueSortedThrows, gameInfo.id);
-
   return uniqueSortedThrows.length === 1
     ? playersThrows[0].playerId
     : getPlayerIdFromUniqueValues(playersThrows, uniqueSortedThrows);
@@ -49,14 +47,4 @@ function getPlayerIdFromUniqueValues(playersThrows: PlayersTrows[], uniqueSorted
     throw new AroundTheClockInitError('Error while detecting current playerId');
   }
   return playersThrows[playersThrows.indexOf(player)].playerId;
-}
-
-function validateThrowsCount(uniqueSortedThrows: number[], gameId: number): void {
-  const len = uniqueSortedThrows.length;
-  const valid = len >= 1 && len <= 3 &&
-    uniqueSortedThrows[0] - uniqueSortedThrows[len - 1] <= throwsPerTurn;
-
-  if (!valid) {
-    throw new AroundTheClockInitError(`Incorrect number of throws. Game with id ${gameId} is broken`);
-  }
 }
