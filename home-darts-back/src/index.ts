@@ -12,12 +12,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-if (isProduction) {
-  app.use(debugInfoProd);
-} else {
-  app.use(debugInfo);
-}
+app.use(isProduction ? debugInfoProd : debugInfo);
 app.use(router);
 
 app.listen(port, () => {
