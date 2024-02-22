@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { aroundTheClockRouter } from './around-the-clock.js';
-import { GameInfo } from '../../../utils/models/game-info.interface';
+import { GameInfo } from '../../../utils/models/game-info.interface.js';
 import { getPgClient } from '../../../config/pg-connect.js';
 import { paramGameId } from '../../../handlers/param-game-id.js';
 import { checkGameExistence } from '../../../handlers/check-game-existence.js';

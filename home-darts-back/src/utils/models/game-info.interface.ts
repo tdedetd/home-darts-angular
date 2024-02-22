@@ -1,7 +1,7 @@
-import { GameParamTypes } from '../types/game-param-types.enum';
-import { GameParamValue } from '../types/game-param-value.type';
-import { Gamemodes } from '../types/gamemodes.enum';
-import { Player } from './player.interface';
+import { GameParamTypes } from '../types/game-param-types.enum.js';
+import { GameParamValue } from '../types/game-param-value.type.js';
+import { Gamemodes } from '../types/gamemodes.enum.js';
+import { Player } from './player.interface.js';
 
 export interface GameInfo {
   id: number;
