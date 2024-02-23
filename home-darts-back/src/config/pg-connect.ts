@@ -1,5 +1,6 @@
 import pg from 'pg';
-import { pg as pgConfig } from './index.js';
+import { isProduction, pg as pgConfig } from './index.js';
+import { Sequelize } from 'sequelize';
 
 if (
   typeof pgConfig.database !== 'string' ||
@@ -24,3 +25,9 @@ pgPool.connect()
 
 // TODO: make async
 export const getPgClient = (): pg.PoolClient => pgClient as pg.PoolClient;
+
+export const sequelize = new Sequelize(pgConfig.database, pgConfig.user, pgConfig.password, {
+  host: pgConfig.host,
+  dialect: 'postgres',
+  logging: isProduction ? false : console.log,
+});

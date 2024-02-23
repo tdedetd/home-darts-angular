@@ -7,6 +7,9 @@ import { SqlQueries } from '../../utils/types/sql-queries.enum.js';
 import { Throw } from '../../utils/models/throw.interface.js';
 import { ThrowsGrouped } from '../../utils/models/throws-grouped.interface.js';
 import { queryPlayerIdOptional } from '../../handlers/query-player-id-optional.js';
+import { ThrowOrm } from '../../orm-models/throw.js';
+import { Op } from 'sequelize';
+import { isEmpty } from '../../utils/functions/is-empty.js';
 
 export const throwsRouter = Router();
 
@@ -20,8 +23,15 @@ throwsRouter.get('/:gameId([0-9]+)',
     res: Response<Throw[], { gameId: number, playerId?: number }>
   ) => {
     const { gameId, playerId } = res.locals;
-    const throwsResult = await getPgClient().query<Throw>(getSql(SqlQueries.Throws), [gameId]);
-    res.json(throwsResult.rows);
+
+    const throwsResult = await ThrowOrm.findAll({
+      where: {
+        gameId: { [Op.eq]: gameId },
+        ...(isEmpty(playerId) ? {} : { playerId: { [Op.eq]: playerId } })
+      },
+      order: [['creation_date', 'desc']]
+    });
+    res.json(throwsResult.map(rec => rec.dataValues));
   }
 );
 
