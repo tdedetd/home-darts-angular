@@ -1,29 +1,28 @@
 import { NextFunction, Request, Response } from 'express';
 import { isEmpty } from '../utils/functions/is-empty.js';
-import { PaginationParams } from '../utils/models/pagination-params.interface.js';
 import { handlerDebug } from '../utils/functions/handler-debug.js';
+import { LimitOffset } from '../utils/models/limit-offset.interface.js';
 
 export const queryPagination = (
-  req: Request<unknown, unknown, unknown, {
-    page?: string;
-    size?: string;
-  }>,
-  res: Response<unknown, PaginationParams>,
+  req: Request,
+  res: Response<unknown, LimitOffset>,
   next: NextFunction
 ) => {
   handlerDebug('queryPagination');
 
-  const { page, size } = req.query;
+  const { page: pageQuery, size: sizeQuery } = req.query;
 
-  if (!isEmpty(page) && isNaN(Number(page))) {
+  if (!isEmpty(pageQuery) && isNaN(Number(pageQuery))) {
     res.status(400).json({ error: 'Query param "page" must be number' });
-  } else if (!isEmpty(size) && isNaN(Number(size))) {
+  } else if (!isEmpty(sizeQuery) && isNaN(Number(sizeQuery))) {
     res.status(400).json({ error: 'Query param "size" must be number' });
   } else {
+    const page = isEmpty(pageQuery) ? 0 : Number(pageQuery);
+    const size = isEmpty(sizeQuery) ? 10 : Number(sizeQuery);
     res.locals = {
       ...res.locals,
-      page: isEmpty(page) ? 0 : Number(page),
-      size: isEmpty(size) ? 10 : Number(size),
+      limit: size,
+      offset: page * size,
     };
     next();
   }

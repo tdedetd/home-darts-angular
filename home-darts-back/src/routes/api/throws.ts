@@ -10,6 +10,8 @@ import { queryPlayerIdOptional } from '../../handlers/query-player-id-optional.j
 import { ThrowOrm } from '../../orm-models/throw.js';
 import { Op } from 'sequelize';
 import { isEmpty } from '../../utils/functions/is-empty.js';
+import { queryPagination } from '../../handlers/query-pagination.js';
+import { LimitOffset } from '../../utils/models/limit-offset.interface.js';
 
 export const throwsRouter = Router();
 
@@ -17,19 +19,25 @@ throwsRouter.get('/:gameId([0-9]+)',
   paramGameId,
   checkGameExistence,
   queryPlayerIdOptional,
+  queryPagination,
   // TODO: check permissions auth 403
   async (
-    req: Request,
-    res: Response<Throw[], { gameId: number, playerId?: number }>
+    req: Request<{ gameId: string }, unknown, unknown, {
+      playerId?: string,
+      page?: string,
+      size?: string,
+    }>,
+    res: Response<Throw[], { gameId: number, playerId?: number } & LimitOffset>
   ) => {
-    const { gameId, playerId } = res.locals;
+    const { gameId, playerId, limit, offset } = res.locals;
 
     const throwsResult = await ThrowOrm.findAll({
       where: {
         gameId: { [Op.eq]: gameId },
         ...(isEmpty(playerId) ? {} : { playerId: { [Op.eq]: playerId } })
       },
-      order: [['creation_date', 'desc']]
+      order: [['creation_date', 'desc']],
+      limit, offset
     });
     res.json(throwsResult.map(rec => rec.dataValues));
   }

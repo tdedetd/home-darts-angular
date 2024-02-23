@@ -3,7 +3,7 @@ import { isEmpty } from '../utils/functions/is-empty.js';
 import { handlerDebug } from '../utils/functions/handler-debug.js';
 
 export const paramGameId = (
-  req: Request<{ gameId?: string }>,
+  req: Request,
   res: Response<unknown, { gameId: number }>,
   next: NextFunction
 ) => {
