@@ -1,0 +1,29 @@
+[
+  {
+    "id": 4991,
+    "creationDate": "2024-03-02T01:42:58.299Z",
+    "gameId": 348,
+    "playerId": 3,
+    "hit": false,
+    "nominal": 7,
+    "multiplier": 1
+  },
+  {
+    "id": 4990,
+    "creationDate": "2024-03-02T01:42:57.715Z",
+    "gameId": 348,
+    "playerId": 13,
+    "hit": false,
+    "nominal": 7,
+    "multiplier": 1
+  },
+  {
+    "id": 4989,
+    "creationDate": "2024-03-02T01:42:57.529Z",
+    "gameId": 348,
+    "playerId": 13,
+    "hit": false,
+    "nominal": 7,
+    "multiplier": 1
+  }
+]

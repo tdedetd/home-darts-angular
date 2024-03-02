@@ -11,7 +11,6 @@ export class ThrowsApiService {
 
   constructor(private http: HttpClient) {}
 
-  // TODO: make mock!!!!
   public getThrows(gameId: number, page: number, size: number): Observable<ThrowApi[]> {
     return this.http.get<ThrowApi[]>(`${this.throwsApiUrl}${gameId}`, {
       params: { page, size }
