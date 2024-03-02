@@ -20,6 +20,7 @@ import { AtcParticipants } from '../../models/atc-participants.type';
 import { getIsCompleted } from './utils/get-is-completed';
 import { isPerfectTurn } from './utils/is-perfect-turn';
 import { HttpStatusCode } from '@angular/common/http';
+import { getSortedLastThrows } from './utils/get-sorted-last-throws';
 
 const initialState: AroundTheClockState = {
   initStatus: GameLoadingStatuses.Pending,
@@ -33,12 +34,17 @@ const initialState: AroundTheClockState = {
 
 export const aroundTheClockReducer = createReducer<AroundTheClockState>(
   initialState,
-  on(atcGameInitialized, (state, { gameInfo, throwsGrouped, lastThrows }): AroundTheClockState => {
+  on(atcGameInitialized, (state, { gameInfo, throwsGrouped, lastThrowsByPlayers }): AroundTheClockState => {
     const sections = getSectionsForAroundTheClock(gameInfo.params.direction, gameInfo.params.includeBull);
     return {
       ...state,
       initStatus: GameLoadingStatuses.Initiated,
-      currentPlayerId: getCurrentPlayerOnInit(gameInfo.players, throwsGrouped, sections, lastThrows),
+      currentPlayerId: getCurrentPlayerOnInit(
+        gameInfo.players,
+        throwsGrouped,
+        sections,
+        getSortedLastThrows(lastThrowsByPlayers)
+      ),
       gameInfo,
       loading: false,
       sections,
