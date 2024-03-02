@@ -23,6 +23,8 @@ import { isNotEmpty } from '@functions/type-guards/is-not-empty';
 import { selectIsGameNotCompleted } from '../../store/selectors/is-game-not-completed.selector';
 import { selectDartboardSettings } from '../../store/selectors/dartboard-settings.selector';
 import { selectIsGameCompleted } from '../../store/selectors/is-game-completed.selector';
+import { selectInitStatusNoSuchGame } from '../../store/selectors/init-status-no-such-game.selector';
+import { selectInitStatusUnexpectedError } from '../../store/selectors/init-status-unexpected-error.selector';
 
 @UntilDestroy()
 @Component({
@@ -40,6 +42,8 @@ export class AtcGameComponent implements OnInit, OnDestroy {
   public hitDetectionMode: SectionTypes | null = null;
   public loading = true;
   public players$: Observable<(AtcParticipant & PlayerApi)[]> = this.store.select(selectPlayersState);
+  public errorNoSuchGame$: Observable<boolean> = this.store.select(selectInitStatusNoSuchGame);
+  public errorUnexpected$: Observable<boolean> = this.store.select(selectInitStatusUnexpectedError);
 
   public selectCurrentSectorForCurrentPlayer$: Observable<DartboardSector | undefined> =
     this.store.select(selectCurrentSectorForCurrentPlayer);

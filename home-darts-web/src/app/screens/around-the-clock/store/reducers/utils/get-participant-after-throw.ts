@@ -1,3 +1,4 @@
+import { throwsPerTurn } from '@constants/throws-per-turn';
 import { AtcParticipant } from '../../../models/atc-participant.interface';
 import { getIsCompleted } from './get-is-completed';
 
@@ -17,7 +18,7 @@ export const getParticipantAfterThrow = (
     isCompleted,
     turnHits: undo
       ? oldTurnHits
-      : oldTurnHits.length !== 3
+      : oldTurnHits.length !== throwsPerTurn
       ? [...oldTurnHits, hit]
       : [],
   };

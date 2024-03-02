@@ -1,21 +1,24 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { gameInfoLoadingError, startGameInfoLoading, gameInfoLoadingSuccess } from '../actions/game-info.actions';
-import { catchError, forkJoin, map, of, switchMap } from 'rxjs';
+import { catchError, map, of, switchMap } from 'rxjs';
 import { GameApiService } from '../../services/game-api.service';
 import { ThrowsApiService } from '../../services/throws-api.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
 export class GameInfoEffects {
   public loadGameInfo$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(startGameInfoLoading),
-      switchMap(({ gameId }) => forkJoin([
-        this.gameApi.getGameInfo(gameId),
-        this.throwsApi.getThrowsGrouped(gameId)
-      ])),
-      map(([gameInfo, throwsGrouped]) => gameInfoLoadingSuccess({ gameInfo, throwsGrouped })),
-      catchError(() => of(gameInfoLoadingError()))
+      switchMap(({ gameId }) => this.gameApi.getGameInfo(gameId).pipe(
+        map((gameInfo) => ({ gameInfo, gameId }))
+      )),
+      switchMap(({ gameInfo, gameId }) => this.throwsApi.getThrowsGrouped(gameId).pipe(
+        map((throwsGrouped) => ({ gameInfo, throwsGrouped }))
+      )),
+      map(({ gameInfo, throwsGrouped }) => gameInfoLoadingSuccess({ gameInfo, throwsGrouped })),
+      catchError((err: HttpErrorResponse) => of(gameInfoLoadingError({ err })))
     );
   });
 

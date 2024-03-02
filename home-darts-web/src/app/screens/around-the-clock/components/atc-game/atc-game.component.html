@@ -1,3 +1,10 @@
+<hd-error-screen
+  *ngIf="errorNoSuchGame$ | async"
+  message="The game doesn't exists"></hd-error-screen>
+<hd-error-screen
+  *ngIf="errorUnexpected$ | async"
+  message="Unexpected error while loading the game"></hd-error-screen>
+
 <div *ngIf="isGameNotCompleted$ | async; else gameCompleted" class="screen-container">
   <ul class="mb-24">
     <li *ngFor="let player of players$ | async" class="atc-game-particpant-container">

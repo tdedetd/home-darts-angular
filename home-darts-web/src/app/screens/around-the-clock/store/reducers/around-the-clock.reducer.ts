@@ -1,23 +1,31 @@
 import { createReducer, on } from '@ngrx/store';
 import { AroundTheClockState } from '../../models/around-the-clock-state.interface';
-import { gameInfoLoadingError, getGameInfoLoadingSuccess } from '../../../../store/actions/game-info.actions';
-import { AroundTheClockParams } from '../../models/around-the-clock-params.interface';
-import { atcCompleteSuccess, atcResetGame, atcTrowStart, atcTrowSuccess, atcUndoSuccess } from '../actions/around-the-clock.actions';
+import { gameInfoLoadingError } from '../../../../store/actions/game-info.actions';
+import {
+  atcCompleteSuccess,
+  atcGameInitialized,
+  atcResetGame,
+  atcTrowStart,
+  atcTrowSuccess,
+  atcUndoSuccess
+} from '../actions/around-the-clock.actions';
 import { getSectionsForAroundTheClock } from '../../utils/functions/get-sections-for-around-the-clock';
 import { GameLoadingStatuses } from '@models/enums/game-loading-statuses.enum';
 import { getParticipantAfterThrow } from './utils/get-participant-after-throw';
 import { getNextPlayerId } from './utils/get-next-player-id';
-import { getCurrentPlayerOnLoad } from './utils/get-current-player-on-load';
+import { getCurrentPlayerOnInit } from './utils/get-current-player-on-init';
 import { checkTurnOver } from './utils/check-turn-over';
 import { isNotEmpty } from '@functions/type-guards/is-not-empty';
 import { AtcParticipants } from '../../models/atc-participants.type';
 import { getIsCompleted } from './utils/get-is-completed';
+import { isPerfectTurn } from './utils/is-perfect-turn';
+import { HttpStatusCode } from '@angular/common/http';
 
 const initialState: AroundTheClockState = {
+  initStatus: GameLoadingStatuses.Pending,
   currentPlayerId: null,
   gameInfo: null,
   loading: true,
-  loadingStatus: GameLoadingStatuses.Pending,
   sections: [],
   participants: {},
   turnOverOnLastThrow: false,
@@ -25,14 +33,14 @@ const initialState: AroundTheClockState = {
 
 export const aroundTheClockReducer = createReducer<AroundTheClockState>(
   initialState,
-  on(getGameInfoLoadingSuccess<AroundTheClockParams>(), (state, { gameInfo, throwsGrouped }): AroundTheClockState => {
+  on(atcGameInitialized, (state, { gameInfo, throwsGrouped, lastThrows }): AroundTheClockState => {
     const sections = getSectionsForAroundTheClock(gameInfo.params.direction, gameInfo.params.includeBull);
     return {
       ...state,
-      currentPlayerId: getCurrentPlayerOnLoad(gameInfo, throwsGrouped, sections),
+      initStatus: GameLoadingStatuses.Initiated,
+      currentPlayerId: getCurrentPlayerOnInit(gameInfo.players, throwsGrouped, sections, lastThrows),
       gameInfo,
       loading: false,
-      loadingStatus: GameLoadingStatuses.Initiated,
       sections,
 
       // TODO: default values for non-existing participants
@@ -47,9 +55,11 @@ export const aroundTheClockReducer = createReducer<AroundTheClockState>(
       }), {}),
     };
   }),
-  on(gameInfoLoadingError, (): AroundTheClockState => ({
+  on(gameInfoLoadingError, (_, { err }): AroundTheClockState => ({
     ...initialState,
-    loadingStatus: GameLoadingStatuses.Error,
+    initStatus: err.status === HttpStatusCode.NotFound
+      ? GameLoadingStatuses.NoSuchGame
+      : GameLoadingStatuses.UnexpectedError,
   })),
   on(atcResetGame, (): AroundTheClockState => initialState),
   on(atcTrowStart, (state): AroundTheClockState => ({ ...state, loading: true })),
@@ -63,7 +73,7 @@ export const aroundTheClockReducer = createReducer<AroundTheClockState>(
       state.sections, hit, false, state.participants[state.currentPlayerId]
     );
 
-    const newCurrentPlayerId = isTurnOver || participantAfterThrow.isCompleted
+    const newCurrentPlayerId = isTurnOver && !isPerfectTurn(participantAfterThrow.turnHits) || participantAfterThrow.isCompleted
       ? getNextPlayerId(state) : state.currentPlayerId;
 
     const newParticipantTurnHits: AtcParticipants | object = (

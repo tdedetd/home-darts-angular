@@ -5,10 +5,10 @@ import { AtcParticipants } from './atc-participants.type';
 import { DartboardSector } from '@models/types/dartboard-sector.type';
 
 export interface AroundTheClockState {
+  initStatus: GameLoadingStatuses,
   currentPlayerId: number | null;
   gameInfo: GameInfoApi<AroundTheClockParams> | null;
   loading: boolean;
-  loadingStatus: GameLoadingStatuses,
   participants: AtcParticipants;
   sections: DartboardSector[];
   turnOverOnLastThrow: boolean;

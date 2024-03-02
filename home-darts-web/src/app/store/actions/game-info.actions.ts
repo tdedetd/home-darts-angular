@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { GameInfoApi } from '@models/game-info-api.interface';
 import { GameParamTypes } from '@models/enums/game-param-types.enum';
 import { ThrowsGrouped } from '@models/throws-grouped.interface';
+import { HttpErrorResponse } from '@angular/common/http';
 
 const source = '[Game Info]';
 
@@ -19,4 +20,7 @@ export const getGameInfoLoadingSuccess = <GameParams extends object = Partial<Re
 
 export const gameInfoLoadingSuccess = getGameInfoLoadingSuccess();
 
-export const gameInfoLoadingError = createAction(`${source} Loading Error`);
+export const gameInfoLoadingError = createAction(
+  `${source} Loading Error`,
+  props<{ err: HttpErrorResponse }>()
+);

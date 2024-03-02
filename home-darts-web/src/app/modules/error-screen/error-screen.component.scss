@@ -1,0 +1,24 @@
+@import '../../../styles/colors';
+
+$error-icon-size: 256px;
+
+:host {
+  display: block;
+}
+
+.error-screen-container {
+  margin: 56px 0 24px;
+}
+
+.error-icon {
+  font-size: $error-icon-size;
+  width: $error-icon-size;
+  height: $error-icon-size;
+  color: $error-screen-color;
+}
+
+.error-message {
+  margin: 0 48px;
+  text-align: center;
+  color: $error-screen-color;
+}

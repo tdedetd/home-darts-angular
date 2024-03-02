@@ -1,7 +1,15 @@
 import { createAction, props } from '@ngrx/store';
 import { ThrowApi } from '@models/throw-api.interface';
+import { GameInfoApi } from '@models/game-info-api.interface';
+import { AroundTheClockParams } from '../../models/around-the-clock-params.interface';
+import { ThrowsGrouped } from '@models/throws-grouped.interface';
 
 const source = '[Around The Clock]';
+
+export const atcGameInitialized = createAction(
+  `${source} Initialized`,
+  props<{ gameInfo: GameInfoApi<AroundTheClockParams>, throwsGrouped: ThrowsGrouped[], lastThrows: ThrowApi[] }>()
+);
 
 export const atcResetGame = createAction(`${source} Reset Game`);
 

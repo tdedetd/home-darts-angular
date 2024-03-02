@@ -24,6 +24,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { AroundTheClockEffectsInit } from './store/effects/around-the-clock-init.effects';
+import { ErrorScreenModule } from '../../modules/error-screen/error-screen.module';
 
 
 @NgModule({
@@ -38,7 +40,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     CommonModule,
     AroundTheClockRoutingModule,
     StoreModule.forFeature('aroundTheClock', aroundTheClockReducer),
-    EffectsModule.forFeature([AroundTheClockEffects]),
+    EffectsModule.forFeature([AroundTheClockEffects, AroundTheClockEffectsInit]),
     FormsModule,
     ReactiveFormsModule,
     DartboardModule,
@@ -52,6 +54,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatIconModule,
     MatChipsModule,
     MatTooltipModule,
+    ErrorScreenModule,
   ],
   providers: [
     AroundTheClockApiService,
