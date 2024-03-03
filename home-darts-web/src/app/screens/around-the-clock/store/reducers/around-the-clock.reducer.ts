@@ -17,10 +17,10 @@ import { getCurrentPlayerOnInit } from './utils/get-current-player-on-init';
 import { checkTurnOver } from './utils/check-turn-over';
 import { isNotEmpty } from '@functions/type-guards/is-not-empty';
 import { AtcParticipants } from '../../models/atc-participants.type';
-import { getIsCompleted } from './utils/get-is-completed';
 import { isPerfectTurn } from './utils/is-perfect-turn';
 import { HttpStatusCode } from '@angular/common/http';
 import { getSortedLastThrows } from './utils/get-sorted-last-throws';
+import { getInitialParticipants } from './utils/get-initial-participants';
 
 const initialState: AroundTheClockState = {
   initStatus: GameLoadingStatuses.Pending,
@@ -36,29 +36,28 @@ export const aroundTheClockReducer = createReducer<AroundTheClockState>(
   initialState,
   on(atcGameInitialized, (state, { gameInfo, throwsGrouped, lastThrowsByPlayers }): AroundTheClockState => {
     const sections = getSectionsForAroundTheClock(gameInfo.params.direction, gameInfo.params.includeBull);
+    const currentPlayerId = getCurrentPlayerOnInit(
+      gameInfo.players,
+      throwsGrouped,
+      sections,
+      getSortedLastThrows(lastThrowsByPlayers)
+    );
+    const participants = getInitialParticipants(
+      gameInfo.players,
+      throwsGrouped,
+      sections,
+      currentPlayerId,
+      lastThrowsByPlayers
+    );
+
     return {
       ...state,
       initStatus: GameLoadingStatuses.Initiated,
-      currentPlayerId: getCurrentPlayerOnInit(
-        gameInfo.players,
-        throwsGrouped,
-        sections,
-        getSortedLastThrows(lastThrowsByPlayers)
-      ),
+      currentPlayerId,
       gameInfo,
       loading: false,
       sections,
-
-      // TODO: default values for non-existing participants
-      participants: throwsGrouped.reduce<AtcParticipants>((acc, { playerId, hits, throws }) => ({
-        ...acc,
-        [playerId]: {
-          hits,
-          throws,
-          isCompleted: getIsCompleted(hits, sections),
-          turnHits: [],
-        }
-      }), {}),
+      participants,
     };
   }),
   on(gameInfoLoadingError, (_, { err }): AroundTheClockState => ({

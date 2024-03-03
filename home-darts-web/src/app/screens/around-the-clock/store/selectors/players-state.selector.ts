@@ -10,12 +10,7 @@ export const selectPlayersState = createSelector(
   selectParticipants,
   (players: PlayerApi[], participants: AtcParticipants): (AtcParticipant & PlayerApi)[] =>
     players.map(player => ({
-      ...(participants[player.id] ?? {
-        hits: 0,
-        throws: 0,
-        isCompleted: false,
-        turnHits: [],
-      }),
+      ...participants[player.id],
       ...player,
     }))
 );

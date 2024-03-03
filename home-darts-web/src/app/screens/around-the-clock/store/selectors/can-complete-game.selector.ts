@@ -6,6 +6,5 @@ export const selectCanCompleteGame = createSelector(
   selectParticipants,
   (participants) => Object
     .values(participants)
-    .filter(isNotEmpty)
     .some(({ isCompleted }) => isCompleted)
 );
