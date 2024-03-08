@@ -18,13 +18,12 @@ import { Player } from '../../../utils/models/player.interface.js';
 
 export const aroundTheClockRouter = Router();
 
-aroundTheClockRouter.use('/:gameId([0-9]+)', queryPlayerId, checkPlayerExistence, paramGameId,
-  checkGameExistence, completedGamesReadOnly, playerParticipation);
+aroundTheClockRouter.use('/:gameId([0-9]+)', paramGameId, checkGameExistence, completedGamesReadOnly);
 
 // TODO: +checkPlayersInBodySpecified, +checkBodyPlayersExistence
 aroundTheClockRouter.post('/start', async (
   req: Request<unknown, unknown, AroundTheClockStartParams & { players: Player['id'][] }>,
-  res: Response<{ gameId: number }, { playerId: number }>
+  res: Response<{ gameId: number }>
 ) => {
   await getPgClient().query('BEGIN');
   const insertGameResult = await getPgClient().query<{ id: number }>(
@@ -49,7 +48,7 @@ aroundTheClockRouter.post('/start', async (
   res.status(201).json({ gameId });
 });
 
-aroundTheClockRouter.post('/:gameId([0-9]+)/throw', async (
+aroundTheClockRouter.post('/:gameId([0-9]+)/throw', queryPlayerId, checkPlayerExistence, playerParticipation, async (
   req: Request<unknown, unknown, { nominal: number, hit: boolean, multiplier?: number }>,
   res: Response<void, { playerId: number, gameId: number }>
 ) => {
