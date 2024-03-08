@@ -14,7 +14,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { selectIsPlayerTurn } from '../../store/selectors/is-player-turn.selector';
 import { selectCanCompleteGame } from '../../store/selectors/can-complete-game.selector';
 import { selectIsCurrentPlayerCompleted } from '../../store/selectors/is-current-player-completed.selector';
-import { selectTurnHits } from '../../store/selectors/turn-throws.selector';
+import { selectTurnHits } from '../../store/selectors/turn-hits.selector';
 import { TurnHits } from '../../models/turn-hits.type';
 import { SectionTypes } from '@models/enums/section-types.enum';
 import { DartboardSector } from '@models/types/dartboard-sector.type';

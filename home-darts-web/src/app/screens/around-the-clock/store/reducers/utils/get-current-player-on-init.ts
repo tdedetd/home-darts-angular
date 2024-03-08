@@ -5,7 +5,7 @@ import { AroundTheClockInitError } from '../../../models/errors/around-the-clock
 import { getIsCompleted } from './get-is-completed';
 import { throwsPerTurn } from '@constants/throws-per-turn';
 import { isPerfectTurn } from './is-perfect-turn';
-import { getTurnHits } from '../../../utils/functions/type-guards/get-turn-hits';
+import { getTurnHits } from '../../../utils/functions/get-turn-hits';
 
 interface PlayersTrows {
   playerId: PlayerApi['id'],

@@ -11,7 +11,6 @@ import {
 } from '../actions/around-the-clock.actions';
 import { getSectionsForAroundTheClock } from '../../utils/functions/get-sections-for-around-the-clock';
 import { GameLoadingStatuses } from '@models/enums/game-loading-statuses.enum';
-import { getParticipantAfterThrow } from './utils/get-participant-after-throw';
 import { getNextPlayerId } from './utils/get-next-player-id';
 import { getCurrentPlayerOnInit } from './utils/get-current-player-on-init';
 import { checkTurnOver } from './utils/check-turn-over';
@@ -21,6 +20,8 @@ import { isPerfectTurn } from './utils/is-perfect-turn';
 import { HttpStatusCode } from '@angular/common/http';
 import { getSortedLastThrows } from './utils/get-sorted-last-throws';
 import { getInitialParticipants } from './utils/get-initial-participants';
+import { getParticipantAfterThrow } from './utils/get-participant-after-throw';
+import { getAffectedParticipantsAfterUndo } from './utils/get-affected-participants-after-undo';
 
 const initialState: AroundTheClockState = {
   initStatus: GameLoadingStatuses.Pending,
@@ -75,7 +76,7 @@ export const aroundTheClockReducer = createReducer<AroundTheClockState>(
 
     const isTurnOver = checkTurnOver(state);
     const participantAfterThrow = getParticipantAfterThrow(
-      state.sections, hit, false, state.participants[state.currentPlayerId]
+      state.sections, hit, state.participants[state.currentPlayerId]
     );
 
     const newCurrentPlayerId = isTurnOver && !isPerfectTurn(participantAfterThrow.turnHits) || participantAfterThrow.isCompleted
@@ -103,17 +104,27 @@ export const aroundTheClockReducer = createReducer<AroundTheClockState>(
       turnOverOnLastThrow: isTurnOver || participantAfterThrow.isCompleted,
     };
   }),
-  on(atcUndoSuccess, (state, { lastThrow }): AroundTheClockState =>
-    state.currentPlayerId && state.participants[state.currentPlayerId] && lastThrow ? {
+  on(atcUndoSuccess, (state, { canceledThrow, lastThrows }): AroundTheClockState => {
+    if (!canceledThrow || !state.currentPlayerId) {
+      return state;
+    }
+
+    const { newCurrentPlayerId, newParticipants } = getAffectedParticipantsAfterUndo(
+      state,
+      lastThrows,
+      canceledThrow
+    );
+
+    return {
       ...state,
+      currentPlayerId: newCurrentPlayerId,
       loading: false,
       participants: {
         ...state.participants,
-        [state.currentPlayerId]: getParticipantAfterThrow(
-          state.sections, lastThrow.hit, true, state.participants[state.currentPlayerId])
+        ...newParticipants,
       }
-    } : state
-  ),
+    };
+  }),
   on(atcCompleteSuccess, (state): AroundTheClockState => ({
     ...state,
     gameInfo: state.gameInfo ? {

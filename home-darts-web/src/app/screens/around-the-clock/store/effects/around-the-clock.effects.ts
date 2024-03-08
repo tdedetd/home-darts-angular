@@ -1,7 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
-import { atcCompleteStart, atcCompleteSuccess, atcTrowStart, atcTrowSuccess, atcUndoStart, atcUndoSuccess } from '../actions/around-the-clock.actions';
-import { filter, map, switchMap, tap } from 'rxjs';
+import {
+  atcCompleteStart,
+  atcCompleteSuccess,
+  atcTrowStart,
+  atcTrowSuccess,
+  atcUndoError,
+  atcUndoStart,
+  atcUndoSuccess
+} from '../actions/around-the-clock.actions';
+import { catchError, filter, map, of, switchMap, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { selectGameId } from '../selectors/game-id.selector';
 import { selectCurrentSectorForCurrentPlayer } from '../selectors/current-sector-for-current-player.selector';
@@ -10,6 +18,12 @@ import { selectCurrentPlayerId } from '../selectors/current-player-id.selector';
 import { selectIsVibrationOn } from '../../../../store/selectors/is-vibration-on.selector';
 import { selectTurnOverOnLastThrow } from '../selectors/turn-over-on-last-throw.selector';
 import { selectIsSoundsOn } from '../../../../store/selectors/is-sounds-on.selector';
+import { selectTurnHitsCurrentPlayer } from '../selectors/turn-hits-current-player.selector';
+import { isEmpty } from '@functions/type-guards/is-empty';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ThrowsApiService } from '../../../../services/throws-api.service';
+import { selectTotalThrowsAllPlayers } from '../selectors/total-throws-all-players.selector';
+import { throwsPerTurn } from '@constants/throws-per-turn';
 
 @Injectable()
 export class AroundTheClockEffects {
@@ -18,11 +32,10 @@ export class AroundTheClockEffects {
       ofType(atcCompleteStart),
       concatLatestFrom(() => [
         this.store.select(selectGameId),
-        this.store.select(selectCurrentPlayerId),
       ]),
 
-      // TOOD: check is not nil: gameId, playerId - throw error
-      switchMap(([_, gameId, PlayerId]) => this.atcApi.complete(gameId ?? 0, PlayerId ?? 0)),
+      // TOOD: check is not nil: gameId - throw error
+      switchMap(([_, gameId]) => this.atcApi.complete(gameId ?? 0)),
       map(() => atcCompleteSuccess())
     );
   });
@@ -50,9 +63,28 @@ export class AroundTheClockEffects {
       concatLatestFrom(() => [
         this.store.select(selectGameId),
         this.store.select(selectCurrentPlayerId),
+        this.store.select(selectTurnHitsCurrentPlayer),
+        this.store.select(selectTotalThrowsAllPlayers),
       ]),
-      switchMap(([_, gameId, playerId]) => this.atcApi.undo(gameId ?? 0, playerId ?? 0)),
-      map((lastThrow) => atcUndoSuccess({ lastThrow }))
+      switchMap(([_, gameId, playerId, turnHits, totalThrows]) => {
+        if (isEmpty(gameId) || isEmpty(playerId)) {
+          return of(atcUndoError({ err: `Incorrect one of following parameters: gameId = ${gameId}, playerId = ${playerId}` }));
+        }
+
+        if (totalThrows === 0) {
+          return of(atcUndoSuccess({ canceledThrow: null, lastThrows: [] }));
+        }
+
+        return this.atcApi.undo(gameId).pipe(
+          switchMap((canceledThrow) => (isEmpty(turnHits) || turnHits.length === 0) && canceledThrow
+            ? this.throwsApiService.getThrows(gameId, { page: 0, size: throwsPerTurn }, playerId).pipe(
+              map((lastThrows) => atcUndoSuccess({ canceledThrow, lastThrows }))
+            )
+            : of(atcUndoSuccess({ canceledThrow, lastThrows: [] }))
+          ),
+        )
+      }),
+      catchError((err: HttpErrorResponse) => of(atcUndoError({ err })))
     );
   });
 
@@ -83,5 +115,6 @@ export class AroundTheClockEffects {
     private actions$: Actions,
     private store: Store,
     private atcApi: AroundTheClockApiService,
+    private throwsApiService: ThrowsApiService,
   ) { }
 }

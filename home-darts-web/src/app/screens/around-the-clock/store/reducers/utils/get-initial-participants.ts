@@ -6,7 +6,7 @@ import { getIsCompleted } from './get-is-completed';
 import { DartboardSector } from '@models/types/dartboard-sector.type';
 import { ThrowApi } from '@models/throw-api.interface';
 import { throwsPerTurn } from '@constants/throws-per-turn';
-import { getTurnHits } from '../../../utils/functions/type-guards/get-turn-hits';
+import { getTurnHits } from '../../../utils/functions/get-turn-hits';
 
 export function getInitialParticipants(
   players: PlayerApi[],
