@@ -1,5 +1,7 @@
 export enum SqlQueries {
+  AtcCompetitionProgress = 'atc-competition-progress',
   AtcGamesCountBySectionType = 'atc-games-count-by-section-type',
+  AtcGamesInCompetition = 'atc-games-in-competition',
   AtcThrowsHitsBySectionTypes = 'atc-throws-hits-by-section-types',
   DeleteFromThrow = 'delete-from-throw',
   GamesCount = 'games-count',

@@ -84,6 +84,42 @@ INSERT INTO public.game_param_type (name, description, "datatype") values
 	('hitDetection', '', 'string'),
 	('fastGame', '', 'boolean');
 
+-- views
+
+CREATE OR REPLACE VIEW public.atc_game as
+SELECT
+	atc_ids.game_id,
+	atc_ids.creation_date,
+	g_dir.direction,
+	g_hit.hit_detection,
+	g_fast.fast_game,
+	g_bull.include_bull
+FROM (
+	SELECT g.id as game_id, g.creation_date
+	FROM public.game g
+	WHERE g.gamemode_name = 'aroundTheClock'
+) atc_ids
+left join (
+	SELECT gp.game_id, gp.value as "direction"
+	FROM public.game_param gp
+	WHERE gp.param_name = 'direction'
+) g_dir on atc_ids.game_id = g_dir.game_id
+left join (
+	SELECT gp.game_id, gp.value as "hit_detection"
+	FROM public.game_param gp
+	WHERE gp.param_name = 'hitDetection'
+) g_hit on atc_ids.game_id = g_hit.game_id
+left join (
+	SELECT gp.game_id, gp.value as "fast_game"
+	FROM public.game_param gp
+	WHERE gp.param_name = 'fastGame'
+) g_fast on atc_ids.game_id = g_fast.game_id
+left join (
+	SELECT gp.game_id, gp.value as "include_bull"
+	FROM public.game_param gp
+	WHERE gp.param_name = 'includeBull'
+) g_bull on atc_ids.game_id = g_bull.game_id;
+
 -- functions
 
 CREATE OR REPLACE FUNCTION public.get_longest_hits_streak(
