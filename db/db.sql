@@ -1,3 +1,5 @@
+-- PostgreSQL 15.2
+
 -- tables
 
 create table public.gamemode (
@@ -161,5 +163,46 @@ BEGIN
 	END LOOP;
 
 	RETURN max_hits_streak;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION public.get_atc_games_ids(
+	in_player_id int,
+	in_hit_detection varchar(16),
+	in_direction varchar(16) = null,
+	in_fast_game varchar(16) = null,
+	in_include_bull varchar(16) = null
+) RETURNS table (
+	game_id int
+) as $$
+DECLARE
+	query_text text = '';
+BEGIN
+	query_text = '
+		SELECT ag.game_id
+		FROM public.atc_game ag
+		INNER JOIN public.game_player gp on ag.game_id = gp.game_id
+		WHERE gp.player_id = $1
+			and ag.hit_detection = $2
+	';
+
+	IF in_direction is not null THEN
+		query_text = query_text + ' and ag.direction = $3';
+	END IF;
+
+	IF in_fast_game is not null THEN
+		query_text = query_text + ' and ag.fast_game = $4';
+	END IF;
+
+	IF in_include_bull is not null THEN
+		query_text = query_text + ' and ag.include_bull = $5';
+	END IF;
+
+	RETURN query EXECUTE query_text using
+		in_player_id,
+		in_hit_detection,
+		in_direction,
+		in_fast_game,
+		in_include_bull;
 END;
 $$ LANGUAGE plpgsql;
