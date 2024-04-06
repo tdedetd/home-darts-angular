@@ -15,10 +15,38 @@ import { SqlQueries } from '../../../utils/types/sql-queries.enum.js';
 import { AroundTheClockStartParams } from '../../../utils/models/around-the-clock-start-params.interface.js';
 import { Throw } from '../../../utils/models/throw.interface.js';
 import { Player } from '../../../utils/models/player.interface.js';
+import { AtcHitRate } from '../../../utils/models/atc-hit-rate.type.js';
+import { SectionTypes } from '../../../utils/types/section-types.enum.js';
+import { GameDirections } from '../../../utils/types/game-directions.enum.js';
+import { queryHitDetection } from '../../../handlers/query-hit-detection.js';
 
 export const aroundTheClockRouter = Router();
 
 aroundTheClockRouter.use('/:gameId([0-9]+)', paramGameId, checkGameExistence, completedGamesReadOnly);
+
+aroundTheClockRouter.get('/hit-rate', queryPlayerId, checkPlayerExistence, queryHitDetection, async (
+  req: Request<unknown, unknown, unknown, {
+    playerId?: string,
+    hitDetection?: string,
+    direction?: GameDirections,
+    fastGame?: string,
+    includeBull?: string,
+    isCompleted?: string,
+  }>,
+  res: Response<AtcHitRate[], { playerId: number, hitDetection: SectionTypes }>
+) => {
+  const { playerId } = res.locals;
+  const { hitDetection, direction, fastGame, includeBull, isCompleted } = req.query;
+  const result = await getPgClient().query<AtcHitRate>(getSql(SqlQueries.AtcHitRate), [
+    playerId,
+    hitDetection,
+    direction ?? null,
+    fastGame ?? null,
+    includeBull ?? null,
+    isEmpty(isCompleted) ? null : isCompleted === 'true',
+  ]);
+  res.json(result.rows);
+})
 
 // TODO: +checkPlayersInBodySpecified, +checkBodyPlayersExistence
 aroundTheClockRouter.post('/start', async (

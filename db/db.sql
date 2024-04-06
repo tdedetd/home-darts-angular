@@ -92,12 +92,13 @@ CREATE OR REPLACE VIEW public.atc_game as
 SELECT
 	atc_ids.game_id,
 	atc_ids.creation_date,
+	atc_ids.is_completed,
 	g_dir.direction,
 	g_hit.hit_detection,
 	g_fast.fast_game,
 	g_bull.include_bull
 FROM (
-	SELECT g.id as game_id, g.creation_date
+	SELECT g.id as game_id, g.creation_date, g.is_completed
 	FROM public.game g
 	WHERE g.gamemode_name = 'aroundTheClock'
 ) atc_ids
@@ -171,7 +172,8 @@ CREATE OR REPLACE FUNCTION public.get_atc_games_ids(
 	in_hit_detection varchar(16),
 	in_direction varchar(16) = null,
 	in_fast_game varchar(16) = null,
-	in_include_bull varchar(16) = null
+	in_include_bull varchar(16) = null,
+	in_is_completed bool = null
 ) RETURNS table (
 	game_id int
 ) as $$
@@ -187,15 +189,19 @@ BEGIN
 	';
 
 	IF in_direction is not null THEN
-		query_text = query_text + ' and ag.direction = $3';
+		query_text = query_text || ' and ag.direction = $3';
 	END IF;
 
 	IF in_fast_game is not null THEN
-		query_text = query_text + ' and ag.fast_game = $4';
+		query_text = query_text || ' and ag.fast_game = $4';
 	END IF;
 
 	IF in_include_bull is not null THEN
-		query_text = query_text + ' and ag.include_bull = $5';
+		query_text = query_text || ' and ag.include_bull = $5';
+	END IF;
+
+	IF in_is_completed is not null THEN
+		query_text = query_text || ' and ag.is_completed = $6';
 	END IF;
 
 	RETURN query EXECUTE query_text using
@@ -203,6 +209,7 @@ BEGIN
 		in_hit_detection,
 		in_direction,
 		in_fast_game,
-		in_include_bull;
+		in_include_bull,
+		in_is_completed;
 END;
 $$ LANGUAGE plpgsql;
