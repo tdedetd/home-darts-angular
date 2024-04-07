@@ -1,4 +1,5 @@
 @import '../styles/variables';
+@import '../styles/mixins';
 
 .header {
   height: $header-height;
@@ -10,10 +11,8 @@
 
 .menu-button {
   display: none;
-}
 
-@media screen and (max-width: $breakpoint-mobile) {
-  .menu-button {
+  @include breakpoint-mobile {
     display: initial;
   }
 }

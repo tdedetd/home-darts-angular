@@ -1,18 +1,19 @@
 @import '../../../styles/colors';
 @import '../../../styles/variables';
+@import '../../../styles/mixins';
 
 :host {
   display: block;
   width: 100%;
   height: calc(100dvh - $header-height);
 
-  @media screen and (max-width: $breakpoint-mobile) {
+  @include breakpoint-mobile {
     background-color: $block-color;
   }
 }
 
 .settings-block {
-  @media screen and (min-width: $breakpoint-mobile) {
+  @include breakpoint-tablet {
     padding: 16px;
   }
 }

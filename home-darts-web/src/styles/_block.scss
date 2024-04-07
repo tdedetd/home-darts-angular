@@ -1,5 +1,6 @@
 @import './colors';
 @import './variables';
+@import './mixins';
 
 @mixin block {
   background: $block-color;
@@ -11,8 +12,8 @@
   @include block;
 }
 
-.block-md {
-  @media screen and (min-width: $breakpoint-mobile) {
+@include breakpoint-tablet {
+  .block-md {
     @include block;
   }
 }
