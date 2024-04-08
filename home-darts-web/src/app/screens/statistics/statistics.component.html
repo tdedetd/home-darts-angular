@@ -1,4 +1,6 @@
 <div class="screen-container">
+  <h2 class="mb-24">Common statistics</h2>
+
   <ng-container *ngIf="isCounterAnimationsOn !== null">
     <div class="block mb-24 p-16">
       <mat-form-field class="mat-form-no-subscript w-100">
@@ -12,47 +14,45 @@
     </div>
 
     <ng-container *ngIf="stats$ | async as stats; else playerNotSelected">
-      <div class="mb-12 flex text-align-center">
-        <div class="block flex-1-1 p-16 mr-12">
-          <p class="mb-12">Total games</p>
-          <h2>
-            <ng-container *ngIf="isCounterAnimationsOn">
-              {{ stats.gamesCount | animated: animationPipeCallback: animationOptions | async }}
-            </ng-container>
-            <ng-container *ngIf="!isCounterAnimationsOn">{{ stats.gamesCount }}</ng-container>
-          </h2>
+      <div class="mb-48">
+        <div class="mb-12 flex text-align-center">
+          <div class="block flex-1-1 p-16 mr-12">
+            <p class="mb-8">Total games</p>
+            <h2>
+              <ng-container *ngIf="isCounterAnimationsOn">
+                {{ stats.gamesCount | animated: animationPipeCallback: animationOptions | async }}
+              </ng-container>
+              <ng-container *ngIf="!isCounterAnimationsOn">{{ stats.gamesCount }}</ng-container>
+            </h2>
+          </div>
+          <div class="block flex-1-1 p-16">
+            <p class="mb-8">Total throws</p>
+            <h2>
+              <ng-container *ngIf="isCounterAnimationsOn">
+                {{ stats.throwsCount | animated: animationPipeCallback: animationOptions | async }}
+              </ng-container>
+              <ng-container *ngIf="!isCounterAnimationsOn">{{ stats.throwsCount }}</ng-container>
+            </h2>
+          </div>
         </div>
-        <div class="block flex-1-1 p-16">
-          <p class="mb-12">Total throws</p>
+
+        <div class="block p-16 text-align-center">
+          <p class="mb-8">Total playing time</p>
           <h2>
             <ng-container *ngIf="isCounterAnimationsOn">
-              {{ stats.throwsCount | animated: animationPipeCallback: animationOptions | async }}
+              {{
+                (stats.totalPlayingTimeSeconds | animated: animationPipeCallback: animationOptions | async) ?? 0
+                  | formatTimeInterval
+              }}
             </ng-container>
-            <ng-container *ngIf="!isCounterAnimationsOn">{{ stats.throwsCount }}</ng-container>
+            <ng-container *ngIf="!isCounterAnimationsOn">
+              {{ stats.totalPlayingTimeSeconds | formatTimeInterval }}
+            </ng-container>
           </h2>
         </div>
       </div>
 
-      <div class="block mb-24 p-16 text-align-center">
-        <p>Total playing time - <span class="statistics-font-weight-500">
-          <ng-container *ngIf="isCounterAnimationsOn">
-            {{
-              (stats.totalPlayingTimeSeconds | animated: animationPipeCallback: animationOptions | async) ?? 0
-                | formatTimeInterval
-            }}
-          </ng-container>
-          <ng-container *ngIf="!isCounterAnimationsOn">
-            {{ stats.totalPlayingTimeSeconds | formatTimeInterval }}
-          </ng-container>
-        </span></p>
-      </div>
-
-      <div class="block p-16">
-        <div>
-          <h3>Around the clock</h3>
-          <hd-atc-statistics [stats]="stats.aroundTheClock"></hd-atc-statistics>
-        </div>
-      </div>
+      <hd-atc-statistics [playerId]="playerId" [stats]="stats.aroundTheClock"></hd-atc-statistics>
     </ng-container>
   </ng-container>
 

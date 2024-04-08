@@ -13,6 +13,7 @@ export class SettingsEffects {
         const settings = this.settingsService.load();
         return settingsLoaded({ settings });
       }),
+      // TODO: catch default settings
     );
   });
 

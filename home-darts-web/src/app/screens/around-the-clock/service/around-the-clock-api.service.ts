@@ -1,14 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { apiPrefix } from '@config';
 import { ThrowApi } from '@models/throw-api.interface';
 import { AroundTheClockParams } from '../models/around-the-clock-params.interface';
 import { PlayerApi } from '@models/player-api.interface';
+import { aroundTheClockApiUrl } from '@constants/urls/around-the-clock-api-url';
 
 @Injectable()
 export class AroundTheClockApiService {
-  private readonly apiPrefix = `${apiPrefix}games/around-the-clock/`;
+  private readonly apiPrefix = aroundTheClockApiUrl;
 
   constructor(private http: HttpClient) {}
 

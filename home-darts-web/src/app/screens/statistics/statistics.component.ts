@@ -35,6 +35,10 @@ export class StatisticsComponent implements OnInit {
     timingFunction: TimingFunctions.EaseOutQuartic,
   };
 
+  public get playerId(): PlayerApi['id'] | null {
+    return this.playerControl.getRawValue()?.id ?? null;
+  }
+
   constructor(
     private playerApi: PlayerApiService,
     private cdr: ChangeDetectorRef,

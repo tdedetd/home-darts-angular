@@ -8,13 +8,19 @@ import { AtcStatisticsComponent } from './components/atc-statistics/atc-statisti
 import { AtcStatsItemsPipe } from './pipes/atc-stats-items.pipe';
 import { MatSelectModule } from '@angular/material/select';
 import { AnimationModule } from '../../modules/animation/animation.module';
+import { StatisticsApiService } from './services/statistics-api.service';
+import { AtcHitRateComponent } from './components/atc-hit-rate/atc-hit-rate.component';
+import { BarController, BarElement, CategoryScale, Chart, LinearScale } from 'chart.js';
 
+
+Chart.register(BarController, CategoryScale, LinearScale, BarElement);
 
 @NgModule({
   declarations: [
     StatisticsComponent,
     AtcStatisticsComponent,
     AtcStatsItemsPipe,
+    AtcHitRateComponent,
   ],
   imports: [
     CommonModule,
@@ -24,6 +30,9 @@ import { AnimationModule } from '../../modules/animation/animation.module';
     FormatTimeIntervalModule,
     MatSelectModule,
     AnimationModule,
+  ],
+  providers: [
+    StatisticsApiService,
   ]
 })
 export class StatisticsModule { }
