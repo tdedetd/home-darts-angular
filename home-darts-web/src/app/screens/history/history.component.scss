@@ -1,7 +1,36 @@
-.history__title, .history__item {
-  margin-bottom: 16px;
+@import '../../../styles/mixins';
+
+.screen-container {
+  max-width: 1536px;
+  margin: 0 auto;
+}
+
+.history-list {
+  display: grid;
+
+  @include breakpoint-mobile {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  @include breakpoint-tablet {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+}
+
+.history__title {
+  margin-bottom: 24px;
 }
 
 .history__actions {
+  @include breakpoint-mobile {
+    padding-top: 16px;
+  }
+
+  @include breakpoint-tablet {
+    padding-top: 32px;
+  }
+
   text-align: center;
 }

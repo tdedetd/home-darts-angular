@@ -1,4 +1,25 @@
+@import '../../../styles/mixins';
+
 .screen-container {
   max-width: 1536px;
   margin: 0 auto;
+}
+
+.common-stats-cards {
+  display: grid;
+
+  @include breakpoint-mobile {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+
+    .stats-playing-time-card {
+      grid-column-start: 1;
+      grid-column-end: 3;
+    }
+  }
+
+  @include breakpoint-tablet {
+    gap: 32px;
+    grid-template-columns: repeat(3, 1fr);
+  }
 }

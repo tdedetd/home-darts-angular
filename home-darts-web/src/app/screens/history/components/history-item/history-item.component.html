@@ -6,14 +6,20 @@
       matTooltipPosition="above"
     >{{ data.creationDate | relativeTime: dateNow }}</mat-card-subtitle>
   </mat-card-header>
-  <mat-card-content>
+  <mat-card-content class="history-item__card-content">
     <div *ngIf="data.throws" class="history-item__throws-info">
       <p>Hits: {{ data.hits }}</p>
       <p>Throws: {{ data.throws }}</p>
       <p>Hit rate: {{ (data.hits / data.throws * 100) | number: '1.2-2' }}%</p>
     </div>
   </mat-card-content>
-  <mat-card-actions *ngIf="!data.isCompleted" align="end">
-    <a mat-button color="primary" [routerLink]="['..', 'around-the-clock', data.id]" [relativeTo]="route">Load game</a>
+  <mat-card-actions align="end">
+    <a
+      *ngIf="!data.isCompleted"
+      mat-button
+      color="primary"
+      [routerLink]="['..', 'around-the-clock', data.id]"
+      [relativeTo]="route"
+    >Load game</a>
   </mat-card-actions>
 </mat-card>

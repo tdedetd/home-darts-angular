@@ -1,4 +1,6 @@
 @import '../../../../../styles/colors';
+@import '../../../../../styles/mixins';
+@import '../../../../../styles/variables';
 
 .atc-game-particpant-container:not(:last-child) {
   margin-bottom: 12px;
@@ -15,6 +17,10 @@
   bottom: 0;
   background: $background-color;
   background: linear-gradient(0deg, $background-color 0%, $background-color 60%, rgba(0,0,0,0) 100%);
+
+  @include breakpoint-tablet {
+    width: calc(100% - $sidebar-desktop-width);
+  }
 }
 
 .atc-game-spacer {
