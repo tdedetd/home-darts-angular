@@ -26,6 +26,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AroundTheClockEffectsInit } from './store/effects/around-the-clock-init.effects';
 import { ErrorScreenModule } from '../../modules/error-screen/error-screen.module';
+import { SectorsWithPrefixesPipe } from './pipes/sectors-with-prefixes.pipe';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { ErrorScreenModule } from '../../modules/error-screen/error-screen.modul
     AtcGameParticipantComponent,
     FilteredPlayersPipe,
     AtcStartPlayersListComponent,
+    SectorsWithPrefixesPipe,
   ],
   imports: [
     CommonModule,

@@ -25,6 +25,7 @@ import { selectDartboardSettings } from '../../store/selectors/dartboard-setting
 import { selectIsGameCompleted } from '../../store/selectors/is-game-completed.selector';
 import { selectInitStatusNoSuchGame } from '../../store/selectors/init-status-no-such-game.selector';
 import { selectInitStatusUnexpectedError } from '../../store/selectors/init-status-unexpected-error.selector';
+import { selectInitStatusInitiated } from '../../store/selectors/init-status-initiated.selector';
 
 @UntilDestroy()
 @Component({
@@ -34,6 +35,7 @@ import { selectInitStatusUnexpectedError } from '../../store/selectors/init-stat
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AtcGameComponent implements OnInit, OnDestroy {
+  public initiated$: Observable<boolean> = this.store.select(selectInitStatusInitiated);
   public canCompleteGame$: Observable<boolean> = this.store.select(selectCanCompleteGame);
   public currentPlayerCompleted$: Observable<boolean> = this.store.select(selectIsCurrentPlayerCompleted);
   public dartboardStyle: DartboardStyles | null = null;
@@ -48,7 +50,7 @@ export class AtcGameComponent implements OnInit, OnDestroy {
   public selectCurrentSectorForCurrentPlayer$: Observable<DartboardSector | undefined> =
     this.store.select(selectCurrentSectorForCurrentPlayer);
 
-  public upcomingSectors$: Observable<number[]> = this.store.select(selectUpcomingSectorsForCurrentPlayer);
+  public upcomingSectors$: Observable<DartboardSector[]> = this.store.select(selectUpcomingSectorsForCurrentPlayer);
 
   constructor(
     private activatedRoute: ActivatedRoute,

@@ -28,14 +28,14 @@
 
     <div class="block p-8 pl-24 flex">
       <p class="mr-24">Next sectors</p>
-      <p class="mr-16" *ngFor="let sector of upcomingSectors$ | async">{{ sector }}</p>
+      <p class="mr-16" *ngFor="let sector of ((upcomingSectors$ | async) ?? []) | sectorsWithPrefixes: hitDetectionMode">{{ sector }}</p>
     </div>
   </div>
 </div>
 
 <div class="atc-game-spacer"></div>
 
-<div class="atc-game-tools flex p-16">
+<div *ngIf="initiated$ | async" class="atc-game-tools flex p-16">
   <button
     mat-raised-button
     matTooltip="Hit"
