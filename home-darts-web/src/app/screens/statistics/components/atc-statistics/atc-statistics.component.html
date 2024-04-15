@@ -36,6 +36,11 @@
   <ng-template #noThrows>-</ng-template>
 </div>
 
-<div class="block p-16">
-  <hd-atc-hit-rate *ngIf="hitRate$ | async as hitRate" [data]="hitRate"></hd-atc-hit-rate>
+<div class="hit-rate-charts">
+  <div class="hit-rate-charts__bar-container block p-16">
+    <hd-atc-hit-rate *ngIf="hitRate$ | async as hitRate" [data]="hitRate"></hd-atc-hit-rate>
+  </div>
+  <div class="block p-16">
+    <hd-dartboard class="hit-rate-dartboard" [style]="hitRateDartboardStyle" [zoom]="false"></hd-dartboard>
+  </div>
 </div>

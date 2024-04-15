@@ -1,3 +1,26 @@
+@import '../../../../../styles/mixins';
+
 :host {
   display: block;
+}
+
+@include breakpoint-mobile {
+  .hit-rate-charts__bar-container {
+    margin-bottom: 16px;
+  }
+}
+
+@include breakpoint-tablet {
+  .hit-rate-charts__bar-container {
+    flex: 1 1;
+  }
+
+  .hit-rate-charts {
+    display: flex;
+    gap: 16px;
+  }
+
+  .hit-rate-dartboard {
+    width: 500px;
+  }
 }

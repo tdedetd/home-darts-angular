@@ -8,6 +8,7 @@ import { defaultCamera } from '../constants/default-camera';
 import { SectionTypes } from '@models/enums/section-types.enum';
 import { DartboardSector } from '@models/types/dartboard-sector.type';
 import { DartboardStyle } from '../models/dartboard-style.interface';
+import { Camera } from '../models/camera.interface';
 
 const gameOuterRadius = 0.49;
 
@@ -54,20 +55,9 @@ export class DartboardRenderer {
     this.updateRenderResolution(width, height);
   }
 
-  public focusSector(sector: DartboardSector, type: SectionTypes): void {
+  public focusSector(sector: DartboardSector, type: SectionTypes, zoom: boolean): void {
     this.sectorSelected = sector === 0 ? null : { sector, type };
-    const index = this.data.sectors.indexOf(sector);
-    this.camera = sector === 25
-      ? { position: this.data.dartboardCenter, zoom: 4 }
-      : index === -1
-      ? defaultCamera
-      : {
-          position: CoordinateSystemConverter.toCartesian({
-            radians: this.getSectorRadians(index) + this.radiansHalfSector,
-            radius: this.data.radiuses.outer * (type === SectionTypes.Double ? 0.75 : 0.6)
-          }, this.data.dartboardCenter),
-          zoom: type === SectionTypes.Double ? 3.5 : 2.5
-        };
+    this.camera = zoom ? this.getCamera(sector, type) : defaultCamera;
     this.updateLabelsConfig(this.renderLength);
     this.render();
   }
@@ -80,8 +70,7 @@ export class DartboardRenderer {
       this.renderSector(sector, index);
     });
 
-    this.renderCircle('fill', this.style.palette.green, this.data.radiuses.bullOuter);
-    this.renderCircle('fill', this.style.palette.red, this.data.radiuses.bullInner);
+    this.renderBull();
 
     if (this.sectorSelected) {
       this.renderSectorHighlight(this.sectorSelected);
@@ -106,12 +95,32 @@ export class DartboardRenderer {
     this.context.fill();
   }
 
+  private getCamera(sector: DartboardSector, type: SectionTypes): Camera {
+    const index = this.data.sectors.indexOf(sector);
+    return sector === 25
+      ? { position: this.data.dartboardCenter, zoom: 4 }
+      : index === -1
+      ? defaultCamera
+      : {
+          position: CoordinateSystemConverter.toCartesian({
+            radians: this.getSectorRadians(index) + this.radiansHalfSector,
+            radius: this.data.radiuses.outer * (type === SectionTypes.Double ? 0.75 : 0.6)
+          }, this.data.dartboardCenter),
+          zoom: type === SectionTypes.Double ? 3.5 : 2.5
+        };
+  }
+
   private getGameSize(realSize: number): number {
     return realSize * gameOuterRadius / (dartboardRealSizesMm.diameter.outer / 2);
   }
 
   private getSectorRadians(index: number): number {
     return (this.degreesStart + this.degreesPerSector * index) * Math.PI / 180;
+  }
+
+  private renderBull(): void {
+    this.renderCircle('fill', this.style.palette.green, this.data.radiuses.bullOuter);
+    this.renderCircle('fill', this.style.palette.red, this.data.radiuses.bullInner);
   }
 
   private renderCircle(
@@ -181,14 +190,20 @@ export class DartboardRenderer {
     const ringsColor = index % 2 === 0 ? this.style.palette.green : this.style.palette.red;
     const singleColor = index % 2 === 0 ? this.style.palette.white : this.style.palette.black;
 
-    this.renderSectorPart('fill', ringsColor, rotationRadians,
-      this.data.radiuses.doubleRingOuter, this.data.radiuses.doubleRingInner);
-    this.renderSectorPart('fill', singleColor, rotationRadians,
-      this.data.radiuses.doubleRingInner, this.data.radiuses.trippleRingOuter);
-    this.renderSectorPart('fill', ringsColor, rotationRadians,
-      this.data.radiuses.trippleRingOuter, this.data.radiuses.trippleRingInner);
-    this.renderSectorPart('fill', singleColor, rotationRadians,
-      this.data.radiuses.trippleRingInner, this.data.radiuses.bullOuter);
+    if (this.style.sectorColors) {
+      const sectorColor = this.style.sectorColors.find(sectorColor => sectorColor.sector === sector);
+      this.renderSectorPart('fill', sectorColor ? sectorColor.color : this.style.palette.highlight, rotationRadians,
+        this.data.radiuses.doubleRingOuter, this.data.radiuses.bullOuter);
+    } else {
+      this.renderSectorPart('fill', ringsColor, rotationRadians,
+        this.data.radiuses.doubleRingOuter, this.data.radiuses.doubleRingInner);
+      this.renderSectorPart('fill', singleColor, rotationRadians,
+        this.data.radiuses.doubleRingInner, this.data.radiuses.trippleRingOuter);
+      this.renderSectorPart('fill', ringsColor, rotationRadians,
+        this.data.radiuses.trippleRingOuter, this.data.radiuses.trippleRingInner);
+      this.renderSectorPart('fill', singleColor, rotationRadians,
+        this.data.radiuses.trippleRingInner, this.data.radiuses.bullOuter);
+    }
 
     this.renderSectorLabel(sector, rotationRadians);
   }

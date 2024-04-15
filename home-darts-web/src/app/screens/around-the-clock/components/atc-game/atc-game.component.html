@@ -23,7 +23,9 @@
       <hd-dartboard
         [sector]="(selectCurrentSectorForCurrentPlayer$ | async) ?? 0"
         [sectorType]="hitDetectionMode"
-        [style]="dartboardStyle"></hd-dartboard>
+        [style]="dartboardStyle"
+        [zoom]="true"
+      ></hd-dartboard>
     </div>
 
     <div class="block p-8 pl-24 flex">
