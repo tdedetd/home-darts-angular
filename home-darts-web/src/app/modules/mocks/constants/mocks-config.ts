@@ -5,6 +5,7 @@ import throws from './mocks/throws.json';
 import atcGameDetail from './mocks/atc-game-detail.json';
 import atcGameThrowsGrouped from './mocks/atc-game-throws-grouped.json';
 import atcStart from './mocks/atc-start.json';
+import atcHitRate from './mocks/atc-hit-rate.json';
 import players from './mocks/players.json';
 import playerStats from './mocks/player-stats.json';
 
@@ -18,4 +19,5 @@ export const mocksConfig: MockMeta[] = [
   { regex: /api\/games\/around-the-clock\/start$/, data: atcStart, delay: 1000 },
   { regex: /api\/games\/around-the-clock\/\d+\/throw$/, delay: 100 },
   { regex: /api\/games\/around-the-clock\/\d+\/undo$/, delay: 100 },
+  { regex: /api\/games\/around-the-clock\/hit-rate$/, data: atcHitRate, delay: 100 },
 ];
