@@ -33,6 +33,10 @@ export function getCurrentPlayerOnInit(
       };
     });
 
+  if (playersThrows.every(({ isCompleted }) => isCompleted)) {
+    return null;
+  }
+
   const lastPlayerThrown = playersThrows.find(({ playerId }) => playerId === lastThrows[0].playerId);
 
   if (!lastPlayerThrown) {
