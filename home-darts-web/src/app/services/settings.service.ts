@@ -32,15 +32,23 @@ export class SettingsService {
       return defaultSettings;
     }
 
-    const settingsParsed: Partial<SettingsState> = JSON.parse(settingsStr);
+    try {
+      const settingsParsed: Partial<SettingsState> = JSON.parse(settingsStr);
 
-    return {
-      countersAnimations: settingsParsed.countersAnimations ?? defaultSettings.countersAnimations,
-      dartboardStyle: settingsParsed.dartboardStyle ?? defaultSettings.dartboardStyle,
-      language: settingsParsed.language ?? defaultSettings.language,
-      sounds: settingsParsed.sounds ?? defaultSettings.sounds,
-      vibration: settingsParsed.vibration ?? defaultSettings.vibration,
-    };
+      return {
+        countersAnimations: settingsParsed.countersAnimations ?? defaultSettings.countersAnimations,
+        dartboardStyle: settingsParsed.dartboardStyle ?? defaultSettings.dartboardStyle,
+        language: settingsParsed.language ?? defaultSettings.language,
+        sounds: settingsParsed.sounds ?? defaultSettings.sounds,
+        vibration: settingsParsed.vibration ?? defaultSettings.vibration,
+      };
+    } catch (err) {
+      if (err instanceof SyntaxError) {
+        return defaultSettings;
+      } else {
+        throw err;
+      }
+    }
   }
 
   public save(settings: SettingsState): void {
