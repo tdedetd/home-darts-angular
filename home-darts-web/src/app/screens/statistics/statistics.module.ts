@@ -12,6 +12,7 @@ import { StatisticsApiService } from './services/statistics-api.service';
 import { AtcHitRateComponent } from './components/atc-hit-rate/atc-hit-rate.component';
 import { BarController, BarElement, CategoryScale, Chart, LinearScale } from 'chart.js';
 import { DartboardModule } from '@modules/dartboard/dartboard.module';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 
 Chart.register(BarController, CategoryScale, LinearScale, BarElement);
@@ -32,6 +33,7 @@ Chart.register(BarController, CategoryScale, LinearScale, BarElement);
     MatSelectModule,
     AnimationModule,
     DartboardModule,
+    NgxSkeletonLoaderModule,
   ],
   providers: [
     StatisticsApiService,

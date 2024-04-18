@@ -23,3 +23,24 @@
     grid-template-columns: repeat(3, 1fr);
   }
 }
+
+::ng-deep {
+  .common-stats-cards .stats-skeleton-loader {
+    display: block;
+    margin: 0 auto;
+    height: 32px;
+
+    .skeleton-loader {
+      height: 32px;
+      margin-bottom: 0;
+    }
+
+    &_100 {
+      max-width: 100px;
+    }
+
+    &_150 {
+      max-width: 150px;
+    }
+  }
+}

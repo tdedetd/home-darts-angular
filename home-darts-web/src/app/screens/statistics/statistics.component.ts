@@ -10,6 +10,7 @@ import { Store } from '@ngrx/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { selectIsCountersAnimationsOn } from '../../store/selectors/is-counters-animations-on.selector';
 import { DefaultPlayerService } from '../../services/default-player.service';
+import { PlayerStatsApi } from '@models/player-stats-api.interface';
 
 @UntilDestroy()
 @Component({
@@ -26,12 +27,7 @@ export class StatisticsComponent implements OnInit {
 
   public isCounterAnimationsOn: boolean | null = null;
 
-  public readonly stats$ = this.playerControl.valueChanges.pipe(
-    filter(Boolean),
-    debounceTime(250),
-    tap(player => this.defaultPlayer.save(player.id)),
-    switchMap(player => this.playerApi.getPlayerStats(player.id)),
-  );
+  public stats?: PlayerStatsApi;
 
   public readonly animationOptions: AnimationOptions = {
     durationMs: 1000,
@@ -57,9 +53,24 @@ export class StatisticsComponent implements OnInit {
       this.isCounterAnimationsOn = isCounterAnimationsOn;
       this.cdr.detectChanges();
     });
+
+    this.initStatsUpdating();
   }
 
   public animationPipeCallback: AnimatedPipeCallback<number> = (value, phase) => Math.round(value * phase);
+
+  private initStatsUpdating(): void {
+    this.playerControl.valueChanges.pipe(
+      filter(Boolean),
+      debounceTime(250),
+      tap(player => this.defaultPlayer.save(player.id)),
+      switchMap(player => this.playerApi.getPlayerStats(player.id)),
+      untilDestroyed(this),
+    ).subscribe((stats) => {
+      this.stats = stats;
+      this.cdr.detectChanges();
+    });
+  }
 
   private selectDefaultPlayer(players: PlayerApi[]): void {
     const playerId = this.defaultPlayer.load();

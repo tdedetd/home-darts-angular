@@ -13,44 +13,59 @@
       </mat-form-field>
     </div>
 
-    <ng-container *ngIf="stats$ | async as stats; else playerNotSelected">
-      <div class="common-stats-cards text-align-center mb-48">
-        <div class="block p-16">
-          <p class="mb-8">Games</p>
+    <div class="common-stats-cards text-align-center mb-48">
+      <div class="block p-16">
+        <p class="mb-8">Games</p>
+        @if (stats) {
           <h2>
-            <ng-container *ngIf="isCounterAnimationsOn">
+            @if (isCounterAnimationsOn) {
               {{ stats.gamesCount | animated: animationPipeCallback: animationOptions | async }}
-            </ng-container>
-            <ng-container *ngIf="!isCounterAnimationsOn">{{ stats.gamesCount }}</ng-container>
+            } @else {
+              {{ stats.gamesCount }}
+            }
           </h2>
-        </div>
-        <div class="block p-16">
-          <p class="mb-8">Throws</p>
+        } @else {
+          <ngx-skeleton-loader class="stats-skeleton-loader stats-skeleton-loader_100" appearance="line" />
+        }
+      </div>
+      <div class="block p-16">
+        <p class="mb-8">Throws</p>
+        @if (stats) {
           <h2>
-            <ng-container *ngIf="isCounterAnimationsOn">
+            @if (isCounterAnimationsOn) {
               {{ stats.throwsCount | animated: animationPipeCallback: animationOptions | async }}
-            </ng-container>
-            <ng-container *ngIf="!isCounterAnimationsOn">{{ stats.throwsCount }}</ng-container>
+            } @else {
+              {{ stats.throwsCount }}
+            }
           </h2>
-        </div>
-        <div class="block stats-playing-time-card p-16">
-          <p class="mb-8">Playing time</p>
+        } @else {
+          <ngx-skeleton-loader class="stats-skeleton-loader stats-skeleton-loader_100" appearance="line" />
+        }
+      </div>
+      <div class="block stats-playing-time-card p-16">
+        <p class="mb-8">Playing time</p>
+        @if (stats) {
           <h2>
-            <ng-container *ngIf="isCounterAnimationsOn">
+            @if (isCounterAnimationsOn) {
               {{
                 (stats.totalPlayingTimeSeconds | animated: animationPipeCallback: animationOptions | async) ?? 0
                   | formatTimeInterval
               }}
-            </ng-container>
-            <ng-container *ngIf="!isCounterAnimationsOn">
+            } @else {
               {{ stats.totalPlayingTimeSeconds | formatTimeInterval }}
-            </ng-container>
+            }
           </h2>
-        </div>
+        } @else {
+          <ngx-skeleton-loader class="stats-skeleton-loader stats-skeleton-loader_150" appearance="line" />
+        }
       </div>
+    </div>
 
-      <hd-atc-statistics [playerId]="playerId" [stats]="stats.aroundTheClock"></hd-atc-statistics>
-    </ng-container>
+    <hd-atc-statistics
+      *ngIf="stats; else playerNotSelected"
+      [playerId]="playerId"
+      [stats]="stats.aroundTheClock"
+    ></hd-atc-statistics>
   </ng-container>
 
   <ng-template #playerNotSelected>Select player</ng-template>
