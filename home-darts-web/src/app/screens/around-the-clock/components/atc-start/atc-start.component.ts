@@ -4,16 +4,16 @@ import { GameDirections } from '../../models/game-directions.enum';
 import { SectionTypes } from '@models/enums/section-types.enum';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ActivatedRoute, Router } from '@angular/router';
-import { defaultPlayerId } from '@config';
 import { FormBuilder } from '@angular/forms';
 import { gameDirectionItems } from '../../utils/constants/game-direction-items';
 import { sectionTypesItems } from '@constants/section-type-items';
 import { PlayerApiService } from '../../../../services/player-api.service';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { PlayerApi } from '@models/player-api.interface';
 import { arrayMinLengthValidator } from '@functions/array-min-length.validator';
 import { Store } from '@ngrx/store';
 import { hideGlobalProgressBar, showGlobalProgressBar } from '../../../../store/actions/global-progress-bar.actions';
+import { DefaultPlayerService } from '../../../../services/default-player.service';
 
 @UntilDestroy()
 @Component({
@@ -25,10 +25,12 @@ import { hideGlobalProgressBar, showGlobalProgressBar } from '../../../../store/
 export class AtcStartComponent {
   public readonly gameDirectionItems = gameDirectionItems;
   public readonly sectionTypes = sectionTypesItems;
-  public readonly players$: Observable<PlayerApi[]> = this.playerApi.getPlayers();
+  public readonly players$: Observable<PlayerApi[]> = this.playerApi.getPlayers().pipe(
+    tap(players => this.setDefaultPlayer(players))
+  );
 
   public form = this.fb.group({
-    players: this.fb.nonNullable.control<PlayerApi['id'][]>([defaultPlayerId], arrayMinLengthValidator(1)),
+    players: this.fb.nonNullable.control<PlayerApi['id'][]>([], arrayMinLengthValidator(1)),
     direction: this.fb.nonNullable.control<GameDirections>(GameDirections.ForwardBackward),
     fastGame: this.fb.nonNullable.control<boolean>(false),
     hitDetection: this.fb.nonNullable.control<SectionTypes>(SectionTypes.Any),
@@ -44,6 +46,7 @@ export class AtcStartComponent {
     private fb: FormBuilder,
     private playerApi: PlayerApiService,
     private store: Store,
+    private defaultPlayer: DefaultPlayerService,
   ) { }
 
   public submit(): void {
@@ -61,6 +64,7 @@ export class AtcStartComponent {
         next: ({ gameId }) => {
           this.store.dispatch(hideGlobalProgressBar());
           this.router.navigate([`./${gameId}`], { relativeTo: this.activatedRoute });
+          this.defaultPlayer.save(this.form.controls.players.getRawValue()[0]);
         },
         error: (err) => {
           this.store.dispatch(hideGlobalProgressBar());
@@ -69,5 +73,13 @@ export class AtcStartComponent {
           return err;
         },
       });
+  }
+
+  private setDefaultPlayer(players: PlayerApi[]): void {
+    const playerId = this.defaultPlayer.load();
+    const player = players.find(({ id }) => id === playerId);
+    if (playerId !== null && player) {
+      this.form.controls.players.setValue([playerId]);
+    }
   }
 }
