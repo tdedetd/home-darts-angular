@@ -17,7 +17,6 @@ export class StatisticsApiService {
     return this.http.get<HitRate[]>(`${this.apiPrefix}hit-rate`, { params: {
       ...params,
       playerId,
-      isCompleted: true,
     } });
   }
 }
