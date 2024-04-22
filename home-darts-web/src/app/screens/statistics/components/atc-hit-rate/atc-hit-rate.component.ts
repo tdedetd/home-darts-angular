@@ -62,7 +62,7 @@ export class AtcHitRateComponent implements OnInit, AfterViewInit {
         borderWidth: 0,
         barPercentage: 0.5,
       }],
-    }
+    };
   }
 
   private initUpdateData(): void {

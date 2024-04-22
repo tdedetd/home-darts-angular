@@ -12,11 +12,11 @@ export class StatisticsApiService {
 
   constructor(private http: HttpClient) {}
 
-  // TODO: params typing 
+  // TODO: params typing
   public hitRate(playerId: PlayerApi['id'], params: Partial<AroundTheClockParams>): Observable<HitRate[]> {
     return this.http.get<HitRate[]>(`${this.apiPrefix}hit-rate`, { params: {
       ...params,
       playerId,
-    } });
+    }});
   }
 }

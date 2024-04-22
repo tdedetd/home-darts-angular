@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { sectionTypesItems } from '@constants/section-type-items';
 import { SectionTypes } from '@models/enums/section-types.enum';
 import { AggregateOperation } from '@models/types/aggregate-operation.type';
+import { Any } from '@models/types/any.type';
 
 const aggregateFnMap: Record<AggregateOperation, (a: number, b: number) => number> = {
   max: (a, b) => Math.max(a, b),
@@ -36,7 +37,7 @@ export class AtcStatsItemsPipe implements PipeTransform {
       resultItemsWithoutAggregate.reduce(
 
         // TODO: any
-        (acc: any, current: any) => ({
+        (acc: Any, current: Any) => ({
           ...acc,
           ...Object.fromEntries(numberFields.map(f => [f, aggregateFnMap[aggregateOperation](acc[f], current[f])]))
         }),

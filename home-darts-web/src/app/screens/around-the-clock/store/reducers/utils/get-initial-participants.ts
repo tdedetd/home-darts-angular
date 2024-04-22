@@ -37,7 +37,8 @@ export function getInitialParticipants(
         hits: throwsGrouped.hits,
         isCompleted: getIsCompleted(throwsGrouped.hits, sectors),
         throws: throwsGrouped.throws,
-        turnHits: (player.id === currentPlayerId && throwsCountOnTurn === throwsPerTurn) ? [] : getTurnHits([...lastThrows].reverse()),
+        turnHits: (player.id === currentPlayerId && throwsCountOnTurn === throwsPerTurn)
+          ? [] : getTurnHits([...lastThrows].reverse()),
       }
     ];
   });

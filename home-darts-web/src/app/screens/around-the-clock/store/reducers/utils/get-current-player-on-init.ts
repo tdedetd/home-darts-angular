@@ -13,7 +13,7 @@ interface PlayersTrows {
   isCompleted: boolean;
 }
 
-export function getCurrentPlayerOnInit( 
+export function getCurrentPlayerOnInit(
   players: PlayerApi[],
   throwsGrouped: ThrowsGrouped[],
   sectors: number[],
@@ -58,11 +58,12 @@ export function getCurrentPlayerOnInit(
 }
 
 function getNextNotCompletedPlayer(player: PlayersTrows, players: PlayersTrows[]): PlayersTrows {
+  let currentPlayer = player;
   do {
-    const index = players.indexOf(player);
+    const index = players.indexOf(currentPlayer);
     const indexNext = (index + 1) % players.length;
-    player = players[indexNext];
-  } while (player.isCompleted);
+    currentPlayer = players[indexNext];
+  } while (currentPlayer.isCompleted);
 
-  return player;
+  return currentPlayer;
 }

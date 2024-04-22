@@ -1,6 +1,7 @@
+import { Any } from '@models/types/any.type';
 import { DartboardPalette } from '../models/dartboard-palette.interface';
 
-export function isDartboardPalette(value: any): value is DartboardPalette {
+export function isDartboardPalette(value: Any): value is DartboardPalette {
   return typeof value === 'object'
     && 'black' in value
     && typeof value.black === 'string'

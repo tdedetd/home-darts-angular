@@ -9,7 +9,9 @@ export class DefaultPlayerService {
 
   public load(): number | null {
     const value = localStorage.getItem(this.key);
-    if (value === null) return null;
+    if (value === null) {
+ return null;
+}
 
     const valueNumber = Number(value);
     return Number.isNaN(valueNumber) ? null : valueNumber;

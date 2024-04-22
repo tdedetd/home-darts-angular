@@ -39,11 +39,6 @@
     "keyword-spacing": "error",
     "line-comment-position": ["error", { "position": "above" }],
     "lines-around-comment": ["error", { "beforeLineComment": true }],
-    "max-len": ["error", {
-      "code": 120,
-      "ignorePattern": "^import ",
-      "ignoreUrls": true
-    }],
     "max-depth": ["error", 4],
     "max-nested-callbacks": ["error", 4],
     "max-statements-per-line": ["error", { "max": 1 }],
@@ -195,9 +190,14 @@
             ]
           }
         ],
-        "@typescript-eslint/no-explicit-any": "warn",
+        "@typescript-eslint/no-explicit-any": "error",
         "@typescript-eslint/prefer-includes": "error",
         "@typescript-eslint/restrict-plus-operands": "error",
+        "max-len": ["error", {
+          "code": 120,
+          "ignorePattern": "^import ",
+          "ignoreUrls": true
+        }],
         "no-implicit-globals": "error",
         "prefer-const": "error"
       }

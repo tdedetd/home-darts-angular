@@ -79,7 +79,8 @@ export const aroundTheClockReducer = createReducer<AroundTheClockState>(
       state.sections, hit, state.participants[state.currentPlayerId]
     );
 
-    const newCurrentPlayerId = isTurnOver && !isPerfectTurn(participantAfterThrow.turnHits) || participantAfterThrow.isCompleted
+    const newCurrentPlayerId =
+      isTurnOver && !isPerfectTurn(participantAfterThrow.turnHits) || participantAfterThrow.isCompleted
       ? getNextPlayerId(state) : state.currentPlayerId;
 
     const newParticipantTurnHits: AtcParticipants | object = (

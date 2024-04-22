@@ -74,7 +74,8 @@ export function getAffectedParticipantsAfterUndo(
       };
     } else {
       const hits = previousParticipant.hits - Number(canceledThrow.hit);
-      const newPreviousPlayerTheowsOfTurn = previousParticipant.turnHits.slice(0, previousParticipant.turnHits.length - 1);
+      const newPreviousPlayerTheowsOfTurn = previousParticipant.turnHits.slice(
+        0, previousParticipant.turnHits.length - 1);
 
       if (!isThrowsOfTurn(newPreviousPlayerTheowsOfTurn)) {
         throw new AroundTheClockError('Incorrect value of newPreviousPlayerTheowsOfTurn');

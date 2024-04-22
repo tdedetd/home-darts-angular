@@ -68,7 +68,9 @@ export class AroundTheClockEffects {
       ]),
       switchMap(([_, gameId, playerId, turnHits, totalThrows]) => {
         if (isEmpty(gameId) || isEmpty(playerId)) {
-          return of(atcUndoError({ err: `Incorrect one of following parameters: gameId = ${gameId}, playerId = ${playerId}` }));
+          return of(atcUndoError({
+            err: `Incorrect one of following parameters: gameId = ${gameId}, playerId = ${playerId}`
+          }));
         }
 
         if (totalThrows === 0) {
@@ -82,7 +84,7 @@ export class AroundTheClockEffects {
             )
             : of(atcUndoSuccess({ canceledThrow, lastThrows: [] }))
           ),
-        )
+        );
       }),
       catchError((err: HttpErrorResponse) => of(atcUndoError({ err })))
     );

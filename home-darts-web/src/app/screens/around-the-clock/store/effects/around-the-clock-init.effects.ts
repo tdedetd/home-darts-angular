@@ -22,7 +22,9 @@ export class AroundTheClockEffectsInit {
         });
 
         return forkJoin(throwsByPlayers$).pipe(
-          map(throwsByPlayers => ({ gameInfo, throwsGrouped, lastThrowsByPlayers: Object.fromEntries(throwsByPlayers) }))
+          map(throwsByPlayers => ({
+            gameInfo, throwsGrouped, lastThrowsByPlayers: Object.fromEntries(throwsByPlayers)
+          }))
         );
       }),
       map((payload) => atcGameInitialized(payload))
