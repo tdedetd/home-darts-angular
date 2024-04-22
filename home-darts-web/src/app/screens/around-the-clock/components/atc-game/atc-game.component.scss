@@ -2,12 +2,29 @@
 @import '../../../../../styles/mixins';
 @import '../../../../../styles/variables';
 
-.atc-game-particpant-container:not(:last-child) {
-  margin-bottom: 12px;
+.atc-game-particpants {
+  margin-bottom: 24px;
 }
 
-.atc-game-dartboard-container {
+.screen-container-atc {
   max-width: 372px;
+}
+
+@include breakpoint-desktop {
+  .atc-game-particpants {
+    margin-bottom: 0;
+  }
+
+  .screen-container-atc {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    max-width: 500px;
+  }
+}
+
+.atc-game-particpant-container:not(:last-child) {
+  margin-bottom: 12px;
 }
 
 .atc-game-tools {

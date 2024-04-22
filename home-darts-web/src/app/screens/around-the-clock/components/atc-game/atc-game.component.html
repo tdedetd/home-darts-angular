@@ -5,34 +5,38 @@
   *ngIf="errorUnexpected$ | async"
   message="Unexpected error while loading the game"></hd-error-screen>
 
-<div *ngIf="isGameNotCompleted$ | async; else gameCompleted" class="screen-container">
-  <ul class="mb-24">
-    <li *ngFor="let player of players$ | async" class="atc-game-particpant-container">
-      <hd-atc-game-participant
-        [active]="isPlayerActive$(player.id) | async"
-        [turnHits]="(turnHits$(player.id) | async) ?? []"
-        [username]="player.username"
-        [hits]="player.hits"
-        [throws]="player.throws"
-      ></hd-atc-game-participant>
-    </li>
-  </ul>
+<div class="screen-container screen-container-atc">
+  @if (isGameCompleted$ | async) {
+    Game is completed
+  } @else {
+    <ul class="atc-game-particpants">
+      <li *ngFor="let player of players$ | async" class="atc-game-particpant-container">
+        <hd-atc-game-participant
+          [active]="isPlayerActive$(player.id) | async"
+          [turnHits]="(turnHits$(player.id) | async) ?? []"
+          [username]="player.username"
+          [hits]="player.hits"
+          [throws]="player.throws"
+        ></hd-atc-game-participant>
+      </li>
+    </ul>
 
-  <div *ngIf="hitDetectionMode && dartboardStyle" class="atc-game-dartboard-container">
-    <div class="block p-16 mb-12">
-      <hd-dartboard
-        [sector]="(selectCurrentSectorForCurrentPlayer$ | async) ?? 0"
-        [sectorType]="hitDetectionMode"
-        [style]="dartboardStyle"
-        [zoom]="true"
-      ></hd-dartboard>
-    </div>
+    <div *ngIf="hitDetectionMode && dartboardStyle" class="atc-game-dartboard-container">
+      <div class="block p-16 mb-12">
+        <hd-dartboard
+          [sector]="(selectCurrentSectorForCurrentPlayer$ | async) ?? 0"
+          [sectorType]="hitDetectionMode"
+          [style]="dartboardStyle"
+          [zoom]="true"
+        ></hd-dartboard>
+      </div>
 
-    <div class="block p-8 pl-24 flex">
-      <p class="mr-24">Next sectors</p>
-      <p class="mr-16" *ngFor="let sector of ((upcomingSectors$ | async) ?? []) | sectorsWithPrefixes: hitDetectionMode">{{ sector }}</p>
+      <div class="block p-8 pl-24 flex">
+        <p class="mr-24">Following sectors</p>
+        <p class="mr-16" *ngFor="let sector of ((upcomingSectors$ | async) ?? []) | sectorsWithPrefixes: hitDetectionMode">{{ sector }}</p>
+      </div>
     </div>
-  </div>
+  }
 </div>
 
 <div class="atc-game-spacer"></div>
@@ -43,7 +47,7 @@
     matTooltip="Hit"
     color="primary"
     type="button"
-    [disabled]="loading || (currentPlayerCompleted$ | async)"
+    [disabled]="loading || (isGameCompleted$ | async) || (currentPlayerCompleted$ | async)"
     class="atc-game-tools-button btn flex-1-1"
     (click)="throw(true)"
   >
@@ -54,7 +58,7 @@
     matTooltip="Miss"
     color="primary"
     type="button"
-    [disabled]="loading || (currentPlayerCompleted$ | async)"
+    [disabled]="loading || (isGameCompleted$ | async) || (currentPlayerCompleted$ | async)"
     class="atc-game-tools-button btn flex-1-1"
     (click)="throw(false)"
   >
@@ -84,5 +88,3 @@
     <mat-icon>check</mat-icon>
   </button>
 </div>
-
-<ng-template #gameCompleted>Game is completed</ng-template>
