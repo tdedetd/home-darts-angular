@@ -1,5 +1,5 @@
 @import '../../../../../styles/colors';
-@import '../../../../../styles/mixins';
+@import '../../../../../styles/utils/mixins';
 @import '../../../../../styles/variables';
 
 .atc-game-particpants {
@@ -10,7 +10,7 @@
   max-width: 372px;
 }
 
-@include breakpoint-desktop {
+@include breakpoint-min(lg) {
   .atc-game-particpants {
     margin-bottom: 0;
   }
@@ -19,7 +19,7 @@
     display: flex;
     gap: 16px;
     justify-content: center;
-    max-width: 500px;
+    max-width: 600px;
   }
 }
 
@@ -35,7 +35,7 @@
   background: $background-color;
   background: linear-gradient(0deg, $background-color 0%, $background-color 60%, rgba(0,0,0,0) 100%);
 
-  @include breakpoint-tablet {
+  @include breakpoint-min(md) {
     width: calc(100% - $sidebar-desktop-width);
   }
 }

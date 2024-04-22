@@ -1,16 +1,16 @@
-@import '../../../../../styles/mixins';
+@import '../../../../../styles/utils/mixins';
 
 :host {
   display: block;
 }
 
-@include breakpoint-mobile {
+@include breakpoint-max(md) {
   .hit-rate-charts__bar-container {
     margin-bottom: 16px;
   }
 }
 
-@include breakpoint-tablet {
+@include breakpoint-min(md) {
   .hit-rate-charts__bar-container {
     flex: 1 1;
   }

@@ -1,6 +1,6 @@
 @import './colors';
 @import './variables';
-@import './mixins';
+@import './utils/mixins';
 
 @mixin block {
   background: $block-color;
@@ -12,7 +12,7 @@
   @include block;
 }
 
-@include breakpoint-tablet {
+@include breakpoint-min(md) {
   .block-md {
     @include block;
   }

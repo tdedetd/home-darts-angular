@@ -1,9 +1,9 @@
-@import '../../../styles/mixins';
+@import '../../../styles/utils/mixins';
 
 .common-stats-cards {
   display: grid;
 
-  @include breakpoint-mobile {
+  @include breakpoint-max(md) {
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
 
@@ -13,7 +13,7 @@
     }
   }
 
-  @include breakpoint-tablet {
+  @include breakpoint-min(md) {
     gap: 32px;
     grid-template-columns: repeat(3, 1fr);
   }

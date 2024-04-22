@@ -1,0 +1,37 @@
+@use 'sass:map';
+@import '../variables';
+@import './breakpoints';
+
+@mixin breakpoint-min($size) {
+  @include breakpoint($size, min) {
+    @content;
+  }
+}
+
+@mixin breakpoint-max($size) {
+  @include breakpoint($size, max) {
+    @content;
+  }
+}
+
+@mixin breakpoint($size, $direction) {
+  $px: map.get($breakpoints, $size);
+
+  @if ($direction == 'max' or $direction == 'min') {
+    @if ($px) {
+      @if ($direction == 'max') {
+        @media screen and (max-width: ($px - 1px)) {
+          @content;
+        }
+      } @else {
+        @media screen and (min-width: $px) {
+          @content;
+        }
+      }
+    } @else {
+      @error 'No such breakpoint';
+    }
+  } @else {
+    @error 'Incorrect parameter "$direction"';
+  }
+}

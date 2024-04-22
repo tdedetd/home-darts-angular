@@ -1,14 +1,11 @@
-@import '../../../styles/mixins';
+@import '../../../styles/utils/mixins';
 
 .history-list {
   display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
 
-  @include breakpoint-mobile {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  @include breakpoint-tablet {
+  @include breakpoint-min(md) {
     grid-template-columns: repeat(2, 1fr);
     gap: 24px;
   }
@@ -19,13 +16,10 @@
 }
 
 .history__actions {
-  @include breakpoint-mobile {
-    padding-top: 16px;
-  }
+  text-align: center;
+  padding-top: 16px;
 
-  @include breakpoint-tablet {
+  @include breakpoint-min(md) {
     padding-top: 32px;
   }
-
-  text-align: center;
 }

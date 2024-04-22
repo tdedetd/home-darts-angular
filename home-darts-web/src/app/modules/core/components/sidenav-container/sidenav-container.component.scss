@@ -1,5 +1,5 @@
 @import '../../../../../styles/variables';
-@import '../../../../../styles/mixins';
+@import '../../../../../styles/utils/mixins';
 
 .drawer-container {
   height: calc(100vh - $header-height);
@@ -12,7 +12,7 @@
 .drawer-content {
   height: 100%;
 
-  @include breakpoint-tablet {
+  @include breakpoint-min(md) {
     display: flex;
     padding-left: $sidebar-desktop-width;
   }
@@ -20,14 +20,11 @@
 
 .sidenav-menu {
   width: $sidebar-desktop-width;
-  display: flex;
   border-radius: 0;
+  display: none;
 
-  @include breakpoint-mobile {
-    display: none;
-  }
-
-  @include breakpoint-tablet {
+  @include breakpoint-min(md) {
+    display: flex;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -36,7 +33,7 @@
 }
 
 .main-content {
-  @include breakpoint-tablet {
+  @include breakpoint-min(md) {
     flex: 1 1;
   }
 }

@@ -1,19 +1,20 @@
 @import '../../../styles/colors';
 @import '../../../styles/variables';
-@import '../../../styles/mixins';
+@import '../../../styles/utils/mixins';
 
 :host {
   display: block;
   width: 100%;
   height: calc(100dvh - $header-height);
+  background-color: $block-color;
 
-  @include breakpoint-mobile {
-    background-color: $block-color;
+  @include breakpoint-min(md) {
+    background-color: inherit;
   }
 }
 
 .settings-block {
-  @include breakpoint-tablet {
+  @include breakpoint-min(md) {
     padding: 16px;
   }
 }
