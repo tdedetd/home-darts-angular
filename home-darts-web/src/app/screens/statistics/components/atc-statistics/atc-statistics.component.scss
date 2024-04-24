@@ -4,6 +4,16 @@
   display: block;
 }
 
+.atc-stats-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+
+  @include breakpoint-min(lg) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 @include breakpoint-max(md) {
   .hit-rate-charts__bar-container {
     margin-bottom: 16px;

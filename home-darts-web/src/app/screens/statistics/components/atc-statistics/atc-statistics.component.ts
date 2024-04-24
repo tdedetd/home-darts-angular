@@ -1,12 +1,13 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, computed, input } from '@angular/core';
 import { PlayerStatsApi } from '@models/player-stats-api.interface';
-import { sectionTypesItems } from '@constants/section-type-items';
 import { PlayerApi } from '@models/player-api.interface';
 import { StatisticsApiService } from '../../services/statistics-api.service';
 import { Observable, ReplaySubject, debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs';
 import { SectionTypes } from '@models/enums/section-types.enum';
 import { isNotEmpty } from '@functions/type-guards/is-not-empty';
 import { HitRate } from '../../models/hit-rate.interface';
+import { AtcStatisticsCard } from '../atc-statistics-card/models/atc-statistics-card.interface';
+import { getAtcStatsCardItems } from '../../utils/get-atc-stats-card-items';
 
 @Component({
   selector: 'hd-atc-statistics',
@@ -19,10 +20,13 @@ export class AtcStatisticsComponent implements OnInit {
     this.playerIdSubject.next(value);
   }
 
-  @Input() public stats?: PlayerStatsApi['aroundTheClock'];
+  public stats = input.required<PlayerStatsApi['aroundTheClock']>();
+  public statsCards = computed<AtcStatisticsCard[]>(() => {
+    const stats = this.stats();
+    return getAtcStatsCardItems(stats);
+  });
 
   public hitRate$?: Observable<HitRate[]>;
-  public readonly sectionTypesItems = sectionTypesItems;
 
   private playerIdSubject = new ReplaySubject<PlayerApi['id'] | null>(1);
 

@@ -1,39 +1,9 @@
 <h2 class="mb-24">Around the clock</h2>
 
-<div class="block p-16 mb-16">
-  <table *ngIf="stats">
-    <thead>
-      <tr>
-        <th></th>
-        <th>All</th>
-        <th *ngFor="let item of sectionTypesItems">{{ item.label }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Games count</td>
-        <td *ngFor="let item of stats.gamesCount | atcStatsItems">{{ item.gamesCount ?? 0 }}</td>
-      </tr>
-      <tr>
-        <td>Throws</td>
-        <td *ngFor="let item of stats.throwsHits | atcStatsItems">{{ item.throws ?? 0 }}</td>
-      </tr>
-      <tr>
-        <td>Hit rate</td>
-        <td *ngFor="let item of stats.throwsHits | atcStatsItems">
-          <ng-container *ngIf="(item.throws ?? 0) > 0; else noThrows">
-            {{ ((item.hits ?? 0) / (item.throws ?? 0) * 100) | number: '1.2-2' }}%
-          </ng-container>
-        </td>
-      </tr>
-      <tr>
-        <td>Longest hits streak</td>
-        <td *ngFor="let item of stats.hitsStreak | atcStatsItems: 'max'">{{ item.longestHitsStreak ?? 0 }}</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <ng-template #noThrows>-</ng-template>
+<div class="atc-stats-cards mb-24">
+  @for (card of statsCards(); track card.title) {
+    <hd-atc-statistics-card [data]="card"></hd-atc-statistics-card>
+  }
 </div>
 
 <div *ngIf="((hitRate$ | async) ?? []) as hitRate" class="hit-rate-charts">

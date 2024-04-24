@@ -1,0 +1,25 @@
+@import '../../../../../styles/utils/mixins';
+
+.atc-stats-card-params {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px 12px;
+}
+
+.atc-stats-card-param-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &__icon {
+    width: 14px;
+    height: 14px;
+    font-size: 14px;
+  }
+
+  &__value {
+    @include breakpoint-max(sm) {
+      font-size: .8em;
+    }
+  }
+}

@@ -1,0 +1,47 @@
+<div class="block p-12">
+  <p class="mb-8">{{ data().title }}</p>
+  <div class="atc-stats-card-params">
+    <div class="atc-stats-card-param-item">
+      <mat-icon
+        [matTooltip]="'Games count'"
+        matTooltipPosition="above"
+        class="atc-stats-card-param-item__icon"
+      >sports_esports</mat-icon>
+      <p class="atc-stats-card-param-item__value">{{ data().gamesCount }}</p>
+    </div>
+    <div class="atc-stats-card-param-item">
+      <img
+        src="../../../../../assets/svg/dart.svg"
+        alt="dart"
+        class="atc-stats-card-param-item__icon"
+        [matTooltip]="'Throws count'"
+        matTooltipPosition="above"
+      />
+      <p class="atc-stats-card-param-item__value">{{ data().throws }}</p>
+    </div>
+    <div class="atc-stats-card-param-item">
+      <img
+        src="../../../../../assets/svg/aim.svg"
+        alt="aim"
+        class="atc-stats-card-param-item__icon"
+        [matTooltip]="'Hit rate'"
+        matTooltipPosition="above"
+      />
+      <p class="atc-stats-card-param-item__value">
+        @if (data().throws === 0) {
+          -
+        } @else {
+          {{ (data().hits / data().throws * 100) | number: '1.1-1' }}%
+        }
+      </p>
+    </div>
+    <div class="atc-stats-card-param-item">
+      <mat-icon
+        class="atc-stats-card-param-item__icon"
+        [matTooltip]="'Longest hits streak'"
+        matTooltipPosition="above"
+      >timeline</mat-icon>
+      <p class="atc-stats-card-param-item__value">{{ data().longestHitsStreak }}</p>
+    </div>
+  </div>
+</div>
