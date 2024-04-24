@@ -9,10 +9,11 @@ import { AtcStatsItemsPipe } from './pipes/atc-stats-items.pipe';
 import { MatSelectModule } from '@angular/material/select';
 import { AnimationModule } from '@modules/animation/animation.module';
 import { StatisticsApiService } from './services/statistics-api.service';
-import { AtcHitRateComponent } from './components/atc-hit-rate/atc-hit-rate.component';
+import { AtcHitRateBarComponent } from './components/atc-hit-rate-bar/atc-hit-rate-bar.component';
 import { BarController, BarElement, CategoryScale, Chart, LinearScale } from 'chart.js';
 import { DartboardModule } from '@modules/dartboard/dartboard.module';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { AtcHitRateHeatMapComponent } from './components/atc-hit-rate-heat-map/atc-hit-rate-heat-map.component';
 
 
 Chart.register(BarController, CategoryScale, LinearScale, BarElement);
@@ -22,7 +23,8 @@ Chart.register(BarController, CategoryScale, LinearScale, BarElement);
     StatisticsComponent,
     AtcStatisticsComponent,
     AtcStatsItemsPipe,
-    AtcHitRateComponent,
+    AtcHitRateBarComponent,
+    AtcHitRateHeatMapComponent,
   ],
   imports: [
     CommonModule,

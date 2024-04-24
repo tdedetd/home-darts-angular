@@ -61,12 +61,10 @@
       </div>
     </div>
 
-    <hd-atc-statistics
-      *ngIf="stats; else playerNotSelected"
-      [playerId]="playerId"
-      [stats]="stats.aroundTheClock"
-    ></hd-atc-statistics>
+    @if (stats) {
+      <hd-atc-statistics [playerId]="playerId" [stats]="stats.aroundTheClock"></hd-atc-statistics>
+    } @else {
+      <p>Select player</p>
+    }
   </ng-container>
-
-  <ng-template #playerNotSelected>Select player</ng-template>
 </div>

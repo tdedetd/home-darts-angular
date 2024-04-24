@@ -1,4 +1,4 @@
-<h2 class="mb-24">Around the clock details</h2>
+<h2 class="mb-24">Around the clock</h2>
 
 <div class="block p-16 mb-16">
   <table *ngIf="stats">
@@ -36,11 +36,11 @@
   <ng-template #noThrows>-</ng-template>
 </div>
 
-<div class="hit-rate-charts">
+<div *ngIf="((hitRate$ | async) ?? []) as hitRate" class="hit-rate-charts">
   <div class="hit-rate-charts__bar-container block p-16">
-    <hd-atc-hit-rate *ngIf="hitRate$ | async as hitRate" [data]="hitRate"></hd-atc-hit-rate>
+    <hd-atc-hit-rate-bar [data]="hitRate"></hd-atc-hit-rate-bar>
   </div>
   <div class="block p-16">
-    <hd-dartboard class="hit-rate-dartboard" [style]="hitRateDartboardStyle" [zoom]="false"></hd-dartboard>
+    <hd-atc-hit-rate-heat-map class="hit-rate-dartboard" [data]="hitRate"></hd-atc-hit-rate-heat-map>
   </div>
 </div>

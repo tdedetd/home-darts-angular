@@ -33,7 +33,10 @@
 
       <div class="block p-8 pl-24 flex">
         <p class="mr-24">Following sectors</p>
-        <p class="mr-16" *ngFor="let sector of ((upcomingSectors$ | async) ?? []) | sectorsWithPrefixes: hitDetectionMode">{{ sector }}</p>
+        <p
+          *ngFor="let sector of ((upcomingSectors$ | async) ?? []) | sectorsWithPrefixes: hitDetectionMode"
+          class="mr-16" 
+        >{{ sector }}</p>
       </div>
     </div>
   }

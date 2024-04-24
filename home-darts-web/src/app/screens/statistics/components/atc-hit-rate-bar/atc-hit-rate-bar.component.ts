@@ -8,12 +8,12 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 @UntilDestroy()
 @Component({
-  selector: 'hd-atc-hit-rate',
-  templateUrl: './atc-hit-rate.component.html',
-  styleUrls: ['./atc-hit-rate.component.scss'],
+  selector: 'hd-atc-hit-rate-bar',
+  templateUrl: './atc-hit-rate-bar.component.html',
+  styleUrls: ['./atc-hit-rate-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AtcHitRateComponent implements OnInit, AfterViewInit {
+export class AtcHitRateBarComponent implements OnInit, AfterViewInit {
   @ViewChild('canvas') public canvas?: ElementRef<HTMLCanvasElement>;
 
   @Input() public set data(value: HitRate[]) {
