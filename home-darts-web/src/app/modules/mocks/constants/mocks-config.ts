@@ -9,6 +9,7 @@ import atcHitRate from './mocks/atc-hit-rate.json';
 import players from './mocks/players.json';
 import playerStats from './mocks/player-stats.json';
 
+// TODO: method support
 export const mocksConfig: MockMeta[] = [
   { regex: /api\/players\/?$/, data: players, delay: 100 },
   { regex: /api\/players\/\d+\/stats$/, data: playerStats, delay: 100 },
