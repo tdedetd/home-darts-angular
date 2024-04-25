@@ -13,9 +13,9 @@
       </mat-form-field>
     </div>
 
-    <div class="common-stats-cards text-align-center mb-48">
-      <div class="block p-16">
-        <p class="mb-8">Games</p>
+    <div class="common-stats-cards mb-48">
+      <div class="common-stats-cards__item common-stats-cards__item_games block p-16">
+        <p>Games</p>
         @if (stats) {
           <h2>
             @if (isCounterAnimationsOn) {
@@ -28,8 +28,8 @@
           <ngx-skeleton-loader class="stats-skeleton-loader stats-skeleton-loader_100" appearance="line" />
         }
       </div>
-      <div class="block p-16">
-        <p class="mb-8">Throws</p>
+      <div class="common-stats-cards__item common-stats-cards__item_throws block p-16">
+        <p>Throws</p>
         @if (stats) {
           <h2>
             @if (isCounterAnimationsOn) {
@@ -42,8 +42,8 @@
           <ngx-skeleton-loader class="stats-skeleton-loader stats-skeleton-loader_100" appearance="line" />
         }
       </div>
-      <div class="block stats-playing-time-card p-16">
-        <p class="mb-8">Playing time</p>
+      <div class="common-stats-cards__item common-stats-cards__item_playing-time block p-16">
+        <p>Playing time</p>
         @if (stats) {
           <h2>
             @if (isCounterAnimationsOn) {

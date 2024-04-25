@@ -1,3 +1,4 @@
+@use '../../../styles/colors' as palette;
 @import '../../../styles/utils/mixins';
 
 .common-stats-cards {
@@ -7,7 +8,7 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
 
-    .stats-playing-time-card {
+    &__item_playing-time {
       grid-column-start: 1;
       grid-column-end: 3;
     }
@@ -17,12 +18,58 @@
     gap: 32px;
     grid-template-columns: repeat(3, 1fr);
   }
+
+  &__item {
+    $bg-z-index: 234;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-end;
+    overflow: hidden;
+
+    & > * {
+      z-index: $bg-z-index + 1;
+    }
+
+    &::before {
+      position: absolute;
+      font-family: 'Material Icons';
+      font-style: normal;
+      font-weight: 400;
+      color: palette.$chip-bg-color;
+      z-index: $bg-z-index;
+    }
+
+    &_games::before {
+      content: '\ea28';
+      top: 36px;
+      left: -32px;
+      font-size: 160px;
+    }
+
+    &_throws::before {
+      content: '';
+      background: url('../../../assets/svg/dart-gray.svg') no-repeat;
+      background-size: 100% 100%;
+      width: 104px;
+      height: 104px;
+      top: -5px;
+      left: -5px;
+    }
+
+    &_playing-time::before {
+      content: '\e8b5';
+      top: 35px;
+      left: -35px;
+      font-size: 162px;
+    }
+  }
 }
 
 ::ng-deep {
   .common-stats-cards .stats-skeleton-loader {
     display: block;
-    margin: 0 auto;
     height: 32px;
 
     .skeleton-loader {
@@ -31,11 +78,11 @@
     }
 
     &_100 {
-      max-width: 100px;
+      width: 100px;
     }
 
     &_150 {
-      max-width: 150px;
+      width: 150px;
     }
   }
 }
