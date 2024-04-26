@@ -1,12 +1,11 @@
 import { PlayerStatsApi } from '../../../models/player-stats-api.interface';
 import { sectionTypesItems } from '@constants/section-type-items';
-import { AtcStatisticsCard } from '../components/atc-statistics-card/models/atc-statistics-card.interface';
+import { AtcStatisticsCardData } from '../models/atc-statistics-card-data.interface';
 
-export function getAtcStatsCardItems(stats: PlayerStatsApi['aroundTheClock']): AtcStatisticsCard[] {
-  const cards: AtcStatisticsCard[] = sectionTypesItems.map(sectionTypeItem => {
+export function getAtcStatsCardItems(stats: PlayerStatsApi['aroundTheClock']): AtcStatisticsCardData[] {
+  const cards: AtcStatisticsCardData[] = sectionTypesItems.map<AtcStatisticsCardData>(sectionTypeItem => {
     const throwsHitsRecord = stats.throwsHits.find(({ sectionType }) => sectionTypeItem.value === sectionType);
     return {
-      title: sectionTypeItem.label,
       gamesCount: stats.gamesCount.find(({ sectionType }) => sectionTypeItem.value === sectionType)?.gamesCount ?? 0,
       throws: throwsHitsRecord?.throws ?? 0,
       hits: throwsHitsRecord?.hits ?? 0,
@@ -16,8 +15,7 @@ export function getAtcStatsCardItems(stats: PlayerStatsApi['aroundTheClock']): A
     }
   });
 
-  const allCard: AtcStatisticsCard = {
-    title: 'All',
+  const allCard: AtcStatisticsCardData = {
     gamesCount: cards.reduce((acc, { gamesCount }) => acc + gamesCount, 0),
     throws: cards.reduce((acc, { throws }) => acc + throws, 0),
     hits: cards.reduce((acc, { hits }) => acc + hits, 0),

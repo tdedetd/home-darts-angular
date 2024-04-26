@@ -12,7 +12,7 @@ import playerStats from './mocks/player-stats.json';
 // TODO: method support
 export const mocksConfig: MockMeta[] = [
   { regex: /api\/players\/?$/, data: players, delay: 100 },
-  { regex: /api\/players\/\d+\/stats$/, data: playerStats, delay: 100 },
+  { regex: /api\/players\/\d+\/stats$/, data: playerStats, delay: 500 },
   { regex: /api\/throws\/\d+$/, data: throws, delay: 300 },
   { regex: /api\/throws\/grouped\/\d+$/, data: atcGameThrowsGrouped, delay: 300 },
   { regex: /api\/history\/?$/, data: getMockGamesHistory, delay: 200 },

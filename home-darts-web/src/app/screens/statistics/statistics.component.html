@@ -61,10 +61,6 @@
       </div>
     </div>
 
-    @if (stats) {
-      <hd-atc-statistics [playerId]="playerId" [stats]="stats.aroundTheClock"></hd-atc-statistics>
-    } @else {
-      <p>Select player</p>
-    }
+    <hd-atc-statistics [playerId]="playerId" [stats]="stats?.aroundTheClock"></hd-atc-statistics>
   </ng-container>
 </div>

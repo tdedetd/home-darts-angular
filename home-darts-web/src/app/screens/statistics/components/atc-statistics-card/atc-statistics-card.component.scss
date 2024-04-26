@@ -23,3 +23,29 @@
     }
   }
 }
+
+::ng-deep {
+  .atc-stats-card-skeleton-loader {
+    height: 20px;
+
+    .skeleton-loader {
+      height: 20px;
+    }
+
+    &_games {
+      width: 30px;
+    }
+
+    &_throws {
+      width: 40px;
+    }
+
+    &_hit-rate {
+      width: 40px;
+    }
+
+    &_streak {
+      width: 25px;
+    }
+  }
+}

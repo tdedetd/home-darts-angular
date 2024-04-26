@@ -16,6 +16,7 @@ import { AtcHitRateHeatMapComponent } from './components/atc-hit-rate-heat-map/a
 import { AtcStatisticsCardComponent } from './components/atc-statistics-card/atc-statistics-card.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { AtcStatsCardItemsPipe } from './pipes/atc-stats-card-items.pipe';
 
 
 Chart.register(BarController, CategoryScale, LinearScale, BarElement);
@@ -27,6 +28,7 @@ Chart.register(BarController, CategoryScale, LinearScale, BarElement);
     AtcHitRateBarComponent,
     AtcHitRateHeatMapComponent,
     AtcStatisticsCardComponent,
+    AtcStatsCardItemsPipe,
   ],
   imports: [
     CommonModule,

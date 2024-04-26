@@ -1,8 +1,14 @@
 <h2 class="mb-24">Around the clock</h2>
 
 <div class="atc-stats-cards mb-24">
-  @for (card of statsCards(); track card.title) {
-    <hd-atc-statistics-card [data]="card"></hd-atc-statistics-card>
+  @if (stats) {
+    @for (card of stats | atcStatsCardItems; track i; let i = $index) {
+      <hd-atc-statistics-card [data]="card" [title]="cardTitles[i]"></hd-atc-statistics-card>
+    }
+  } @else {
+    @for (title of cardTitles; track title) {
+      <hd-atc-statistics-card [title]="title"></hd-atc-statistics-card>
+    }
   }
 </div>
 

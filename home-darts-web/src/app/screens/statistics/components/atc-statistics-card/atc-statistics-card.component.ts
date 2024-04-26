@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { AtcStatisticsCard } from './models/atc-statistics-card.interface';
+import { ChangeDetectionStrategy, Component, Input, input } from '@angular/core';
+import { AtcStatisticsCardData } from '../../models/atc-statistics-card-data.interface';
 
 @Component({
   selector: 'hd-atc-statistics-card',
@@ -8,5 +8,7 @@ import { AtcStatisticsCard } from './models/atc-statistics-card.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AtcStatisticsCardComponent {
-  public data = input.required<AtcStatisticsCard>();
+  @Input() public data?: AtcStatisticsCardData;
+
+  public title = input.required<string>();
 }

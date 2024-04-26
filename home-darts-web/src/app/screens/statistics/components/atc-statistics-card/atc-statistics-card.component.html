@@ -1,14 +1,23 @@
 <div class="block p-12">
-  <p class="mb-8">{{ data().title }}</p>
+  <p class="mb-8">{{ title() }}</p>
   <div class="atc-stats-card-params">
+
     <div class="atc-stats-card-param-item">
       <mat-icon
         [matTooltip]="'Games count'"
         matTooltipPosition="above"
         class="atc-stats-card-param-item__icon"
       >sports_esports</mat-icon>
-      <p class="atc-stats-card-param-item__value">{{ data().gamesCount }}</p>
+      @if (data) {
+        <p class="atc-stats-card-param-item__value">{{ data.gamesCount }}</p>
+      } @else {
+        <ngx-skeleton-loader
+          class="atc-stats-card-skeleton-loader atc-stats-card-skeleton-loader_games"
+          appearance="line"
+        />
+      }
     </div>
+
     <div class="atc-stats-card-param-item">
       <img
         src="../../../../../assets/svg/dart.svg"
@@ -17,8 +26,16 @@
         [matTooltip]="'Throws count'"
         matTooltipPosition="above"
       />
-      <p class="atc-stats-card-param-item__value">{{ data().throws }}</p>
+      @if (data) {
+        <p class="atc-stats-card-param-item__value">{{ data.throws }}</p>
+      } @else {
+        <ngx-skeleton-loader
+          class="atc-stats-card-skeleton-loader atc-stats-card-skeleton-loader_throws"
+          appearance="line"
+        />
+      }
     </div>
+
     <div class="atc-stats-card-param-item">
       <img
         src="../../../../../assets/svg/aim.svg"
@@ -27,21 +44,37 @@
         [matTooltip]="'Hit rate'"
         matTooltipPosition="above"
       />
-      <p class="atc-stats-card-param-item__value">
-        @if (data().throws === 0) {
-          -
-        } @else {
-          {{ (data().hits / data().throws * 100) | number: '1.1-1' }}%
-        }
-      </p>
+      @if (data) {
+        <p class="atc-stats-card-param-item__value">
+          @if (data.throws === 0) {
+            -
+          } @else {
+            {{ (data.hits / data.throws * 100) | number: '1.1-1' }}%
+          }
+        </p>
+      } @else {
+        <ngx-skeleton-loader
+          class="atc-stats-card-skeleton-loader atc-stats-card-skeleton-loader_hit-rate"
+          appearance="line"
+        />
+      }
     </div>
+
     <div class="atc-stats-card-param-item">
       <mat-icon
         class="atc-stats-card-param-item__icon"
         [matTooltip]="'Longest hits streak'"
         matTooltipPosition="above"
       >timeline</mat-icon>
-      <p class="atc-stats-card-param-item__value">{{ data().longestHitsStreak }}</p>
+      @if (data) {
+        <p class="atc-stats-card-param-item__value">{{ data.longestHitsStreak }}</p>
+      } @else {
+        <ngx-skeleton-loader
+          class="atc-stats-card-skeleton-loader atc-stats-card-skeleton-loader_streak"
+          appearance="line"
+        />
+      }
     </div>
+
   </div>
 </div>

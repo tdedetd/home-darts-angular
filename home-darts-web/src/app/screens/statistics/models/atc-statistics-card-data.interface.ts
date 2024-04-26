@@ -1,5 +1,4 @@
-export interface AtcStatisticsCard {
-  title: string;
+export interface AtcStatisticsCardData {
   gamesCount: number;
   throws: number;
   hits: number;
