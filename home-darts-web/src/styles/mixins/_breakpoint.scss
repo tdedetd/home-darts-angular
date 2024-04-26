@@ -1,6 +1,5 @@
 @use 'sass:map';
-@import '../variables';
-@import './breakpoints';
+@import '../variables/breakpoints';
 
 @mixin breakpoint-min($size) {
   @include breakpoint($size, min) {

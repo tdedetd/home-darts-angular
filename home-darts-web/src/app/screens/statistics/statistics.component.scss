@@ -1,5 +1,5 @@
-@use '../../../styles/colors' as palette;
-@import '../../../styles/utils/mixins';
+@use '../../../styles/variables/palette' as palette;
+@import '../../../styles/mixins/breakpoint';
 
 .common-stats-cards {
   display: grid;
@@ -37,7 +37,7 @@
       font-family: 'Material Icons';
       font-style: normal;
       font-weight: 400;
-      color: palette.$chip-bg-color;
+      color: palette.$chip-bg;
       z-index: $bg-z-index;
     }
 

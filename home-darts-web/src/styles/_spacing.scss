@@ -1,21 +1,23 @@
 @mixin spacing($sizes...) {
   @each $size in $sizes {
-    .mat-typography .p-#{$size} {
+    .p-#{$size} {
       padding: #{$size}px;
     }
 
-    .mat-typography .pl-#{$size} {
+    .pl-#{$size} {
       padding-left: #{$size}px;
     }
 
-    .mat-typography .mr-#{$size} {
+    .mr-#{$size} {
       margin-right: #{$size}px;
     }
 
-    .mat-typography .mb-#{$size} {
+    .mb-#{$size} {
       margin-bottom: #{$size}px;
     }
   }
 }
 
-@include spacing(8, 12, 16, 24, 48);
+.mat-typography {
+  @include spacing(8, 12, 16, 24, 48);
+}

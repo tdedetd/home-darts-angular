@@ -1,7 +1,7 @@
-@import '../../../../../styles/colors';
+@use '../../../../../styles/variables/palette' as palette;
 
 .atc-game-part-active {
-  background-color: $highlight-color;
+  background-color: palette.$highlight;
 }
 
 .atc-game-part-throw {
@@ -9,11 +9,11 @@
 }
 
 .atc-game-part-throw__green {
-  color: $accent-green-color;
+  color: palette.$accent-green;
 }
 
 .atc-game-part-throw__red {
-  color: $accent-red-color;
+  color: palette.$accent-red;
 }
 
 .atc-game-part-stats {

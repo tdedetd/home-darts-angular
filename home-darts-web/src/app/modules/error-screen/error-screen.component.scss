@@ -1,4 +1,4 @@
-@import '../../../styles/colors';
+@use '../../../styles/variables/palette' as palette;
 
 $error-icon-size: 256px;
 
@@ -14,11 +14,11 @@ $error-icon-size: 256px;
   font-size: $error-icon-size;
   width: $error-icon-size;
   height: $error-icon-size;
-  color: $error-screen-color;
+  color: palette.$error-screen;
 }
 
 .error-message {
   margin: 0 48px;
   text-align: center;
-  color: $error-screen-color;
+  color: palette.$error-screen;
 }

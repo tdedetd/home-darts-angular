@@ -1,9 +1,9 @@
-@import '../../../../../styles/colors';
+@use '../../../../../styles/variables/palette' as palette;
 
 :host {
   display: block;
   padding: 12px 16px;
-  color: $copyright-text-color;
+  color: palette.$copyright-text;
   text-align: center;
 }
 

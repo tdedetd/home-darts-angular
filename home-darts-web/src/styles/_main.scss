@@ -1,17 +1,17 @@
-@import './colors';
+@use './variables/palette' as palette;
 
 html, body {
   height: 100%;
 }
 
 html {
-  color: $text-color;
+  color: palette.$text;
 }
 
 body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
-  background-color: $background-color;
+  background-color: palette.$background;
 }
 
 h1, h2, h3, h4, h5, h6 {

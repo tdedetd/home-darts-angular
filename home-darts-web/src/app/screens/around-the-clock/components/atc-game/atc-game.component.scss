@@ -1,5 +1,5 @@
-@import '../../../../../styles/colors';
-@import '../../../../../styles/utils/mixins';
+@use '../../../../../styles/variables/palette' as palette;
+@import '../../../../../styles/mixins/breakpoint';
 @import '../../../../../styles/variables';
 
 .atc-game-particpants {
@@ -32,8 +32,8 @@
   position: fixed;
   width: 100%;
   bottom: 0;
-  background: $background-color;
-  background: linear-gradient(0deg, $background-color 0%, $background-color 60%, rgba(0,0,0,0) 100%);
+  background: palette.$background;
+  background: linear-gradient(0deg, palette.$background 0%, palette.$background 60%, rgba(0,0,0,0) 100%);
 
   @include breakpoint-min(md) {
     width: calc(100% - $sidebar-desktop-width);

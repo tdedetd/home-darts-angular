@@ -1,5 +1,5 @@
 @import '../styles/variables';
-@import '../styles/utils/mixins';
+@import '../styles/mixins/breakpoint';
 
 .header {
   height: $header-height;
