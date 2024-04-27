@@ -15,6 +15,7 @@ import { sectionTypesItems } from '../../../../utils/constants/section-type-item
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AtcStatisticsComponent implements OnInit {
+  /** @deprecated */
   @Input() public set playerId(value: PlayerApi['id'] | null) {
     this.playerIdSubject.next(value);
   }

@@ -10,6 +10,7 @@ import players from './mocks/players.json';
 import playerStats from './mocks/player-stats.json';
 
 // TODO: method support
+// TODO: simulate errors
 export const mocksConfig: MockMeta[] = [
   { regex: /api\/players\/?$/, data: players, delay: 100 },
   { regex: /api\/players\/\d+\/stats$/, data: playerStats, delay: 500 },

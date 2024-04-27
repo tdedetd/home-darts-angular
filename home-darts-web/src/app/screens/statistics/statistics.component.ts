@@ -1,16 +1,18 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable, debounceTime, filter, switchMap, tap } from 'rxjs';
+import { Observable, filter, take } from 'rxjs';
 import { PlayerApi } from '@models/player-api.interface';
-import { PlayerApiService } from '../../services/player-api.service';
 import { AnimatedPipeCallback } from '@modules/animation/models/animated-pipe-callback.type';
 import { AnimationOptions } from '@modules/animation/models/animation-options.interface';
 import { TimingFunctions } from '@modules/animation/models/timing-functions.enum';
 import { Store } from '@ngrx/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { selectIsCountersAnimationsOn } from '../../store/selectors/is-counters-animations-on.selector';
-import { DefaultPlayerService } from '../../services/default-player.service';
 import { PlayerStatsApi } from '@models/player-stats-api.interface';
+import { changePlayerSelectedStart, initStatistics, resetStatistics } from './store/actions/statistics.actions';
+import { selectPlayers } from './store/selectors/players.selector';
+import { selectPlayerSelected } from './store/selectors/player-selected.selector';
+import { selectStatisticsData } from './store/selectors/statistics-data.selector';
 
 @UntilDestroy()
 @Component({
@@ -19,15 +21,13 @@ import { PlayerStatsApi } from '@models/player-stats-api.interface';
   styleUrls: ['./statistics.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class StatisticsComponent implements OnInit {
-  public readonly players$: Observable<PlayerApi[]> = this.playerApi.getPlayers().pipe(
-    tap(players => this.selectDefaultPlayer(players))
-  );
+export class StatisticsComponent implements OnInit, OnDestroy {
+  public readonly players$: Observable<PlayerApi[]> = this.store.select(selectPlayers);
   public readonly playerControl = new FormControl<PlayerApi | null>(null);
 
   public isCounterAnimationsOn: boolean | null = null;
 
-  public stats?: PlayerStatsApi;
+  public stats?: PlayerStatsApi | null;
 
   public readonly animationOptions: AnimationOptions = {
     durationMs: 1000,
@@ -35,48 +35,60 @@ export class StatisticsComponent implements OnInit {
     timingFunction: TimingFunctions.EaseOutQuartic,
   };
 
+  /** @deprecated */
   public get playerId(): PlayerApi['id'] | null {
     return this.playerControl.getRawValue()?.id ?? null;
   }
 
-  constructor(
-    private playerApi: PlayerApiService,
-    private cdr: ChangeDetectorRef,
-    private store: Store,
-    private defaultPlayer: DefaultPlayerService,
-  ) { }
+  constructor(private cdr: ChangeDetectorRef, private store: Store) { }
 
   public ngOnInit(): void {
-    this.store.select(selectIsCountersAnimationsOn).pipe(
-      untilDestroyed(this)
-    ).subscribe(isCounterAnimationsOn => {
-      this.isCounterAnimationsOn = isCounterAnimationsOn;
-      this.cdr.detectChanges();
-    });
-
+    this.loadIsCounterAnimationsOn();
+    this.subscribeToChangePlayerFromControl();
+    this.subscribeToChangePlayerFromStore();
     this.initStatsUpdating();
+
+    this.store.dispatch(initStatistics());
+  }
+
+  public ngOnDestroy(): void {
+    this.store.dispatch(resetStatistics());
   }
 
   public animationPipeCallback: AnimatedPipeCallback<number> = (value, phase) => Math.round(value * phase);
 
   private initStatsUpdating(): void {
-    this.playerControl.valueChanges.pipe(
-      filter(Boolean),
-      debounceTime(250),
-      tap(player => this.defaultPlayer.save(player.id)),
-      switchMap(player => this.playerApi.getPlayerStats(player.id)),
-      untilDestroyed(this),
-    ).subscribe((stats) => {
+    this.store.select(selectStatisticsData).pipe(untilDestroyed(this)).subscribe((stats) => {
       this.stats = stats;
       this.cdr.detectChanges();
     });
   }
 
-  private selectDefaultPlayer(players: PlayerApi[]): void {
-    const playerId = this.defaultPlayer.load();
-    const player = players.find(({ id }) => id === playerId);
-    if (player) {
-      this.playerControl.setValue(player);
-    }
+  private loadIsCounterAnimationsOn(): void {
+    this.store.select(selectIsCountersAnimationsOn).pipe(
+      take(1),
+      untilDestroyed(this)
+    ).subscribe(isCounterAnimationsOn => {
+      this.isCounterAnimationsOn = isCounterAnimationsOn;
+      this.cdr.detectChanges();
+    });
+  }
+
+  private subscribeToChangePlayerFromControl(): void {
+    this.playerControl.valueChanges.pipe(
+      filter(Boolean),
+      untilDestroyed(this),
+    ).subscribe((player) => {
+      this.store.dispatch(changePlayerSelectedStart({ playerId: player.id }));
+    });
+  }
+
+  private subscribeToChangePlayerFromStore(): void {
+    this.store.select(selectPlayerSelected).pipe(
+      filter(Boolean),
+      untilDestroyed(this)
+    ).subscribe((player) => {
+      this.playerControl.setValue(player, { emitEvent: false });
+    });
   }
 }

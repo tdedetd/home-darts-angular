@@ -1,4 +1,4 @@
-import { PlayerStatsApi } from '../../../models/player-stats-api.interface';
+import { PlayerStatsApi } from '@models/player-stats-api.interface';
 import { sectionTypesItems } from '@constants/section-type-items';
 import { AtcStatisticsCardData } from '../models/atc-statistics-card-data.interface';
 

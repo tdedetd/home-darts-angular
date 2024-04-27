@@ -17,6 +17,10 @@ import { AtcStatisticsCardComponent } from './components/atc-statistics-card/atc
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AtcStatsCardItemsPipe } from './pipes/atc-stats-card-items.pipe';
+import { StoreModule } from '@ngrx/store';
+import { statisticsReducer } from './store/reducers';
+import { StatisticsEffects } from './store/effects/statistics.effects';
+import { EffectsModule } from '@ngrx/effects';
 
 
 Chart.register(BarController, CategoryScale, LinearScale, BarElement);
@@ -42,6 +46,8 @@ Chart.register(BarController, CategoryScale, LinearScale, BarElement);
     NgxSkeletonLoaderModule,
     MatIconModule,
     MatTooltipModule,
+    StoreModule.forFeature('statistics', statisticsReducer),
+    EffectsModule.forFeature([StatisticsEffects]),
   ],
   providers: [
     StatisticsApiService,
