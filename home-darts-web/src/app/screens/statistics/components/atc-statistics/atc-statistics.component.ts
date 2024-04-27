@@ -1,13 +1,14 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { PlayerStatsApi } from '@models/player-stats-api.interface';
-import { PlayerApi } from '@models/player-api.interface';
-import { StatisticsApiService } from '../../services/statistics-api.service';
-import { Observable, ReplaySubject, debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs';
-import { SectionTypes } from '@models/enums/section-types.enum';
-import { isNotEmpty } from '@functions/type-guards/is-not-empty';
+import { Observable, filter } from 'rxjs';
 import { HitRate } from '../../models/hit-rate.interface';
 import { sectionTypesItems } from '@constants/section-type-items';
+import { Store } from '@ngrx/store';
+import { selectAtcStatisticsData } from '../../store/selectors/atc-statistics-data.selector';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { selectAtcHitRate } from '../../store/selectors/atc-hit-rate.selector';
 
+@UntilDestroy()
 @Component({
   selector: 'hd-atc-statistics',
   templateUrl: './atc-statistics.component.html',
@@ -15,32 +16,20 @@ import { sectionTypesItems } from '@constants/section-type-items';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AtcStatisticsComponent implements OnInit {
-  /** @deprecated */
-  @Input() public set playerId(value: PlayerApi['id'] | null) {
-    this.playerIdSubject.next(value);
-  }
-
-  @Input() public stats?: PlayerStatsApi['aroundTheClock'];
-
   public readonly cardTitles: string[] = ['All', ...sectionTypesItems.map(({ label }) => label)];
-  public hitRate$?: Observable<HitRate[]>;
+  public hitRate$: Observable<HitRate[]> = this.store.select(selectAtcHitRate).pipe(filter(Boolean));
+  public stats?: PlayerStatsApi['aroundTheClock'];
 
-  private playerIdSubject = new ReplaySubject<PlayerApi['id'] | null>(1);
-
-  constructor(private statisticsApi: StatisticsApiService) { }
+  constructor(private cdr: ChangeDetectorRef, private store: Store) { }
 
   public ngOnInit(): void {
-    this.hitRate$ = this.getHitRate();
+    this.initStatsUpdating();
   }
 
-  private getHitRate(): Observable<HitRate[]> {
-    return this.playerIdSubject.pipe(
-      filter((playerId): playerId is PlayerApi['id'] => isNotEmpty(playerId)),
-      distinctUntilChanged(),
-      debounceTime(10),
-      switchMap((playerId) => {
-        return this.statisticsApi.hitRate(playerId, { hitDetection: SectionTypes.Any });
-      }),
-    );
+  private initStatsUpdating(): void {
+    this.store.select(selectAtcStatisticsData).pipe(untilDestroyed(this)).subscribe((stats) => {
+      this.stats = stats;
+      this.cdr.detectChanges();
+    });
   }
 }

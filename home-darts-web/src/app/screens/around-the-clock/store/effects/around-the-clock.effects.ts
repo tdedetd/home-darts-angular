@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   atcCompleteStart,
   atcCompleteSuccess,
@@ -11,6 +11,7 @@ import {
 } from '../actions/around-the-clock.actions';
 import { catchError, filter, map, of, switchMap, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
+import { concatLatestFrom } from '@ngrx/operators';
 import { selectGameId } from '../selectors/game-id.selector';
 import { selectCurrentSectorForCurrentPlayer } from '../selectors/current-sector-for-current-player.selector';
 import { AroundTheClockApiService } from '../../service/around-the-clock-api.service';

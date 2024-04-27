@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { concatLatestFrom } from '@ngrx/operators';
 import {
+  atcHitRateError,
+  atcHitRateLoaded,
   changePlayerSelectedEnd,
   changePlayerSelectedStart,
   initStatistics,
@@ -10,9 +13,15 @@ import {
   statisticsError,
   statisticsLoaded
 } from '../actions/statistics.actions';
-import { catchError, debounceTime, map, of, switchMap, tap } from 'rxjs';
+import { catchError, debounceTime, filter, map, of, switchMap, tap } from 'rxjs';
 import { PlayerApiService } from '../../../../services/player-api.service';
 import { DefaultPlayerService } from '../../../../services/default-player.service';
+import { Store } from '@ngrx/store';
+import { selectPlayerIdSelected } from '../selectors/player-id-selected.selector';
+import { selectAtcFilter } from '../selectors/atc-filter.selector';
+import { StatisticsApiService } from '../../services/statistics-api.service';
+import { isNotEmpty } from '../../../../utils/functions/type-guards/is-not-empty';
+import { AtcStatisticsFilter } from '../../models/atc-statistics-filter.interface';
 
 @Injectable()
 export class StatisticsEffects {
@@ -23,7 +32,7 @@ export class StatisticsEffects {
     );
   });
 
-  public liadPlayers$ = createEffect(() => {
+  public loadPlayers$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadPlayers),
       switchMap(() => this.playerApi.getPlayers()),
@@ -70,9 +79,27 @@ export class StatisticsEffects {
     );
   });
 
+  public loadHitRate$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(changePlayerSelectedEnd),
+      concatLatestFrom(() => [
+        this.store.select(selectPlayerIdSelected),
+        this.store.select(selectAtcFilter),
+      ]),
+      filter((data): data is [never, number, AtcStatisticsFilter] => isNotEmpty(data)),
+      switchMap(([_, playerId, filter]) => this.statisticsApi.hitRate(playerId, {
+        hitDetection: filter.hitDetection
+      })),
+      map(hitRate => atcHitRateLoaded({ hitRate })),
+      catchError(error => of(atcHitRateError({ error }))),
+    );
+  });
+
   constructor(
     private actions$: Actions,
     private playerApi: PlayerApiService,
     private defaultPlayer: DefaultPlayerService,
+    private store: Store,
+    private statisticsApi: StatisticsApiService,
   ) { }
 }

@@ -3,6 +3,7 @@ import { PlayerApi } from '@models/player-api.interface';
 import { getPlayersActions } from '@functions/store/get-players-actions';
 import { PlayerStatsApi } from '@models/player-stats-api.interface';
 import { Any } from '@models/types/any.type';
+import { HitRate } from '../../models/hit-rate.interface';
 
 const source = '[Statistics]';
 
@@ -27,3 +28,6 @@ export const statisticsLoaded = createAction(
 );
 
 export const statisticsError = createAction(`${source} Error while loading`, props<{ error: Any }>());
+
+export const atcHitRateLoaded = createAction(`${source} ATC hit rate loaded`, props<{ hitRate: HitRate[] }>());
+export const atcHitRateError = createAction(`${source} ATC hit rate error`, props<{ error: Any }>());
