@@ -12,55 +12,6 @@
     </mat-form-field>
   </div>
 
-  <div *ngIf="isCounterAnimationsOn !== null" class="common-stats-cards mb-48">
-    <div class="common-stats-cards__item common-stats-cards__item_games block p-16">
-      <p>Games</p>
-      @if (stats) {
-        <h2>
-          @if (isCounterAnimationsOn) {
-            {{ stats.gamesCount | animated: animationPipeCallback: animationOptions | async }}
-          } @else {
-            {{ stats.gamesCount }}
-          }
-        </h2>
-      } @else {
-        <ngx-skeleton-loader class="stats-skeleton-loader stats-skeleton-loader_100" appearance="line" />
-      }
-    </div>
-
-    <div class="common-stats-cards__item common-stats-cards__item_throws block p-16">
-      <p>Throws</p>
-      @if (stats) {
-        <h2>
-          @if (isCounterAnimationsOn) {
-            {{ stats.throwsCount | animated: animationPipeCallback: animationOptions | async }}
-          } @else {
-            {{ stats.throwsCount }}
-          }
-        </h2>
-      } @else {
-        <ngx-skeleton-loader class="stats-skeleton-loader stats-skeleton-loader_100" appearance="line" />
-      }
-    </div>
-
-    <div class="common-stats-cards__item common-stats-cards__item_playing-time block p-16">
-      <p>Playing time</p>
-      @if (stats) {
-        <h2>
-          @if (isCounterAnimationsOn) {
-            {{
-              (stats.totalPlayingTimeSeconds | animated: animationPipeCallback: animationOptions | async) ?? 0
-                | formatTimeInterval
-            }}
-          } @else {
-            {{ stats.totalPlayingTimeSeconds | formatTimeInterval }}
-          }
-        </h2>
-      } @else {
-        <ngx-skeleton-loader class="stats-skeleton-loader stats-skeleton-loader_150" appearance="line" />
-      }
-    </div>
-  </div>
-
+  <hd-statistics-cards class="mb-48"></hd-statistics-cards>
   <hd-atc-statistics [playerId]="playerId" [stats]="stats?.aroundTheClock"></hd-atc-statistics>
 </div>

@@ -21,6 +21,7 @@ import { StoreModule } from '@ngrx/store';
 import { statisticsReducer } from './store/reducers';
 import { StatisticsEffects } from './store/effects/statistics.effects';
 import { EffectsModule } from '@ngrx/effects';
+import { StatisticsCardsComponent } from './components/statistics-cards/statistics-cards.component';
 
 
 Chart.register(BarController, CategoryScale, LinearScale, BarElement);
@@ -33,6 +34,7 @@ Chart.register(BarController, CategoryScale, LinearScale, BarElement);
     AtcHitRateHeatMapComponent,
     AtcStatisticsCardComponent,
     AtcStatsCardItemsPipe,
+    StatisticsCardsComponent,
   ],
   imports: [
     CommonModule,

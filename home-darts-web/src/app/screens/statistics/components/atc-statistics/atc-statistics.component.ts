@@ -6,7 +6,7 @@ import { Observable, ReplaySubject, debounceTime, distinctUntilChanged, filter, 
 import { SectionTypes } from '@models/enums/section-types.enum';
 import { isNotEmpty } from '@functions/type-guards/is-not-empty';
 import { HitRate } from '../../models/hit-rate.interface';
-import { sectionTypesItems } from '../../../../utils/constants/section-type-items';
+import { sectionTypesItems } from '@constants/section-type-items';
 
 @Component({
   selector: 'hd-atc-statistics',
