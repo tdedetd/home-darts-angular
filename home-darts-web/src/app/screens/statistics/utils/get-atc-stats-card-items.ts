@@ -12,7 +12,7 @@ export function getAtcStatsCardItems(stats: PlayerStatsApi['aroundTheClock']): A
       longestHitsStreak: stats.hitsStreak.find(
         ({ sectionType }) => sectionTypeItem.value === sectionType
       )?.longestHitsStreak ?? 0,
-    }
+    };
   });
 
   const allCard: AtcStatisticsCardData = {
