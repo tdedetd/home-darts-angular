@@ -1,16 +1,18 @@
 <div class="screen-container">
-  <h2 class="mb-24">Common statistics</h2>
+  <header class="statistics-header mb-24">
+    <h2 class="statistics-header__title">Common statistics</h2>
 
-  <div class="block mb-24 p-16">
-    <mat-form-field class="mat-form-no-subscript w-100">
-      <mat-label>Select player</mat-label>
-      <mat-select [formControl]="playerControl">
-        <mat-option
-          *ngFor="let player of players$ | async"
-          [value]="player">{{ player.username }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
+    <div class="statistics-header__players-select">
+      <mat-form-field class="mat-form-no-subscript">
+        <mat-label>Select player</mat-label>
+        <mat-select [formControl]="playerControl">
+          <mat-option
+            *ngFor="let player of players$ | async"
+            [value]="player">{{ player.username }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </header>
 
   <hd-statistics-cards class="mb-48"></hd-statistics-cards>
   <hd-atc-statistics></hd-atc-statistics>

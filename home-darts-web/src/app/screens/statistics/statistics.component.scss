@@ -1,0 +1,27 @@
+@import '../../../styles/mixins/breakpoint';
+
+.statistics-header {
+  $breakpoint: lg;
+
+  &__title {
+    margin-bottom: 24px;
+
+    @include breakpoint-min($breakpoint) {
+      margin-bottom: 0;
+    }
+  }
+
+  &__players-select {
+    & > .mat-mdc-form-field {
+      @include breakpoint-max($breakpoint) {
+        width: 100%;
+      }
+    }
+  }
+
+  @include breakpoint-min($breakpoint) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
