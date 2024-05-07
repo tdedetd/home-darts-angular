@@ -14,6 +14,7 @@ export class HistoryComponent implements OnInit {
 
   public games: HistoryApi[] = [];
   public showMoreButton = true;
+  public lastFocusedElement: HTMLElement | null = null;
 
   private readonly size = 10;
   private page = 0;
@@ -26,7 +27,6 @@ export class HistoryComponent implements OnInit {
 
   public loadMore(): void {
 
-    // TODO: focus on last blured load game button
     this.api.getHistory({
       page: this.page,
       size: this.size,
@@ -37,6 +37,11 @@ export class HistoryComponent implements OnInit {
         this.showMoreButton = false;
       }
       this.cdr.detectChanges();
+      this.lastFocusedElement?.focus();
     });
+  }
+
+  public onElementFocus(element: HTMLElement): void {
+    this.lastFocusedElement = element;
   }
 }

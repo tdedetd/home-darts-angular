@@ -1,7 +1,7 @@
 import { HttpRequest } from '@angular/common/http';
 import gameHistoryItem from '../constants/mocks/game-history-item.json';
 
-const totalGames = 12;
+const totalGames = 120;
 
 export function getMockGamesHistory(request: HttpRequest<unknown>): object {
   const params = request.params;

@@ -1,11 +1,18 @@
 <div class="screen-container">
   <h2 class="history__title">History</h2>
   <ul class="history-list">
-    <li *ngFor="let game of games" class="history__item">
-      <hd-history-item [data]="game"></hd-history-item>
-    </li>
+    @for (game of games; track game.id) {
+      <li class="history__item">
+        <hd-history-item [data]="game" (elementFocus)="onElementFocus($event)"></hd-history-item>
+      </li>
+    }
   </ul>
   <div class="history__actions">
-    <button *ngIf="showMoreButton" mat-button color="primary" (click)="loadMore()">Load more</button>
+    <button
+      *ngIf="showMoreButton"
+      mat-button
+      color="primary"
+      (click)="loadMore()"
+    >Load more</button>
   </div>
 </div>

@@ -6,8 +6,15 @@
   gap: 16px;
 
   @include breakpoint-min(md) {
-    grid-template-columns: repeat(2, 1fr);
     gap: 24px;
+  }
+
+  @include breakpoint-min(lg) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include breakpoint-min(xl) {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 

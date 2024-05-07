@@ -1,4 +1,4 @@
-<mat-card *ngIf="data">
+<mat-card *ngIf="data" tabindex="0" (focus)="onFocus($event)">
   <mat-card-header>
     <mat-card-title>{{ gamemodesNames[data.gamemodeName] }}</mat-card-title>
     <mat-card-subtitle
@@ -20,6 +20,7 @@
       color="primary"
       [routerLink]="['..', 'around-the-clock', data.id]"
       [relativeTo]="route"
+      (focus)="onFocus($event)"
     >Load game</a>
   </mat-card-actions>
 </mat-card>
