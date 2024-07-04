@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -22,11 +22,11 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [AppComponent],
+  bootstrap: [AppComponent],
   imports: [
     CoreModule,
     CommonModule,
     BrowserModule,
-    HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     StoreModule.forRoot(reducers),
@@ -37,8 +37,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatButtonModule,
     MatProgressBarModule,
     MatSnackBarModule,
-    ...(environment.mock ? [MocksModule] : []),
-  ],
-  bootstrap: [AppComponent]
+    ...(environment.mock ? [MocksModule] : [])],
+    providers: [provideHttpClient(withInterceptorsFromDi())]
 })
 export class AppModule { }
