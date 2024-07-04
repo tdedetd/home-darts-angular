@@ -4,9 +4,9 @@
       <div class="mb-24">
         <mat-form-field class="mat-form-no-subscript w-100">
           <mat-select formControlName="direction">
-            <mat-option
-              *ngFor="let item of gameDirectionItems"
-              [value]="item.value">{{ item.label }}</mat-option>
+            @for (item of gameDirectionItems; track item.value) {
+              <mat-option [value]="item.value">{{ item.label }}</mat-option>
+            }
           </mat-select>
         </mat-form-field>
       </div>
@@ -20,11 +20,13 @@
           class="w-100"
           name="fontStyle"
           aria-label="Hit detection mode"
-          formControlName="hitDetection">
-          <mat-button-toggle
-            *ngFor="let sectionType of sectionTypes"
-            class="flex-1-1"
-            [value]="sectionType.value">{{ sectionType.label }}</mat-button-toggle>
+          formControlName="hitDetection"
+        >
+          @for (sectionType of sectionTypes; track sectionType.value) {
+            <mat-button-toggle
+              class="flex-1-1"
+              [value]="sectionType.value">{{ sectionType.label }}</mat-button-toggle>
+          }
         </mat-button-toggle-group>
       </div>
 
@@ -32,11 +34,13 @@
         <mat-checkbox formControlName="includeBull" color="primary">Include bull</mat-checkbox>
       </div>
 
-      <div *ngIf="players$ | async as players">
-        <hd-atc-start-players-list
-          formControlName="players"
-          [players]="players"></hd-atc-start-players-list>
-      </div>
+      @if (players$ | async; as players) {
+        <div>
+          <hd-atc-start-players-list
+            formControlName="players"
+            [players]="players"></hd-atc-start-players-list>
+        </div>
+      }
     </div>
 
     <button mat-raised-button color="primary" type="submit" class="btn w-100">START</button>

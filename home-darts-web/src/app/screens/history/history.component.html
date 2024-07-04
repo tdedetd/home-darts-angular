@@ -8,11 +8,12 @@
     }
   </ul>
   <div class="history__actions">
-    <button
-      *ngIf="showMoreButton"
-      mat-button
-      color="primary"
-      (click)="loadMore()"
-    >Load more</button>
+    @if (showMoreButton) {
+      <button
+        mat-button
+        color="primary"
+        (click)="loadMore()"
+      >Load more</button>
+    }
   </div>
 </div>

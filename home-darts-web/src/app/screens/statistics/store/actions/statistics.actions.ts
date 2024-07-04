@@ -8,7 +8,7 @@ import { HitRate } from '../../models/hit-rate.interface';
 const source = '[Statistics]';
 
 export const initStatistics = createAction(`${source} Init`);
-export const resetStatistics = createAction(`${source} Reset`);
+export const clearStatistics = createAction(`${source} Clear`);
 
 export const changePlayerSelectedStart = createAction(
   `${source} Change player start`,

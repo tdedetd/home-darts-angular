@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
     map(val => val.url !== '/'),
   );
 
-  public progressBarShown$: Observable<boolean> = this.store.select(selectGlobalProgressBarShown);
+  public progressBarShown = this.store.selectSignal(selectGlobalProgressBarShown);
 
   constructor(
     private store: Store,

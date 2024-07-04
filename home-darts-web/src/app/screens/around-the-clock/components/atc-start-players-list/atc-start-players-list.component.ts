@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, forwardRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, forwardRef, input } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { PlayerApi } from '@models/player-api.interface';
 import { shuffleList } from '@functions/shuffle-list';
@@ -17,7 +17,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   }]
 })
 export class AtcStartPlayersListComponent implements OnInit, ControlValueAccessor {
-  @Input() public players: PlayerApi[] = [];
+  public players = input.required<PlayerApi[]>();
 
   public onChange?: (item: PlayerApi['id'][]) => void;
   public onTouched?: () => void;

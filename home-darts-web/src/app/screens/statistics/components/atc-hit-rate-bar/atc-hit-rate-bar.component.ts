@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnInit, effect, input, viewChild } from '@angular/core';
 import { Chart, ChartData } from 'chart.js';
 import { sectionsInOrder } from '@constants/sections-in-order';
 import { HitRate } from '../../models/hit-rate.interface';
@@ -14,21 +14,25 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AtcHitRateBarComponent implements OnInit, AfterViewInit {
-  @ViewChild('canvas') public canvas?: ElementRef<HTMLCanvasElement>;
+  public canvas = viewChild<ElementRef<HTMLCanvasElement>>('canvas');
 
-  @Input() public set data(value: HitRate[]) {
-    this.dataSubject.next(value);
-  }
+  public data = input.required<HitRate[]>();
 
   private chart?: Chart;
   private dataSubject = new ReplaySubject<HitRate[]>(1);
+
+  constructor() {
+    effect(() => {
+      this.dataSubject.next(this.data());
+    });
+  }
 
   public ngOnInit(): void {
     this.initUpdateData();
   }
 
   public ngAfterViewInit(): void {
-    const canvas = this.canvas?.nativeElement;
+    const canvas = this.canvas()?.nativeElement;
     if (canvas) {
       const ctx = canvas.getContext('2d');
       if (ctx) {

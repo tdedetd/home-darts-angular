@@ -12,11 +12,13 @@
   }
 </div>
 
-<div *ngIf="((hitRate$ | async) ?? []) as hitRate" class="hit-rate-charts">
-  <div class="hit-rate-charts__bar-container block p-16">
-    <hd-atc-hit-rate-bar [data]="hitRate"></hd-atc-hit-rate-bar>
+@if (((hitRate$ | async) ?? []); as hitRate) {
+  <div class="hit-rate-charts">
+    <div class="hit-rate-charts__bar-container block p-16">
+      <hd-atc-hit-rate-bar [data]="hitRate"></hd-atc-hit-rate-bar>
+    </div>
+    <div class="block p-16">
+      <hd-atc-hit-rate-heat-map class="hit-rate-dartboard" [data]="hitRate"></hd-atc-hit-rate-heat-map>
+    </div>
   </div>
-  <div class="block p-16">
-    <hd-atc-hit-rate-heat-map class="hit-rate-dartboard" [data]="hitRate"></hd-atc-hit-rate-heat-map>
-  </div>
-</div>
+}

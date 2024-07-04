@@ -1,11 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, Signal, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
 import { startGameInfoLoading } from '../../../../store/actions/game-info.actions';
-import { Observable, filter, take } from 'rxjs';
+import { Observable } from 'rxjs';
 import { selectPlayersState } from '../../store/selectors/players-state.selector';
-import { AtcParticipant } from '../../models/atc-participant.interface';
-import { PlayerApi } from '@models/player-api.interface';
 import { selectCurrentSectorForCurrentPlayer } from '../../store/selectors/current-sector-for-current-player.selector';
 import { selectUpcomingSectorsForCurrentPlayer } from '../../store/selectors/upcoming-sectors-for-current-player.selector';
 import { atcCompleteStart, atcResetGame, atcTrowStart, atcUndoStart } from '../../store/actions/around-the-clock.actions';
@@ -16,10 +14,7 @@ import { selectCanCompleteGame } from '../../store/selectors/can-complete-game.s
 import { selectIsCurrentPlayerCompleted } from '../../store/selectors/is-current-player-completed.selector';
 import { selectTurnHits } from '../../store/selectors/turn-hits.selector';
 import { TurnHits } from '../../models/turn-hits.type';
-import { SectionTypes } from '@models/enums/section-types.enum';
 import { DartboardSector } from '@models/types/dartboard-sector.type';
-import { DartboardStyles } from '@models/enums/dartboard-styles.enum';
-import { isNotEmpty } from '@functions/type-guards/is-not-empty';
 import { selectDartboardSettings } from '../../store/selectors/dartboard-settings.selector';
 import { selectIsGameCompleted } from '../../store/selectors/is-game-completed.selector';
 import { selectInitStatusNoSuchGame } from '../../store/selectors/init-status-no-such-game.selector';
@@ -34,16 +29,17 @@ import { selectInitStatusInitiated } from '../../store/selectors/init-status-ini
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AtcGameComponent implements OnInit, OnDestroy {
-  public initiated$: Observable<boolean> = this.store.select(selectInitStatusInitiated);
-  public canCompleteGame$: Observable<boolean> = this.store.select(selectCanCompleteGame);
-  public currentPlayerCompleted$: Observable<boolean> = this.store.select(selectIsCurrentPlayerCompleted);
-  public dartboardStyle: DartboardStyles | null = null;
-  public isGameCompleted$: Observable<boolean> = this.store.select(selectIsGameCompleted);
-  public hitDetectionMode: SectionTypes | null = null;
+  public readonly store = inject(Store);
+
+  public initiated = this.store.selectSignal(selectInitStatusInitiated);
+  public canCompleteGame = this.store.selectSignal(selectCanCompleteGame);
+  public currentPlayerCompleted = this.store.selectSignal(selectIsCurrentPlayerCompleted);
+  public isGameCompleted = this.store.selectSignal(selectIsGameCompleted);
   public loading = true;
-  public players$: Observable<(AtcParticipant & PlayerApi)[]> = this.store.select(selectPlayersState);
-  public errorNoSuchGame$: Observable<boolean> = this.store.select(selectInitStatusNoSuchGame);
-  public errorUnexpected$: Observable<boolean> = this.store.select(selectInitStatusUnexpectedError);
+  public players = this.store.selectSignal(selectPlayersState);
+  public errorNoSuchGame = this.store.selectSignal(selectInitStatusNoSuchGame);
+  public errorUnexpected = this.store.selectSignal(selectInitStatusUnexpectedError);
+  public dartboardSettings = this.store.selectSignal(selectDartboardSettings);
 
   public selectCurrentSectorForCurrentPlayer$: Observable<DartboardSector | undefined> =
     this.store.select(selectCurrentSectorForCurrentPlayer);
@@ -52,7 +48,6 @@ export class AtcGameComponent implements OnInit, OnDestroy {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private store: Store,
     private cdr: ChangeDetectorRef,
   ) {}
 
@@ -64,24 +59,18 @@ export class AtcGameComponent implements OnInit, OnDestroy {
       this.loading = loading;
       this.cdr.detectChanges();
     });
-
-    this.store.select(selectDartboardSettings).pipe(
-      filter(({ dartboardStyle, hitDetectionMode }) => isNotEmpty(dartboardStyle) && isNotEmpty(hitDetectionMode)),
-      take(1),
-      untilDestroyed(this)
-    ).subscribe(({ dartboardStyle, hitDetectionMode }) => {
-      this.dartboardStyle = dartboardStyle;
-      this.hitDetectionMode = hitDetectionMode;
-      this.cdr.detectChanges();
-    });
   }
 
   public ngOnDestroy(): void {
     this.store.dispatch(atcResetGame());
   }
 
-  public isPlayerActive$(playerId: number): Observable<boolean> {
-    return this.store.select(selectIsPlayerTurn(playerId));
+  public getTurnHits(playerId: number): Signal<TurnHits> {
+    return this.store.selectSignal(selectTurnHits(playerId));
+  }
+
+  public isPlayerActive(playerId: number): Signal<boolean> {
+    return this.store.selectSignal(selectIsPlayerTurn(playerId));
   }
 
   public onCompleteClick(): void {
@@ -90,10 +79,6 @@ export class AtcGameComponent implements OnInit, OnDestroy {
 
   public throw(hit: boolean): void {
     this.store.dispatch(atcTrowStart({ hit }));
-  }
-
-  public turnHits$(playerId: number): Observable<TurnHits> {
-    return this.store.select(selectTurnHits(playerId));
   }
 
   public undo(): void {

@@ -1,15 +1,22 @@
-<div class="block p-12 pl-16 flex flex-align-center" [class.atc-game-part-active]="active">
-  <div class="flex-1-1">{{ username }}</div>
-  <div *ngFor="let i of turnIndexes" class="atc-game-part-throw mr-24 flex flex-align-center">
-    <mat-icon *ngIf="turnHits[i] === true" class="atc-game-part-throw__green">check</mat-icon>
-    <mat-icon *ngIf="turnHits[i] === false" class="atc-game-part-throw__red">close</mat-icon>
-  </div>
+<div class="block p-12 pl-16 flex flex-align-center" [class.atc-game-part-active]="active()">
+  <div class="flex-1-1">{{ username() }}</div>
+  @for (i of turnIndexes; track i) {
+    <div class="atc-game-part-throw mr-24 flex flex-align-center">
+      @if (turnHits()[i] === true) {
+        <mat-icon class="atc-game-part-throw__green">check</mat-icon>
+      } @else if (turnHits()[i] === false) {
+        <mat-icon class="atc-game-part-throw__red">close</mat-icon>
+      }
+    </div>
+  }
   <div class="atc-game-part-stats">
-    <p>{{ hits }} / {{ throws }}</p>
+    <p>{{ hits() }} / {{ throws() }}</p>
     <p>
-      <ng-container *ngIf="throws > 0; else noThrows">{{ (hits / throws * 100) | number: '1.3-3' }}%</ng-container>
+      @if (throws() > 0) {
+        {{ (hits() / throws() * 100) | number: '1.3-3' }}%
+      } @else {
+        -
+      }
     </p>
   </div>
 </div>
-
-<ng-template #noThrows>-</ng-template>

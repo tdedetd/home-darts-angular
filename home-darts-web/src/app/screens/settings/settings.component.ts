@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
@@ -29,11 +29,9 @@ export class SettingsComponent implements OnInit {
     sounds: this.fb.nonNullable.control(false, Validators.required),
     vibration: this.fb.nonNullable.control(false, Validators.required),
   });
+  public readonly store = inject(Store);
 
-  constructor(
-    private store: Store,
-    private fb: FormBuilder,
-  ) {}
+  constructor(private fb: FormBuilder) {}
 
   public ngOnInit(): void {
     this.initFormValueChanges();

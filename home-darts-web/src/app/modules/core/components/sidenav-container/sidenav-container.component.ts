@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject, viewChild } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
 import { Store } from '@ngrx/store';
 import { closeSidenav } from '../../../../store/actions/sidenav-opened.actions';
@@ -15,12 +15,10 @@ import { mobileBreakpoint } from '@constants/breakpoints/mobile-breakpoint';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidenavContainerComponent implements OnInit {
-  @ViewChild(MatDrawer) public drawer?: MatDrawer;
+  public drawer = viewChild.required(MatDrawer);
+  public readonly store = inject(Store);
 
-  constructor(
-    private store: Store,
-    private cd: ChangeDetectorRef,
-  ) { }
+  constructor(private cd: ChangeDetectorRef) { }
 
   public ngOnInit(): void {
     this.initToggleSidenav();
@@ -36,9 +34,9 @@ export class SidenavContainerComponent implements OnInit {
       untilDestroyed(this)
     ).subscribe(isOpened => {
       if (isOpened) {
-        this.drawer?.open();
+        this.drawer().open();
       } else {
-        this.drawer?.close();
+        this.drawer().close();
       }
       this.cd.detectChanges();
     });

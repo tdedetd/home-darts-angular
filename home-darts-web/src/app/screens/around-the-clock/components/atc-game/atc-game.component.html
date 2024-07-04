@@ -1,93 +1,100 @@
-<hd-error-screen
-  *ngIf="errorNoSuchGame$ | async"
-  message="The game doesn't exists"></hd-error-screen>
-<hd-error-screen
-  *ngIf="errorUnexpected$ | async"
-  message="Unexpected error while loading the game"></hd-error-screen>
+@if (errorNoSuchGame()) {
+  <hd-error-screen message="The game doesn't exists"></hd-error-screen>
+} @else if (errorUnexpected()) {
+  <hd-error-screen message="Unexpected error while loading the game"></hd-error-screen>
+}
 
 <div class="screen-container screen-container-atc">
-  @if (isGameCompleted$ | async) {
+  @if (isGameCompleted()) {
     Game is completed
   } @else {
     <ul class="atc-game-particpants">
-      <li *ngFor="let player of players$ | async" class="atc-game-particpant-container">
-        <hd-atc-game-participant
-          [active]="isPlayerActive$(player.id) | async"
-          [turnHits]="(turnHits$(player.id) | async) ?? []"
-          [username]="player.username"
-          [hits]="player.hits"
-          [throws]="player.throws"
-        ></hd-atc-game-participant>
-      </li>
+      @for (player of players(); track player.id) {
+        <li class="atc-game-particpant-container">
+          <hd-atc-game-participant
+            [active]="isPlayerActive(player.id)()"
+            [turnHits]="getTurnHits(player.id)()"
+            [username]="player.username"
+            [hits]="player.hits"
+            [throws]="player.throws"
+          ></hd-atc-game-participant>
+        </li>
+      }
     </ul>
 
-    <div *ngIf="hitDetectionMode && dartboardStyle" class="atc-game-dartboard-container">
-      <div class="block p-16 mb-12">
-        <hd-dartboard
-          [sector]="(selectCurrentSectorForCurrentPlayer$ | async) ?? 0"
-          [sectorType]="hitDetectionMode"
-          [style]="dartboardStyle"
-          [zoom]="true"
-        ></hd-dartboard>
-      </div>
-
-      <div class="block p-8 pl-24 flex">
-        <p class="mr-24">Following sectors</p>
-        <p
-          *ngFor="let sector of ((upcomingSectors$ | async) ?? []) | sectorsWithPrefixes: hitDetectionMode"
-          class="mr-16" 
-        >{{ sector }}</p>
-      </div>
-    </div>
+    @if (dartboardSettings(); as dartboardSettings) {
+      @if (dartboardSettings.hitDetectionMode) {
+        <div class="atc-game-dartboard-container">
+          <div class="block p-16 mb-12">
+            <hd-dartboard
+              [sector]="(selectCurrentSectorForCurrentPlayer$ | async) ?? 0"
+              [sectorType]="dartboardSettings.hitDetectionMode"
+              [style]="dartboardSettings.dartboardStyle"
+              [zoom]="true"
+            ></hd-dartboard>
+          </div>
+    
+          <div class="block p-8 pl-24 flex">
+            <p class="mr-24">Following sectors</p>
+            @for (sector of ((upcomingSectors$ | async) ?? []) | sectorsWithPrefixes: dartboardSettings.hitDetectionMode; track sector) {
+              <p class="mr-16">{{ sector }}</p>
+            }
+          </div>
+        </div>
+      }
+    }
   }
 </div>
 
 <div class="atc-game-spacer"></div>
 
-<div *ngIf="initiated$ | async" class="atc-game-tools flex p-16">
-  <button
-    mat-raised-button
-    matTooltip="Hit"
-    color="primary"
-    type="button"
-    [disabled]="loading || (isGameCompleted$ | async) || (currentPlayerCompleted$ | async)"
-    class="atc-game-tools-button btn flex-1-1"
-    (click)="throw(true)"
-  >
-    <mat-icon>ads_click</mat-icon>
-  </button>
-  <button
-    mat-raised-button
-    matTooltip="Miss"
-    color="primary"
-    type="button"
-    [disabled]="loading || (isGameCompleted$ | async) || (currentPlayerCompleted$ | async)"
-    class="atc-game-tools-button btn flex-1-1"
-    (click)="throw(false)"
-  >
-    <mat-icon>close</mat-icon>
-  </button>
-  <button
-    mat-raised-button
-    matTooltip="Undo"
-    color="primary"
-    type="button"
-    [disabled]="loading || (isGameCompleted$ | async)"
-    class="atc-game-tools-button btn flex-1-1"
-    (click)="undo()"
-  >
-    <mat-icon>undo</mat-icon>
-  </button>
-  <button
-    *ngIf="canCompleteGame$ | async"
-    mat-raised-button
-    matTooltip="Complete"
-    color="primary"
-    type="button"
-    [disabled]="loading || (isGameCompleted$ | async)"
-    class="atc-game-tools-button btn flex-1-1"
-    (click)="onCompleteClick()"
-  >
-    <mat-icon>check</mat-icon>
-  </button>
-</div>
+@if (initiated()) {
+  <div class="atc-game-tools flex p-16">
+    <button
+      mat-raised-button
+      matTooltip="Hit"
+      color="primary"
+      type="button"
+      [disabled]="loading || (isGameCompleted()) || (currentPlayerCompleted())"
+      class="atc-game-tools-button btn flex-1-1"
+      (click)="throw(true)"
+    >
+      <mat-icon>ads_click</mat-icon>
+    </button>
+    <button
+      mat-raised-button
+      matTooltip="Miss"
+      color="primary"
+      type="button"
+      [disabled]="loading || (isGameCompleted()) || (currentPlayerCompleted())"
+      class="atc-game-tools-button btn flex-1-1"
+      (click)="throw(false)"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+    <button
+      mat-raised-button
+      matTooltip="Undo"
+      color="primary"
+      type="button"
+      [disabled]="loading || (isGameCompleted())"
+      class="atc-game-tools-button btn flex-1-1"
+      (click)="undo()"
+    >
+      <mat-icon>undo</mat-icon>
+    </button>
+    @if (canCompleteGame()) {
+      <button
+        mat-raised-button
+        matTooltip="Complete"
+        color="primary"
+        type="button"
+        [disabled]="loading || (isGameCompleted())"
+        class="atc-game-tools-button btn flex-1-1"
+        (click)="onCompleteClick()"
+      >
+        <mat-icon>check</mat-icon>
+      </button>
+    }
+  </div>
+}

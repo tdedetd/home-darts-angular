@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { AtcStatisticsCardData } from '../../models/atc-statistics-card-data.interface';
 
 @Component({
@@ -8,7 +8,6 @@ import { AtcStatisticsCardData } from '../../models/atc-statistics-card-data.int
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AtcStatisticsCardComponent {
-  @Input() public data?: AtcStatisticsCardData;
-
+  public data = input<AtcStatisticsCardData>();
   public title = input.required<string>();
 }

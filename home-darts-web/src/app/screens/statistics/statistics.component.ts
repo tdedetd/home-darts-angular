@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable, filter } from 'rxjs';
+import { filter } from 'rxjs';
 import { PlayerApi } from '@models/player-api.interface';
 import { Store } from '@ngrx/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { changePlayerSelectedStart, initStatistics, resetStatistics } from './store/actions/statistics.actions';
+import { changePlayerSelectedStart, initStatistics, clearStatistics } from './store/actions/statistics.actions';
 import { selectPlayers } from './store/selectors/players.selector';
 import { selectPlayerSelected } from './store/selectors/player-selected.selector';
 
@@ -16,7 +16,7 @@ import { selectPlayerSelected } from './store/selectors/player-selected.selector
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StatisticsComponent implements OnInit, OnDestroy {
-  public readonly players$: Observable<PlayerApi[]> = this.store.select(selectPlayers);
+  public readonly players = this.store.selectSignal(selectPlayers);
   public readonly playerControl = new FormControl<PlayerApi | null>(null);
 
   constructor(private store: Store) { }
@@ -29,7 +29,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.store.dispatch(resetStatistics());
+    this.store.dispatch(clearStatistics());
   }
 
   private subscribeToChangePlayerFromControl(): void {

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, output } from '@angular/core';
 import { MenuItem } from '@models/menu-item.interface';
 import { menuItems } from '@constants/menu-items';
 
@@ -9,7 +9,7 @@ import { menuItems } from '@constants/menu-items';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidenavMenuComponent {
-  @Output() public menuItemClick = new EventEmitter<void>();
+  public menuItemClick = output();
 
   public readonly menuItems: MenuItem[] = menuItems;
 

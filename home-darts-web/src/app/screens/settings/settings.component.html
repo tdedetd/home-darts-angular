@@ -17,9 +17,9 @@
           name="fontStyle"
           aria-label="Dartboard style"
           formControlName="dartboardStyle">
-          <mat-button-toggle
-            *ngFor="let styleItem of dartboardStyleItems"
-            [value]="styleItem.value">{{ styleItem.label }}</mat-button-toggle>
+          @for (styleItem of dartboardStyleItems; track styleItem.value) {
+            <mat-button-toggle [value]="styleItem.value">{{ styleItem.label }}</mat-button-toggle>
+          }
         </mat-button-toggle-group>
       </div>
 

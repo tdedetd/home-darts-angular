@@ -1,10 +1,12 @@
 <div class="screen-container">
   <ul cdkMenu>
-    <li *ngFor="let item of menuItems; let isLast = last" [class.mb-16]="!isLast" cdkMenuItem>
-      <a mat-raised-button color="primary" class="btn w-100" [routerLink]="item.link">
-        <mat-icon>{{ item.icon }}</mat-icon>
-        <span>{{ item.name }}</span>
-      </a>
-    </li>
+    @for (item of menuItems; track item.name; let isLast = $last) {
+      <li [class.mb-16]="!isLast" cdkMenuItem>
+        <a mat-raised-button color="primary" class="btn w-100" [routerLink]="item.link">
+          <mat-icon>{{ item.icon }}</mat-icon>
+          <span>{{ item.name }}</span>
+        </a>
+      </li>
+    }
   </ul>
 </div>

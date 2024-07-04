@@ -3,11 +3,11 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  Input,
   OnChanges,
   OnDestroy,
   SimpleChanges,
-  ViewChild
+  input,
+  viewChild
 } from '@angular/core';
 import { SectionTypes } from '@models/enums/section-types.enum';
 import { DartboardRenderer } from './classes/dartboard-renderer.class';
@@ -24,12 +24,12 @@ import { isDartboardStyle } from './utils/is-dartboard-style';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DartboardComponent implements OnChanges, AfterViewInit, OnDestroy {
-  @ViewChild('dartboard') public dartboard?: ElementRef<HTMLCanvasElement>;
+  public dartboard = viewChild.required<ElementRef<HTMLCanvasElement>>('dartboard');
 
-  @Input() public sector: DartboardSector = 0;
-  @Input() public sectorType: SectionTypes = SectionTypes.Any;
-  @Input() public style: DartboardStyles | DartboardStyle | null = DartboardStyles.Material;
-  @Input() public zoom = true;
+  public sector = input<DartboardSector>(0);
+  public sectorType = input<SectionTypes>(SectionTypes.Any);
+  public style = input<DartboardStyles | DartboardStyle | null>(DartboardStyles.Material);
+  public zoom = input(true);
 
   private dartboardRenderer?: DartboardRenderer;
   private renderQuality = 2;
@@ -43,7 +43,7 @@ export class DartboardComponent implements OnChanges, AfterViewInit, OnDestroy {
     if (sectorChange && sectorChange.currentValue !== sectorChange.previousValue ||
       sectorTypeChange && sectorTypeChange.currentValue !== sectorTypeChange.previousValue) {
 
-      this.dartboardRenderer?.focusSector(this.sector, this.sectorType, this.zoom);
+      this.dartboardRenderer?.focusSector(this.sector(), this.sectorType(), this.zoom());
     }
 
     if (styleChange && styleChange.currentValue !== styleChange.previousValue) {
@@ -61,19 +61,20 @@ export class DartboardComponent implements OnChanges, AfterViewInit, OnDestroy {
 
   private initDartboard(): void {
     this.unobserveResizeObserver();
-    if (!this.style || !this.dartboard) {
+    const style = this.style();
+    if (!style || !this.dartboard) {
       return;
     }
 
-    const el = this.dartboard.nativeElement;
+    const el = this.dartboard().nativeElement;
     const context = el.getContext('2d');
     if (context) {
       el.width = el.clientWidth;
       el.height = el.clientWidth;
       this.dartboardRenderer = new DartboardRenderer(
-        context, 0, 0, isDartboardStyle(this.style) ? this.style : dartboardStyleMapper[this.style]
+        context, 0, 0, isDartboardStyle(style) ? style : dartboardStyleMapper[style]
       );
-      this.dartboardRenderer.focusSector(this.sector, this.sectorType, this.zoom);
+      this.dartboardRenderer.focusSector(this.sector(), this.sectorType(), this.zoom());
       this.updateCanvasResolution = this.updateCanvasResolution.bind(this);
       new ResizeObserver(this.updateCanvasResolution).observe(el);
     }
@@ -84,9 +85,12 @@ export class DartboardComponent implements OnChanges, AfterViewInit, OnDestroy {
       return;
     }
 
-    this.dartboard.nativeElement.width = this.dartboard.nativeElement.clientWidth * this.renderQuality;
-    this.dartboard.nativeElement.height = this.dartboard.nativeElement.clientWidth * this.renderQuality;
-    const { width, height } = this.dartboard.nativeElement;
+    const dartboardElement = this.dartboard().nativeElement;
+    const renderWidth = dartboardElement.clientWidth * this.renderQuality;
+    dartboardElement.width = renderWidth;
+    dartboardElement.height = renderWidth;
+    const { width, height } = dartboardElement;
+
     this.dartboardRenderer.updateRenderResolution(width, height);
     this.dartboardRenderer.render();
   }
@@ -95,7 +99,7 @@ export class DartboardComponent implements OnChanges, AfterViewInit, OnDestroy {
     if (!this.dartboard) {
       return;
     }
-    const el = this.dartboard.nativeElement;
+    const el = this.dartboard().nativeElement;
     this.resizeObserver?.unobserve(el);
   }
 }
