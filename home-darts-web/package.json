@@ -30,12 +30,12 @@
     "@ngrx/effects": "^18.0.1",
     "@ngrx/store": "^18.0.1",
     "@ngrx/store-devtools": "^18.0.1",
-    "chart.js": "^4.4.2",
+    "chart.js": "^4.4.3",
     "js-md5": "^0.8.3",
     "ngx-skeleton-loader": "^9.0.0",
     "rxjs": "^7.8.1",
     "tslib": "^2.6.2",
-    "zone.js": "^0.14.4"
+    "zone.js": "^0.14.7"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.0.7",
@@ -48,16 +48,16 @@
     "@ngrx/eslint-plugin": "^18.0.1",
     "@types/chart.js": "^2.9.41",
     "@types/jasmine": "~4.3.0",
-    "@typescript-eslint/eslint-plugin": "^6.13.2",
-    "@typescript-eslint/parser": "^6.13.2",
-    "eslint": "^8.55.0",
-    "jasmine-core": "~4.5.0",
-    "karma": "~6.4.0",
-    "karma-chrome-launcher": "~3.1.0",
-    "karma-coverage": "~2.2.0",
-    "karma-jasmine": "~5.1.0",
-    "karma-jasmine-html-reporter": "~2.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.15.0",
+    "@typescript-eslint/parser": "^7.15.0",
+    "eslint": "^9.6.0",
+    "jasmine-core": "^5.1.2",
+    "karma": "^6.4.3",
+    "karma-chrome-launcher": "^3.2.0",
+    "karma-coverage": "^2.2.1",
+    "karma-jasmine": "^5.1.0",
+    "karma-jasmine-html-reporter": "^2.1.0",
     "typescript": "~5.4.5",
-    "webpack-bundle-analyzer": "^4.9.1"
+    "webpack-bundle-analyzer": "^4.10.2"
   }
 }

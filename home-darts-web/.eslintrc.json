@@ -100,8 +100,8 @@
   },
   "overrides": [
     {
+      "plugins": ["@ngrx"],
       "files": ["**.ts"],
-      "extends": ["plugin:@ngrx/recommended"],
       "parserOptions": {
         "project": ["./tsconfig.json"]
       },
