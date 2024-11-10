@@ -1,6 +1,6 @@
 import { formatDate } from '@angular/common';
 import { Pipe, PipeTransform } from '@angular/core';
-import { pluralize } from '../../../modules/plural/utils/pluralize';
+import { pluralize } from '@features/plural/utils/pluralize';
 
 @Pipe({
   name: 'relativeTime',

@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { AnimationOptions } from '../../../../modules/animation/models/animation-options.interface';
-import { TimingFunctions } from '../../../../modules/animation/models/timing-functions.enum';
+import { AnimationOptions } from '@features/animation/models/animation-options.interface';
+import { TimingFunctions } from '@features/animation/models/timing-functions.enum';
 import { PlayerStatsApi } from '@models/player-stats-api.interface';
 import { Store } from '@ngrx/store';
-import { AnimatedPipeCallback } from '../../../../modules/animation/models/animated-pipe-callback.type';
+import { AnimatedPipeCallback } from '@features/animation/models/animated-pipe-callback.type';
 import { selectStatisticsData } from '../../store/selectors/statistics-data.selector';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { selectIsCountersAnimationsOn } from '../../../../store/selectors/is-counters-animations-on.selector';

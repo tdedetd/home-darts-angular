@@ -13,7 +13,7 @@ import { AroundTheClockEffects } from './store/effects/around-the-clock.effects'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilteredPlayersPipe } from './pipes/filtered-players.pipe';
 import { AtcStartPlayersListComponent } from './components/atc-start-players-list/atc-start-players-list.component';
-import { DartboardModule } from '../../modules/dartboard/dartboard.module';
+import { DartboardModule } from '@features/dartboard/dartboard.module';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -25,8 +25,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AroundTheClockEffectsInit } from './store/effects/around-the-clock-init.effects';
-import { ErrorScreenModule } from '../../modules/error-screen/error-screen.module';
 import { SectorsWithPrefixesPipe } from './pipes/sectors-with-prefixes.pipe';
+import { ErrorScreenComponent } from '../../features/error-screen/error-screen.component';
 
 
 @NgModule({
@@ -56,7 +56,7 @@ import { SectorsWithPrefixesPipe } from './pipes/sectors-with-prefixes.pipe';
     MatIconModule,
     MatChipsModule,
     MatTooltipModule,
-    ErrorScreenModule,
+    ErrorScreenComponent,
   ],
   providers: [
     AroundTheClockApiService,

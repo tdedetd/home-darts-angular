@@ -15,8 +15,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { reducers } from './store/reducers';
 import { SettingsEffects } from './store/effects/settings.effects';
 import { environment } from '../environments/environment';
-import { MocksModule } from './modules/mocks/mocks.module';
-import { CoreModule } from './modules/core/core.module';
+import { MocksModule } from '@features/mocks/mocks.module';
+import { CoreModule } from '@features/core/core.module';
 import { CommonModule } from '@angular/common';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 

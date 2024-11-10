@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, Signal, computed, input } from '@angular/core';
 import { HitRate } from '../../models/hit-rate.interface';
-import { DartboardStyle } from '../../../../modules/dartboard/models/dartboard-style.interface';
+import { DartboardStyle } from '@features/dartboard/models/dartboard-style.interface';
 import { DartboardSector } from '@models/types/dartboard-sector.type';
 import { mixColors } from '@functions/mix-colors';
 import { accentBlueColor } from '@constants/colors/accent-blue-color';
 import { lightBlueColor } from '@constants/colors/light-blue-color';
-import { materialStyle } from '../../../../modules/dartboard/constants/styles/material-style';
+import { materialStyle } from '@features/dartboard/constants/styles/material-style';
 
 @Component({
   selector: 'hd-atc-hit-rate-heat-map',

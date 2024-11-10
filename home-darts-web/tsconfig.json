@@ -29,9 +29,9 @@
     "paths": {
       "@config": ["src/app/config"],
       "@constants/*": ["src/app/utils/constants/*"],
+      "@features/*": ["src/app/features/*"],
       "@functions/*": ["src/app/utils/functions/*"],
       "@models/*": ["src/app/models/*"],
-      "@modules/*": ["src/app/modules/*"],
     }
   },
   "angularCompilerOptions": {
