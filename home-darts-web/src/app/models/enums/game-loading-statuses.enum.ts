@@ -1,4 +1,4 @@
-export enum GameLoadingStatuses {
+export const enum GameLoadingStatuses {
   Pending,
   Initiated,
   NoSuchGame,

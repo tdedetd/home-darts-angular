@@ -1,4 +1,4 @@
-export enum GameDirections {
+export const enum GameDirections {
   Forward = 'forward',
   Backward = 'backward',
   ForwardBackward = 'forwardBackward',

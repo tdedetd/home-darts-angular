@@ -1,4 +1,4 @@
-export enum DartboardStyles {
+export const enum DartboardStyles {
   Classic = 'classic',
   Material = 'material',
 }

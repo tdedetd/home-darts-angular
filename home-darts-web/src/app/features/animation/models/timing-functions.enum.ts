@@ -1,4 +1,4 @@
-export enum TimingFunctions {
+export const enum TimingFunctions {
   Linear,
   EaseInQuadratic,
   EaseOutQuadratic,

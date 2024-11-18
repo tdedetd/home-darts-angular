@@ -1,4 +1,4 @@
-export enum GameParamTypes {
+export const enum GameParamTypes {
   Direction = 'direction',
   HitDetection = 'hitDetection',
   FastGame = 'fastGame',

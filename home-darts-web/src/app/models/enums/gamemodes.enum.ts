@@ -1,3 +1,3 @@
-export enum Gamemodes {
+export const enum Gamemodes {
   AroundTheClock = 'aroundTheClock',
 }
