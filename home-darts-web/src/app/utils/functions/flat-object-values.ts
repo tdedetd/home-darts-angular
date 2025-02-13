@@ -1,3 +1,3 @@
-export function flatObjectValues<T>(obj: Record<string | number | symbol, T[]>): T[] {
+export function flatObjectValues<T>(obj: Record<PropertyKey, T[]>): T[] {
   return Object.values(obj).reduce<T[]>((acc, item) => [...acc, ...item], []);
 }

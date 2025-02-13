@@ -15,7 +15,6 @@ import { DartboardSector } from '@models/types/dartboard-sector.type';
 import { DartboardStyles } from '@models/enums/dartboard-styles.enum';
 import { dartboardStyleMapper } from './constants/dartboard-style-mapper';
 import { DartboardStyle } from './models/dartboard-style.interface';
-import { isDartboardStyle } from './utils/is-dartboard-style';
 
 @Component({
   selector: 'hd-dartboard',
@@ -72,7 +71,7 @@ export class DartboardComponent implements OnChanges, AfterViewInit, OnDestroy {
       el.width = el.clientWidth;
       el.height = el.clientWidth;
       this.dartboardRenderer = new DartboardRenderer(
-        context, 0, 0, isDartboardStyle(style) ? style : dartboardStyleMapper[style]
+        context, 0, 0, typeof style === 'object' ? style : dartboardStyleMapper[style]
       );
       this.dartboardRenderer.focusSector(this.sector(), this.sectorType(), this.zoom());
       this.updateCanvasResolution = this.updateCanvasResolution.bind(this);

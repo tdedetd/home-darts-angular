@@ -27,16 +27,16 @@
         <div class="atc-game-dartboard-container">
           <div class="block p-16 mb-12">
             <hd-dartboard
-              [sector]="(selectCurrentSectorForCurrentPlayer$ | async) ?? 0"
+              [sector]="selectCurrentSectorForCurrentPlayer() ?? 0"
               [sectorType]="dartboardSettings.hitDetectionMode"
               [style]="dartboardSettings.dartboardStyle"
               [zoom]="true"
             ></hd-dartboard>
           </div>
-    
+
           <div class="block p-8 pl-24 flex">
             <p class="mr-24">Following sectors</p>
-            @for (sector of ((upcomingSectors$ | async) ?? []) | sectorsWithPrefixes: dartboardSettings.hitDetectionMode; track sector) {
+            @for (sector of (upcomingSectors()) | sectorsWithPrefixes: dartboardSettings.hitDetectionMode; track sector) {
               <p class="mr-16">{{ sector }}</p>
             }
           </div>
@@ -55,7 +55,7 @@
       matTooltip="Hit"
       color="primary"
       type="button"
-      [disabled]="loading || (isGameCompleted()) || (currentPlayerCompleted())"
+      [disabled]="loading() || (isGameCompleted()) || (currentPlayerCompleted())"
       class="atc-game-tools-button btn flex-1-1"
       (click)="throw(true)"
     >
@@ -66,7 +66,7 @@
       matTooltip="Miss"
       color="primary"
       type="button"
-      [disabled]="loading || (isGameCompleted()) || (currentPlayerCompleted())"
+      [disabled]="loading() || (isGameCompleted()) || (currentPlayerCompleted())"
       class="atc-game-tools-button btn flex-1-1"
       (click)="throw(false)"
     >
@@ -77,7 +77,7 @@
       matTooltip="Undo"
       color="primary"
       type="button"
-      [disabled]="loading || (isGameCompleted())"
+      [disabled]="loading() || (isGameCompleted())"
       class="atc-game-tools-button btn flex-1-1"
       (click)="undo()"
     >
@@ -89,7 +89,7 @@
         matTooltip="Complete"
         color="primary"
         type="button"
-        [disabled]="loading || (isGameCompleted())"
+        [disabled]="loading() || (isGameCompleted())"
         class="atc-game-tools-button btn flex-1-1"
         (click)="onCompleteClick()"
       >

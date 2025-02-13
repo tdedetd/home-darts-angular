@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StatisticsRoutingModule } from './statistics-routing.module';
 import { StatisticsComponent } from './statistics.component';
-import { FormatTimeIntervalModule } from '@features/format-date-interval/format-time-interval.module';
 import { AtcStatisticsComponent } from './components/atc-statistics/atc-statistics.component';
 import { MatSelectModule } from '@angular/material/select';
 import { AnimationModule } from '@features/animation/animation.module';
@@ -22,6 +21,7 @@ import { statisticsReducer } from './store/reducers';
 import { StatisticsEffects } from './store/effects/statistics.effects';
 import { EffectsModule } from '@ngrx/effects';
 import { StatisticsCardsComponent } from './components/statistics-cards/statistics-cards.component';
+import { FormatTimeIntervalPipe } from '../../features/format-date-interval/format-time-interval.pipe';
 
 
 Chart.register(BarController, CategoryScale, LinearScale, BarElement);
@@ -41,7 +41,7 @@ Chart.register(BarController, CategoryScale, LinearScale, BarElement);
     FormsModule,
     ReactiveFormsModule,
     StatisticsRoutingModule,
-    FormatTimeIntervalModule,
+    FormatTimeIntervalPipe,
     MatSelectModule,
     AnimationModule,
     DartboardModule,

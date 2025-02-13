@@ -2,9 +2,9 @@
   <div class="common-stats-cards mb-48">
     <div class="common-stats-cards__item common-stats-cards__item_games block p-16">
       <p>Games</p>
-      @if (stats) {
+      @if (stats(); as stats) {
         <h2>
-          @if (isCounterAnimationsOn) {
+          @if (isCounterAnimationsOn()) {
             {{ stats.gamesCount | animated: animationPipeCallback: animationOptions | async }}
           } @else {
             {{ stats.gamesCount }}
@@ -17,9 +17,9 @@
 
     <div class="common-stats-cards__item common-stats-cards__item_throws block p-16">
       <p>Throws</p>
-      @if (stats) {
+      @if (stats(); as stats) {
         <h2>
-          @if (isCounterAnimationsOn) {
+          @if (isCounterAnimationsOn()) {
             {{ stats.throwsCount | animated: animationPipeCallback: animationOptions | async }}
           } @else {
             {{ stats.throwsCount }}
@@ -32,9 +32,9 @@
 
     <div class="common-stats-cards__item common-stats-cards__item_playing-time block p-16">
       <p>Playing time</p>
-      @if (stats) {
+      @if (stats(); as stats) {
         <h2>
-          @if (isCounterAnimationsOn) {
+          @if (isCounterAnimationsOn()) {
             {{
               (stats.totalPlayingTimeSeconds | animated: animationPipeCallback: animationOptions | async) ?? 0
                 | formatTimeInterval

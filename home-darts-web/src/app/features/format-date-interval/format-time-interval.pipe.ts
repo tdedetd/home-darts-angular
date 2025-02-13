@@ -3,7 +3,8 @@ import { TimePart } from './models/time-part.interface';
 import { TimeUnits } from './models/time-units.enum';
 
 @Pipe({
-  name: 'formatTimeInterval'
+  name: 'formatTimeInterval',
+  standalone: true,
 })
 export class FormatTimeIntervalPipe implements PipeTransform {
   public transform(seconds: number): string {

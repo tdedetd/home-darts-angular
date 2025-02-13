@@ -23,7 +23,7 @@ export class AnimationService {
   public play(callback: AnimateCallback, options: AnimationOptions): number {
     const startTimeMs = AnimationService.nowMs;
     const { durationMs } = options;
-    const refreshTimeout = options.refreshTimeout ?? 100;
+    const refreshTimeout = options.refreshTimeout ?? 16;
     const onFinishState = options.onFinishState ?? AnimationStates.Final;
     const timingFunction: TimingFunction = isNotEmpty(options.timingFunction)
       ? typeof options.timingFunction === 'function'
